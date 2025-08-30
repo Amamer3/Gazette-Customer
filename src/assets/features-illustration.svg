@@ -1,0 +1,90 @@
+<svg width="500" height="300" viewBox="0 0 500 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="500" height="300" fill="url(#featuresGradient)"/>
+  
+  <!-- Speed/Lightning -->
+  <g transform="translate(80,50)">
+    <circle cx="40" cy="40" r="35" fill="#ffffff" opacity="0.9"/>
+    <path d="M25 25 L35 45 L45 35 L55 55 L45 45 L35 55 L25 35 Z" fill="#fbbf24"/>
+    <circle cx="40" cy="40" r="3" fill="#f59e0b"/>
+    <!-- Speed lines -->
+    <line x1="10" y1="20" x2="20" y2="20" stroke="#fbbf24" stroke-width="2" opacity="0.6"/>
+    <line x1="15" y1="30" x2="25" y2="30" stroke="#fbbf24" stroke-width="2" opacity="0.6"/>
+    <line x1="10" y1="40" x2="20" y2="40" stroke="#fbbf24" stroke-width="2" opacity="0.6"/>
+  </g>
+  
+  <!-- Security/Shield -->
+  <g transform="translate(200,40)">
+    <circle cx="40" cy="50" r="40" fill="#ffffff" opacity="0.9"/>
+    <path d="M40 20 L55 30 L55 50 C55 65 40 75 40 75 C40 75 25 65 25 50 L25 30 Z" fill="#3b82f6"/>
+    <path d="M35 45 L38 48 L45 40" stroke="#ffffff" stroke-width="3" fill="none"/>
+    <!-- Lock elements -->
+    <rect x="32" y="55" width="16" height="12" fill="#1e40af" rx="2"/>
+    <path d="M35 55 L35 50 C35 47 37 45 40 45 C43 45 45 47 45 50 L45 55" stroke="#1e40af" stroke-width="2" fill="none"/>
+  </g>
+  
+  <!-- Support/People -->
+  <g transform="translate(320,45)">
+    <circle cx="40" cy="45" r="38" fill="#ffffff" opacity="0.9"/>
+    <!-- Person 1 -->
+    <circle cx="30" cy="35" r="6" fill="#6366f1"/>
+    <circle cx="30" cy="50" r="10" fill="#6366f1" opacity="0.7"/>
+    <!-- Person 2 -->
+    <circle cx="50" cy="35" r="6" fill="#8b5cf6"/>
+    <circle cx="50" cy="50" r="10" fill="#8b5cf6" opacity="0.7"/>
+    <!-- Chat bubble -->
+    <ellipse cx="40" cy="25" rx="12" ry="8" fill="#10b981"/>
+    <path d="M35 30 L40 35 L45 30" fill="#10b981"/>
+    <circle cx="37" cy="25" r="1.5" fill="#ffffff"/>
+    <circle cx="40" cy="25" r="1.5" fill="#ffffff"/>
+    <circle cx="43" cy="25" r="1.5" fill="#ffffff"/>
+  </g>
+  
+  <!-- Digital Connection Lines -->
+  <path d="M120 90 Q200 70 280 90" stroke="#7c3aed" stroke-width="2" fill="none" opacity="0.4" stroke-dasharray="5,5">
+    <animate attributeName="stroke-dashoffset" values="0;10" dur="2s" repeatCount="indefinite"/>
+  </path>
+  <path d="M240 130 Q300 110 360 130" stroke="#2563eb" stroke-width="2" fill="none" opacity="0.4" stroke-dasharray="5,5">
+    <animate attributeName="stroke-dashoffset" values="0;10" dur="2s" repeatCount="indefinite" begin="1s"/>
+  </path>
+  
+  <!-- Floating Data Points -->
+  <g opacity="0.6">
+    <circle cx="50" cy="150" r="4" fill="#7c3aed">
+      <animate attributeName="cy" values="150;140;150" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="150" cy="180" r="3" fill="#2563eb">
+      <animate attributeName="cy" values="180;170;180" dur="3s" repeatCount="indefinite" begin="1s"/>
+    </circle>
+    <circle cx="250" cy="160" r="5" fill="#10b981">
+      <animate attributeName="cy" values="160;150;160" dur="3s" repeatCount="indefinite" begin="2s"/>
+    </circle>
+    <circle cx="350" cy="190" r="3" fill="#f59e0b">
+      <animate attributeName="cy" values="190;180;190" dur="3s" repeatCount="indefinite" begin="0.5s"/>
+    </circle>
+    <circle cx="450" cy="170" r="4" fill="#ec4899">
+      <animate attributeName="cy" values="170;160;170" dur="3s" repeatCount="indefinite" begin="1.5s"/>
+    </circle>
+  </g>
+  
+  <!-- Digital Grid Background -->
+  <g opacity="0.1">
+    <defs>
+      <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#7c3aed" stroke-width="1"/>
+      </pattern>
+    </defs>
+    <rect width="500" height="300" fill="url(#grid)"/>
+  </g>
+  
+  <!-- Bottom Wave -->
+  <path d="M0 250 Q125 230 250 250 T500 250 L500 300 L0 300 Z" fill="#ffffff" opacity="0.3"/>
+  
+  <defs>
+    <linearGradient id="featuresGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#e2e8f0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#cbd5e1;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg>

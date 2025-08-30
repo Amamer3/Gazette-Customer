@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+/* Ghana Publishing Company Brand Colors - Blue, White, and Violet */
+:root {
+  --gpc-primary: #8B5CF6; /* Violet - primary brand color */
+  --gpc-primary-dark: #7C3AED;
+  --gpc-primary-light: #C4B5FD;
+  --gpc-secondary: #3B82F6; /* Blue - secondary brand color */
+  --gpc-secondary-dark: #2563EB;
+  --gpc-secondary-light: #93C5FD;
+  --gpc-accent: #FFFFFF; /* White - accent color */
+  --gpc-accent-dark: #F9FAFB;
+  --gpc-accent-light: #FFFFFF;
+  --gpc-text: #1F2937;
+  --gpc-text-light: #6B7280;
+}
+
+/* Custom Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.8s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.8s ease-out;
+}
+
+/* Custom styles for the E-Gazette app */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#root {
+  min-height: 100vh;
+}

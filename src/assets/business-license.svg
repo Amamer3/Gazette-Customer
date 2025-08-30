@@ -1,0 +1,56 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="100" cy="100" r="90" fill="url(#businessGradient)" opacity="0.1"/>
+  
+  <!-- License Document -->
+  <rect x="50" y="40" width="100" height="120" fill="#ffffff" rx="8" stroke="#e5e7eb" stroke-width="2"/>
+  
+  <!-- Header -->
+  <rect x="60" y="55" width="80" height="6" fill="#10b981" rx="3"/>
+  <rect x="70" y="70" width="60" height="3" fill="#9ca3af" rx="1.5"/>
+  
+  <!-- Building Icon -->
+  <rect x="85" y="85" width="30" height="25" fill="#e5e7eb" rx="2"/>
+  <rect x="90" y="90" width="5" height="15" fill="#9ca3af"/>
+  <rect x="100" y="90" width="5" height="15" fill="#9ca3af"/>
+  <rect x="110" y="90" width="5" height="15" fill="#9ca3af"/>
+  <polygon points="85,85 100,75 115,85" fill="#10b981"/>
+  
+  <!-- Business Details -->
+  <rect x="60" y="120" width="50" height="2" fill="#9ca3af" rx="1"/>
+  <rect x="60" y="130" width="70" height="2" fill="#9ca3af" rx="1"/>
+  <rect x="60" y="140" width="45" height="2" fill="#9ca3af" rx="1"/>
+  
+  <!-- License Number -->
+  <rect x="60" y="150" width="35" height="3" fill="#10b981" rx="1.5"/>
+  
+  <!-- Seal -->
+  <circle cx="130" cy="140" r="8" fill="#10b981"/>
+  <path d="M126 140l3 3 6-6" stroke="#ffffff" stroke-width="1.5" fill="none"/>
+  
+  <!-- Money/Success Icons -->
+  <circle cx="30" cy="80" r="8" fill="#fbbf24" opacity="0.3"/>
+  <text x="30" y="85" text-anchor="middle" fill="#f59e0b" font-size="10" font-weight="bold">$</text>
+  
+  <circle cx="170" cy="90" r="8" fill="#10b981" opacity="0.3"/>
+  <path d="M166 90l3 3 6-6" stroke="#059669" stroke-width="1.5" fill="none"/>
+  
+  <!-- Chart/Growth -->
+  <g transform="translate(160,120)">
+    <rect x="0" y="8" width="3" height="12" fill="#3b82f6" opacity="0.4"/>
+    <rect x="5" y="5" width="3" height="15" fill="#3b82f6" opacity="0.4"/>
+    <rect x="10" y="2" width="3" height="18" fill="#3b82f6" opacity="0.4"/>
+  </g>
+  
+  <!-- Decorative Elements -->
+  <circle cx="40" cy="50" r="3" fill="#10b981" opacity="0.3"/>
+  <circle cx="160" cy="45" r="2" fill="#3b82f6" opacity="0.3"/>
+  <circle cx="35" cy="150" r="2.5" fill="#fbbf24" opacity="0.3"/>
+  
+  <defs>
+    <linearGradient id="businessGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg>
