@@ -30,14 +30,13 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFirstName 
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-3 group">
               <div className="relative">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-violet-600 via-violet-700 to-purple-800 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+                {/* <div className="relative z-10 w-10 h-10 bg-gradient-to-br from-violet-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg transform group-hover:scale-105 transition-all duration-300">
                   <span className="text-white font-bold text-sm sm:text-base tracking-wide">GZ</span>
-                </div>
+                </div> */}
+                <img src="https://ghanapublishing.gov.gh/wp-content/uploads/2025/03/gpclogo.png" className='w-38 h-10' alt="" />
                 <div className="absolute -inset-1 bg-gradient-to-br from-violet-400 to-purple-600 rounded-xl opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent group-hover:from-violet-800 group-hover:via-purple-700 group-hover:to-violet-900 transition-all duration-300">E-Gazette</h1>
-                <p className="text-xs sm:text-sm text-gray-500 font-medium tracking-wide">Ghana Publishing Company Ltd</p>
               </div>
             </Link>
           </div>
@@ -189,7 +188,7 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFirstName 
                   : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
               }`}
             >
-              🏠 Home
+              Home
             </Link>
           {isAuthenticated ? (
             <>
@@ -207,7 +206,7 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFirstName 
                     : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
                 }`}
               >
-                📊 Dashboard
+                Dashboard
               </Link>
               <Link
                 to="/applications"
@@ -218,7 +217,7 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFirstName 
                     : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
                 }`}
               >
-                📋 My Applications
+                My Applications
               </Link>
               <Link
                 to="/profile"
@@ -238,7 +237,7 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFirstName 
                 }}
                 className="block w-full text-left px-4 py-3 rounded-xl text-sm sm:text-base font-semibold bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-lg shadow-red-500/25 mt-4"
               >
-                🚪 Logout
+                Logout
               </button>
             </>
           ) : (
@@ -252,7 +251,7 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFirstName 
                     : 'text-gray-700 hover:text-amber-700 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 hover:shadow-md'
                 }`}
               >
-                🛍️ Services
+                Services
               </Link>
               <Link
                 to="/about"
@@ -263,7 +262,7 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFirstName 
                     : 'text-gray-700 hover:text-emerald-700 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 hover:shadow-md'
                 }`}
               >
-                ℹ️ About
+                About
               </Link>
               <div className="pt-4 space-y-3 border-t border-violet-100">
                 <Link
@@ -282,7 +281,7 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFirstName 
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="block px-4 py-3 rounded-xl text-sm sm:text-base font-semibold bg-gradient-to-r from-violet-600 to-purple-700 text-white hover:from-violet-700 hover:to-purple-800 transition-all duration-300 shadow-lg shadow-violet-500/25"
                 >
-                  ✨ Register
+                  Register
                 </Link>
               </div>
             </>

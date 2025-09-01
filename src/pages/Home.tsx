@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { gazetteServices } from '../services/mockData';
-import { Clock, Shield, FileText, ArrowRight, Star, Users, Award } from 'lucide-react';
+import { Clock, Shield, FileText, ArrowRight, Users, Award } from 'lucide-react';
 import heroIllustration from '../assets/hero-illustration.svg';
 import birthCertificate from '../assets/birth-certificate.svg';
 import nameChange from '../assets/name-change.svg';
@@ -25,7 +25,7 @@ const Home: React.FC = () => {
             <div className="text-center lg:text-left order-2 lg:order-1">
             {/* Badge */}
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm font-medium mb-8">
-              <Award className="w-4 h-4 mr-2" />
+              {/* <Award className="w-4 h-4 mr-2" /> */}
               Official Government Platform
             </div>
             
@@ -84,7 +84,7 @@ const Home: React.FC = () => {
                 <img 
                   src={heroIllustration} 
                   alt="Ghana E-Gazette Digital Services" 
-                  className="w-full max-w-md lg:max-w-lg xl:max-w-xl h-auto"
+                  className="w-full max-w-md rounded-2xl lg:max-w-lg xl:max-w-xl h-auto"
                 />
                 {/* Floating Animation Elements */}
                 <div className="absolute -top-4 -left-4 w-8 h-8 bg-white/20 rounded-full animate-bounce"></div>
@@ -193,13 +193,13 @@ const Home: React.FC = () => {
             <img 
               src={featuresIllustration} 
               alt="Digital Government Services Features" 
-              className="w-full max-w-2xl h-auto opacity-90"
+              className="w-full max-w-2xl h-auto opacity-90 rounded-2xl"
             />
           </div>
           
           <div className="text-center mb-20">
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm text-violet-700 text-sm font-medium mb-6 shadow-lg">
-              <Star className="w-4 h-4 mr-2" />
+              {/* <Star className="w-4 h-4 mr-2" /> */}
               Why Choose Us
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
@@ -400,10 +400,7 @@ const Home: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-violet-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">GZ</span>
-                </div>
-                <span className="text-xl font-bold">E-Gazette</span>
+                <img src="https://ghanapublishing.gov.gh/wp-content/uploads/2025/03/gpclogo.png" className='w-38 h-12' alt="" />
               </div>
               <p className="text-gray-400">
                 Official digital gazette services from Ghana Publishing Company Ltd.
@@ -442,7 +439,7 @@ const Home: React.FC = () => {
           </div>
           
           <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 Ghana Publishing Company Ltd. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} Ghana Publishing Company Ltd. All rights reserved.</p>
           </div>
         </div>
       </footer>

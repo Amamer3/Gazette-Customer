@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { CheckCircle, Sparkles, Shield, Clock } from 'lucide-react';
+import { CheckCircle, Shield, Clock } from 'lucide-react';
 import AuthService from '../services/authService';
 import type { LoginFormData } from '../types/auth.js';
 
@@ -59,9 +59,10 @@ const Login: React.FC = () => {
 
       <div className="relative z-10 mx-auto w-full max-w-sm sm:max-w-md">
         <div className="flex justify-center animate-fade-in-up">
-          <div className="w-16 h-16 bg-gradient-to-br from-violet-600 to-blue-600 rounded-2xl flex items-center justify-center shadow-xl transform hover:scale-105 transition-all duration-300">
-            <Sparkles className="text-white w-8 h-8" />
-          </div>
+          {/* <div className="w-16 h-16 bg-gradient-to-br from-violet-600 to-blue-600 rounded-2xl flex items-center justify-center shadow-xl transform hover:scale-105 transition-all duration-300"> */}
+            <img src="https://ghanapublishing.gov.gh/wp-content/uploads/2025/03/gpclogo.png" className="text-white w-40 h-20" alt="GPC Logo" />
+
+          {/* </div> */}
         </div>
         <h2 className="mt-6 sm:mt-8 text-center text-2xl sm:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent animate-fade-in-up" style={{animationDelay: '0.2s'}}>
           Welcome back
