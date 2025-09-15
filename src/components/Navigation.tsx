@@ -23,17 +23,14 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFirstName 
   };
 
   return (
-    <nav className="bg-gradient-to-r from-white via-gray-50 to-white shadow-xl border-b border-gray-100 backdrop-blur-sm">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-white via-gray-50 to-white shadow-xl border-b border-gray-100 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 sm:h-18">
           {/* Logo and Brand */}
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-3 group">
               <div className="relative">
-                {/* <div className="relative z-10 w-10 h-10 bg-gradient-to-br from-violet-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg transform group-hover:scale-105 transition-all duration-300">
-                  <span className="text-white font-bold text-sm sm:text-base tracking-wide">GZ</span>
-                </div> */}
-                <img src="https://ghanapublishing.gov.gh/wp-content/uploads/2025/03/gpclogo.png" className='w-38 h-10' alt="" />
+                <img src="https://ghanapublishing.gov.gh/wp-content/uploads/2025/03/gpclogo.png" className='w-38 h-12' alt="" />
                 <div className="absolute -inset-1 bg-gradient-to-br from-violet-400 to-purple-600 rounded-xl opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
               </div>
               <div className="hidden sm:block">

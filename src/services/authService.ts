@@ -1,4 +1,4 @@
-import type { User, AuthState, LoginFormData, RegisterFormData } from '../types/auth.js';
+import type { User, AuthState, LoginFormData, RegisterFormData, OTPRequestData } from '../types/auth.js';
 import LocalStorageService from './localStorage';
 import { mockUsers } from './mockData';
 
@@ -17,27 +17,92 @@ class AuthService {
   static initializeMockData(): void {
     const existingAuth = LocalStorageService.getAuthState();
     if (!existingAuth) {
-      // Store mock users for testing
+      // Store mock users for testing (using phone as key)
       mockUsers.forEach(user => {
         const userData = {
-          [`user_${user.email}`]: {
-            ...user,
-            password: 'password123' // Default password for mock users
+          [`user_${user.phone}`]: {
+            ...user
           }
         };
-        localStorage.setItem(`egazette_user_${user.email}`, JSON.stringify(userData));
+        localStorage.setItem(`egazette_user_phone_${user.phone}`, JSON.stringify(userData));
       });
     }
   }
 
-  // Login user
+  // Request OTP for phone number
+  static async requestOTP(data: OTPRequestData): Promise<{ success: boolean; error?: string }> {
+    try {
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Check if user exists with this phone number
+      const userKey = `egazette_user_phone_${data.phone}`;
+      const userData = localStorage.getItem(userKey);
+      
+      if (!userData) {
+        return { success: false, error: 'Phone number not registered. Please register first.' };
+      }
+
+      // Generate and store OTP (in real app, this would be sent via SMS)
+      const otp = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit OTP
+      const otpData = {
+        otp,
+        phone: data.phone,
+        expiresAt: Date.now() + 5 * 60 * 1000, // 5 minutes expiry
+        attempts: 0
+      };
+      
+      localStorage.setItem(`egazette_otp_${data.phone}`, JSON.stringify(otpData));
+      
+      // In development, log the OTP (remove in production)
+      console.log(`OTP for ${data.phone}: ${otp}`);
+      
+      return { success: true };
+    } catch (error) {
+      console.error('OTP request error:', error);
+      return { success: false, error: 'An error occurred while sending OTP. Please try again.' };
+    }
+  }
+
+  // Verify OTP and login user
   static async login(credentials: LoginFormData): Promise<{ success: boolean; user?: User; token?: string; error?: string }> {
     try {
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Check if user exists in localStorage
-      const userKey = `egazette_user_${credentials.email}`;
+      // Get stored OTP data
+      const otpKey = `egazette_otp_${credentials.phone}`;
+      const otpData = localStorage.getItem(otpKey);
+      
+      if (!otpData) {
+        return { success: false, error: 'No OTP found. Please request a new OTP.' };
+      }
+
+      const parsedOtpData = JSON.parse(otpData);
+      
+      // Check if OTP is expired
+      if (Date.now() > parsedOtpData.expiresAt) {
+        localStorage.removeItem(otpKey);
+        return { success: false, error: 'OTP has expired. Please request a new OTP.' };
+      }
+
+      // Check attempt limit
+      if (parsedOtpData.attempts >= 3) {
+        localStorage.removeItem(otpKey);
+        return { success: false, error: 'Too many failed attempts. Please request a new OTP.' };
+      }
+
+      // Verify OTP - For demo purposes, accept any 6-digit code
+      const isValidOtp = credentials.otp.length === 6 && /^\d{6}$/.test(credentials.otp);
+      
+      if (!isValidOtp) {
+        parsedOtpData.attempts += 1;
+        localStorage.setItem(otpKey, JSON.stringify(parsedOtpData));
+        return { success: false, error: `Invalid OTP format. Please enter a 6-digit code. ${3 - parsedOtpData.attempts} attempts remaining.` };
+      }
+
+      // OTP is valid, get user data
+      const userKey = `egazette_user_phone_${credentials.phone}`;
       const userData = localStorage.getItem(userKey);
       
       if (!userData) {
@@ -45,12 +110,7 @@ class AuthService {
       }
 
       const parsedUserData = JSON.parse(userData);
-      const user = parsedUserData[`user_${credentials.email}`];
-
-      // Verify password (in real app, this would be hashed)
-      if (user.password !== credentials.password) {
-        return { success: false, error: 'Invalid password. Please try again.' };
-      }
+      const user = parsedUserData[`user_${credentials.phone}`];
 
       // Generate token and create auth state
       const token = generateToken();
@@ -73,6 +133,9 @@ class AuthService {
       LocalStorageService.saveAuthState(authState);
       LocalStorageService.saveUserProfile(authenticatedUser);
 
+      // Clean up OTP data
+      localStorage.removeItem(otpKey);
+
       return { success: true, user: authenticatedUser, token };
     } catch (error) {
       console.error('Login error:', error);
@@ -86,12 +149,20 @@ class AuthService {
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 1500));
 
-      // Check if user already exists
-      const userKey = `egazette_user_${userData.email}`;
+      // Check if user already exists with this phone number
+      const userKey = `egazette_user_phone_${userData.phone}`;
       const existingUser = localStorage.getItem(userKey);
       
       if (existingUser) {
-        return { success: false, error: 'User with this email already exists. Please login instead.' };
+        return { success: false, error: 'User with this phone number already exists. Please login instead.' };
+      }
+
+      // Check if email is already used
+      const emailKey = `egazette_user_email_${userData.email}`;
+      const existingEmail = localStorage.getItem(emailKey);
+      
+      if (existingEmail) {
+        return { success: false, error: 'User with this email already exists. Please use a different email.' };
       }
 
       // Create new user
@@ -104,14 +175,14 @@ class AuthService {
         createdAt: new Date().toISOString()
       };
 
-      // Store user with password
-      const userDataWithPassword = {
-        [`user_${userData.email}`]: {
-          ...newUser,
-          password: userData.password
-        }
+      // Store user data (using phone as primary key)
+      const userDataForStorage = {
+        [`user_${userData.phone}`]: newUser
       };
-      localStorage.setItem(userKey, JSON.stringify(userDataWithPassword));
+      localStorage.setItem(userKey, JSON.stringify(userDataForStorage));
+      
+      // Also store email mapping for duplicate check
+      localStorage.setItem(emailKey, userData.phone);
 
       // Generate token and create auth state
       const token = generateToken();

@@ -1,6 +1,19 @@
 // Service Types
 export type GazetteServiceType = 'birth-certificate' | 'name-change' | 'marriage-certificate' | 'business-license';
 
+// Gazette Types
+export type GazetteType = 'premium-plus' | 'premium-gazette' | 'regular-gazette';
+
+// Gazette Service Categories
+export type GazetteServiceCategory = 
+  | 'name-of-persons' 
+  | 'date-of-birth' 
+  | 'miss-to-mrs' 
+  | 'mrs-to-miss' 
+  | 'marriage-officer' 
+  | 'public-place-of-worship' 
+  | 'chiefs-and-queen-mothers';
+
 export interface GazetteService {
   id: GazetteServiceType;
   name: string;
@@ -8,6 +21,15 @@ export interface GazetteService {
   price: number;
   processingTime: string;
   requiredDocuments: string[];
+}
+
+export interface GazettePricingService {
+  id: string;
+  category: GazetteServiceCategory;
+  name: string;
+  price: number;
+  gazetteType: GazetteType;
+  requirements: string[];
 }
 
 // Status and Method Types

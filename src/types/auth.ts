@@ -15,9 +15,14 @@ export interface AuthState {
 }
 
 export interface LoginFormData {
-  email: string;
-  password: string;
+  phone: string;
+  otp: string;
 }
+
+export interface OTPRequestData {
+  phone: string;
+}
+
 
 export interface RegisterFormData {
   firstName: string;

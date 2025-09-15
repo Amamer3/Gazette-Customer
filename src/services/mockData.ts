@@ -1,5 +1,5 @@
 import type { User } from '../types/auth.js';
-import type { GazetteService, GazetteServiceType, Application, Notification } from '../types/index.js';
+import type { GazetteService, GazetteServiceType, Application, Notification, GazettePricingService } from '../types/index.js';
 
 // Mock Gazette Services
 export const gazetteServices: GazetteService[] = [
@@ -56,6 +56,234 @@ export const gazetteServices: GazetteService[] = [
   }
 ];
 
+// Gazette Pricing Services
+export const gazettePricingServices: GazettePricingService[] = [
+  // PREMIUM PLUS
+  {
+    id: 'premium-plus-name-of-persons',
+    category: 'name-of-persons',
+    name: 'Change/Correction of Name of Persons',
+    price: 2000.00,
+    gazetteType: 'premium-plus',
+    requirements: [
+      'Statutory Declaration'
+    ]
+  },
+  {
+    id: 'premium-plus-date-of-birth',
+    category: 'date-of-birth',
+    name: 'Change of Date of Birth / Place of Birth',
+    price: 2000.00,
+    gazetteType: 'premium-plus',
+    requirements: [
+      'Statutory Declaration'
+    ]
+  },
+  {
+    id: 'premium-plus-mrs-to-miss',
+    category: 'mrs-to-miss',
+    name: 'Change of Name from Mrs to Miss (Divorce)',
+    price: 2000.00,
+    gazetteType: 'premium-plus',
+    requirements: [
+      'Statutory Declaration from Notary Public',
+      'Divorce Certificate'
+    ]
+  },
+  {
+    id: 'premium-plus-miss-to-mrs',
+    category: 'miss-to-mrs',
+    name: 'Change of Name From Miss to Mrs (Mohammedan)',
+    price: 2000.00,
+    gazetteType: 'premium-plus',
+    requirements: [
+      'Statutory Declaration',
+      'Marriage Certificate from Imam'
+    ]
+  },
+  {
+    id: 'premium-plus-marriage-officer',
+    category: 'marriage-officer',
+    name: 'Appointment of Marriage Officer',
+    price: 3199.99,
+    gazetteType: 'premium-plus',
+    requirements: [
+      'Letter from the Attorney General Department'
+    ]
+  },
+  {
+    id: 'premium-plus-public-place-of-worship',
+    category: 'public-place-of-worship',
+    name: 'Public Place of Worship',
+    price: 4799.99,
+    gazetteType: 'premium-plus',
+    requirements: [
+      'Letter from the MMC / Regional Coordinating Council'
+    ]
+  },
+  {
+    id: 'premium-plus-chiefs-and-queen-mothers',
+    category: 'chiefs-and-queen-mothers',
+    name: 'Change of Name of Chiefs and Queen Mothers',
+    price: 5599.99,
+    gazetteType: 'premium-plus',
+    requirements: [
+      'Extract from the National House of Chiefs',
+      'Statutory Declaration certified by the Notary Public'
+    ]
+  },
+
+  // PREMIUM GAZETTE
+  {
+    id: 'premium-gazette-name-of-persons',
+    category: 'name-of-persons',
+    name: 'Change/Correction of Name of Persons',
+    price: 1262.94,
+    gazetteType: 'premium-gazette',
+    requirements: [
+      'Statutory Declaration'
+    ]
+  },
+  {
+    id: 'premium-gazette-date-of-birth',
+    category: 'date-of-birth',
+    name: 'Change of Date of Birth / Place of Birth',
+    price: 1262.94,
+    gazetteType: 'premium-gazette',
+    requirements: [
+      'Statutory Declaration'
+    ]
+  },
+  {
+    id: 'premium-gazette-marriage-officer',
+    category: 'marriage-officer',
+    name: 'Appointment of Marriage Officer',
+    price: 2020.71,
+    gazetteType: 'premium-gazette',
+    requirements: [
+      'Letter from the Attorney General Department'
+    ]
+  },
+  {
+    id: 'premium-gazette-mrs-to-miss',
+    category: 'mrs-to-miss',
+    name: 'Change of Name from Mrs to Miss (Divorce)',
+    price: 1262.94,
+    gazetteType: 'premium-gazette',
+    requirements: [
+      'Statutory Declaration from Notary Public',
+      'Divorce Certificate'
+    ]
+  },
+  {
+    id: 'premium-gazette-miss-to-mrs',
+    category: 'miss-to-mrs',
+    name: 'Change of Name From Miss to Mrs (Mohammedan)',
+    price: 1262.94,
+    gazetteType: 'premium-gazette',
+    requirements: [
+      'Statutory Declaration',
+      'Marriage Certificate from Imam'
+    ]
+  },
+  {
+    id: 'premium-gazette-chiefs-and-queen-mothers',
+    category: 'chiefs-and-queen-mothers',
+    name: 'Change of Name of Chiefs and Queen Mothers',
+    price: 3536.24,
+    gazetteType: 'premium-gazette',
+    requirements: [
+      'Extract from the National House of Chiefs',
+      'Statutory Declaration certified by the Notary Public'
+    ]
+  },
+  {
+    id: 'premium-gazette-public-place-of-worship',
+    category: 'public-place-of-worship',
+    name: 'Public Place of Worship',
+    price: 3031.06,
+    gazetteType: 'premium-gazette',
+    requirements: [
+      'Letter from the MMC / Regional Coordinating Council'
+    ]
+  },
+
+  // REGULAR GAZETTE
+  {
+    id: 'regular-gazette-name-of-persons',
+    category: 'name-of-persons',
+    name: 'Change/Correction of Name of Persons',
+    price: 601.03,
+    gazetteType: 'regular-gazette',
+    requirements: [
+      'Statutory Declaration'
+    ]
+  },
+  {
+    id: 'regular-gazette-date-of-birth',
+    category: 'date-of-birth',
+    name: 'Change of Date of Birth / Place of Birth',
+    price: 601.03,
+    gazetteType: 'regular-gazette',
+    requirements: [
+      'Statutory Declaration'
+    ]
+  },
+  {
+    id: 'regular-gazette-miss-to-mrs',
+    category: 'miss-to-mrs',
+    name: 'Change of Name From Miss to Mrs (Mohammedan)',
+    price: 601.03,
+    gazetteType: 'regular-gazette',
+    requirements: [
+      'Statutory Declaration',
+      'Marriage Certificate from Imam'
+    ]
+  },
+  {
+    id: 'regular-gazette-chiefs-and-queen-mothers',
+    category: 'chiefs-and-queen-mothers',
+    name: 'Change of Name of Chiefs and Queen Mothers',
+    price: 1682.88,
+    gazetteType: 'regular-gazette',
+    requirements: [
+      'Extract from the National House of Chiefs',
+      'Statutory Declaration certified by the Notary Public'
+    ]
+  },
+  {
+    id: 'regular-gazette-mrs-to-miss',
+    category: 'mrs-to-miss',
+    name: 'Change of Name from Mrs to Miss (Divorce)',
+    price: 601.03,
+    gazetteType: 'regular-gazette',
+    requirements: [
+      'Statutory Declaration from Notary Public',
+      'Divorce Certificate'
+    ]
+  },
+  {
+    id: 'regular-gazette-public-place-of-worship',
+    category: 'public-place-of-worship',
+    name: 'Public Place of Worship',
+    price: 1442.47,
+    gazetteType: 'regular-gazette',
+    requirements: [
+      'Letter from the MMC / Regional Coordinating Council'
+    ]
+  },
+  {
+    id: 'regular-gazette-marriage-officer',
+    category: 'marriage-officer',
+    name: 'Appointment of Marriage Officer',
+    price: 961.65,
+    gazetteType: 'regular-gazette',
+    requirements: [
+      'Letter from the Attorney General Department'
+    ]
+  }
+];
+
 // Mock Users (for testing)
 export const mockUsers: User[] = [
   {
@@ -63,7 +291,7 @@ export const mockUsers: User[] = [
     email: 'john.doe@example.com',
     firstName: 'John',
     lastName: 'Doe',
-    phone: '+233 24 123 4567',
+    phone: '+233123456789',
     createdAt: '2024-01-15T10:00:00Z'
   },
   {
@@ -71,7 +299,7 @@ export const mockUsers: User[] = [
     email: 'jane.smith@example.com',
     firstName: 'Jane',
     lastName: 'Smith',
-    phone: '+233 20 987 6543',
+    phone: '+233209876543',
     createdAt: '2024-02-20T14:30:00Z'
   }
 ];

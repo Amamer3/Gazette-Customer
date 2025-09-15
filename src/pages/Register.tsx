@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, User, Mail, Phone, Lock, CheckCircle, ArrowRight, Sparkles } from 'lucide-react';
+import { Eye, EyeOff, User, Mail, Phone, Lock, CheckCircle, ArrowRight } from 'lucide-react';
 import AuthService from '../services/authService';
 import type { RegisterFormData } from '../types/auth.js';
 
@@ -94,11 +94,12 @@ const Register: React.FC = () => {
       <div className="mx-auto w-full max-w-sm sm:max-w-md relative z-10">
         <div className="flex justify-center mb-6 sm:mb-8">
           <div className="relative">
-            <div className="w-16 h-16 bg-gradient-to-br from-violet-600 to-blue-600 rounded-2xl flex items-center justify-center shadow-xl transform hover:scale-105 transition-transform duration-300">
+            <img src="https://ghanapublishing.gov.gh/wp-content/uploads/2025/03/gpclogo.png" className='w-44 h-14' alt="Ghana Publishing Company Logo" />
+            {/* <div className="w-16 h-16 bg-gradient-to-br from-violet-600 to-blue-600 rounded-2xl flex items-center justify-center shadow-xl transform hover:scale-105 transition-transform duration-300">
               <span className="text-white font-bold text-2xl">GZ</span>
-            </div>
+            </div> */}
             <div className="absolute -top-2 -right-2">
-              <Sparkles className="w-6 h-6 text-violet-500 animate-pulse" />
+              
             </div>
           </div>
         </div>
@@ -107,9 +108,7 @@ const Register: React.FC = () => {
           <h2 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-2 sm:mb-3">
             Create your account
           </h2>
-          <p className="text-gray-600 text-base sm:text-lg">
-            Join <span className="text-violet-600 font-semibold">50,000+</span> satisfied customers
-          </p>
+          
           <div className="flex items-center justify-center mt-3 sm:mt-4 space-x-4 sm:space-x-6 text-xs sm:text-sm text-gray-500">
             <div className="flex items-center">
               <CheckCircle className="w-4 h-4 text-green-500 mr-2" />

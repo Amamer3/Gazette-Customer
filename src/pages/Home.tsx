@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { gazetteServices } from '../services/mockData';
+import { gazettePricingServices } from '../services/mockData';
 import { Clock, Shield, FileText, ArrowRight, Users, Award } from 'lucide-react';
 import heroIllustration from '../assets/hero-illustration.svg';
-import birthCertificate from '../assets/birth-certificate.svg';
-import nameChange from '../assets/name-change.svg';
-import marriageCertificate from '../assets/marriage-certificate.svg';
-import businessLicense from '../assets/business-license.svg';
+// import birthCertificate from '../assets/birth-certificate.svg';
+// import nameChange from '../assets/name-change.svg';
+// import marriageCertificate from '../assets/marriage-certificate.svg';
+// import businessLicense from '../assets/business-license.svg';
 import featuresIllustration from '../assets/features-illustration.svg';
 
 const Home: React.FC = () => {
@@ -99,8 +99,30 @@ const Home: React.FC = () => {
         <div className="absolute bottom-20 right-10 w-32 h-32 bg-blue-400/20 rounded-full blur-2xl animate-pulse delay-1000"></div>
       </section>
 
+
+
+          <div className="text-center pt-20">
+            <div className="inline-flex items-center px-4 py-2 rounded-full bg-violet-100 text-violet-700 text-sm font-medium mb-6">
+              <FileText className="w-4 h-4 mr-2" />
+              Our Services
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Government Services
+              <span className="block text-violet-600">Made Simple</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Access all essential government documents and certificates through our streamlined digital platform
+            </p>
+          </div>
+
+
+
+
+
+
+
       {/* Services Section */}
-      <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
+      {/* <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-violet-100 text-violet-700 text-sm font-medium mb-6">
@@ -118,7 +140,7 @@ const Home: React.FC = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {gazetteServices.map((service, index) => {
-              // Map service images
+              
               const serviceImages = {
                 'birth-certificate': birthCertificate,
                 'name-change': nameChange,
@@ -131,13 +153,13 @@ const Home: React.FC = () => {
                   key={service.id} 
                   className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 overflow-hidden"
                   style={{ animationDelay: `${index * 100}ms` }}
-                >
+                > */}
                   {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  {/* <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   
-                  <div className="relative p-8">
+                  <div className="relative p-8"> */}
                     {/* Service Image */}
-                    <div className="w-20 h-20 mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    {/* <div className="w-20 h-20 mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                       <img 
                         src={serviceImages[service.id as keyof typeof serviceImages]} 
                         alt={service.name}
@@ -148,10 +170,10 @@ const Home: React.FC = () => {
                     <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-violet-700 transition-colors">
                       {service.name}
                     </h3>
-                    <p className="text-gray-600 mb-6 leading-relaxed">{service.description}</p>
+                    <p className="text-gray-600 mb-6 leading-relaxed">{service.description}</p> */}
                     
                     {/* Price and Processing */}
-                    <div className="space-y-3">
+                    {/* <div className="space-y-3">
                       <div className="flex justify-between items-center p-3 bg-gray-50 rounded-xl">
                         <span className="text-sm font-medium text-gray-700">Price:</span>
                         <span className="font-bold text-blue-600 text-lg">GHS {service.price.toFixed(2)}</span>
@@ -160,10 +182,10 @@ const Home: React.FC = () => {
                         <span className="text-sm font-medium text-gray-700">Processing:</span>
                         <span className="text-sm font-semibold text-violet-700">{service.processingTime}</span>
                       </div>
-                    </div>
+                    </div> */}
                     
                     {/* Apply Button */}
-                    <Link 
+                    {/* <Link 
                       to={`/application/${service.id}`}
                       className="mt-6 w-full inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-violet-600 to-blue-600 text-white rounded-xl font-semibold hover:from-violet-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                     >
@@ -174,6 +196,186 @@ const Home: React.FC = () => {
                 </div>
               );
             })}
+          </div>
+        </div>
+      </section> */}
+
+      {/* Pricing Section */}
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              PREMIUM PLUS
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Our premium plus services for official gazette publications
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+            {gazettePricingServices
+              .filter(service => service.gazetteType === 'premium-plus')
+              .map((service) => (
+                <div 
+                  key={service.id} 
+                  className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 overflow-hidden"
+                  style={{ 
+                    backgroundImage: 'linear-gradient(to right, rgba(255,0,255,0.1), rgba(0,255,255,0.1))',
+                    backgroundSize: '200% 200%',
+                    animation: 'gradient-animation 5s ease infinite'
+                  }}
+                >
+                  <div className="p-6">
+                    <div className="bg-blue-600 text-white text-center py-2 px-4 rounded-lg mb-4">
+                      <span className="text-sm font-semibold">PREMIUM Plus</span>
+                    </div>
+                    
+                    <h3 className="text-xl font-bold text-violet-800 mb-3">
+                      {service.name}
+                    </h3>
+                    
+                    <div className="mb-4">
+                      <h4 className="text-sm font-medium text-gray-600 mb-2">Requirements</h4>
+                      <ul className="space-y-1">
+                        {service.requirements.map((req, index) => (
+                          <li key={index} className="flex items-start">
+                            <span className="inline-block w-2 h-2 bg-blue-500 rounded-full mt-1.5 mr-2"></span>
+                            <span className="text-sm text-gray-600">{req}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    
+                    <div className="bg-gray-100 rounded-xl p-4 text-center mb-4">
+                      <div className="text-gray-700 font-semibold">GHC</div>
+                      <div className="text-3xl font-bold text-blue-600">{service.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                    </div>
+                    
+                    <Link 
+                      to={`/application/${service.id}`}
+                      className="w-full inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-violet-600 to-blue-600 text-white rounded-xl font-semibold hover:from-violet-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                    >
+                      Apply Now
+                      <ArrowRight className="ml-2 w-4 h-4" />
+                    </Link>
+                  </div>
+                </div>
+              ))}
+          </div>
+
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              PREMIUM GAZETTE
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Our premium gazette publication services
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+            {gazettePricingServices
+              .filter(service => service.gazetteType === 'premium-gazette')
+              .map((service) => (
+                <div 
+                  key={service.id} 
+                  className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 overflow-hidden"
+                  style={{ 
+                    backgroundImage: 'linear-gradient(to right, rgba(255,0,255,0.05), rgba(0,255,255,0.05))',
+                    backgroundSize: '200% 200%',
+                    animation: 'gradient-animation 5s ease infinite'
+                  }}
+                >
+                  <div className="p-6">
+                    <div className="bg-purple-600 text-white text-center py-2 px-4 rounded-lg mb-4">
+                      <span className="text-sm font-semibold">PREMIUM Gazette Type</span>
+                    </div>
+                    
+                    <h3 className="text-xl font-bold text-violet-800 mb-3">
+                      {service.name}
+                    </h3>
+                    
+                    <div className="mb-4">
+                      <h4 className="text-sm font-medium text-gray-600 mb-2">Requirements</h4>
+                      <ul className="space-y-1">
+                        {service.requirements.map((req, index) => (
+                          <li key={index} className="flex items-start">
+                            <span className="inline-block w-2 h-2 bg-purple-500 rounded-full mt-1.5 mr-2"></span>
+                            <span className="text-sm text-gray-600">{req}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    
+                    <div className="bg-gray-100 rounded-xl p-4 text-center mb-4">
+                      <div className="text-gray-700 font-semibold">GHC</div>
+                      <div className="text-3xl font-bold text-purple-600">{service.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                    </div>
+                    
+                    <Link 
+                      to={`/application/${service.id}`}
+                      className="w-full inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                    >
+                      Apply Now
+                      <ArrowRight className="ml-2 w-4 h-4" />
+                    </Link>
+                  </div>
+                </div>
+              ))}
+          </div>
+
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              REGULAR GAZETTE
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Our standard gazette publication services
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {gazettePricingServices
+              .filter(service => service.gazetteType === 'regular-gazette')
+              .map((service) => (
+                <div 
+                  key={service.id} 
+                  className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 overflow-hidden"
+                >
+                  <div className="p-6">
+                    <div className="bg-blue-500 text-white text-center py-2 px-4 rounded-lg mb-4">
+                      <span className="text-sm font-semibold">Gazette Type</span>
+                    </div>
+                    
+                    <h3 className="text-xl font-bold text-blue-800 mb-3">
+                      {service.name}
+                    </h3>
+                    
+                    <div className="mb-4">
+                      <h4 className="text-sm font-medium text-gray-600 mb-2">Requirements</h4>
+                      <ul className="space-y-1">
+                        {service.requirements.map((req, index) => (
+                          <li key={index} className="flex items-start">
+                            <span className="inline-block w-2 h-2 bg-blue-500 rounded-full mt-1.5 mr-2"></span>
+                            <span className="text-sm text-gray-600">{req}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    
+                    <div className="bg-gray-100 rounded-xl p-4 text-center mb-4">
+                      <div className="text-gray-700 font-semibold">GHC</div>
+                      <div className="text-3xl font-bold text-blue-600">{service.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                    </div>
+                    
+                    <Link 
+                      to={`/application/${service.id}`}
+                      className="w-full inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                    >
+                      Apply Now
+                      <ArrowRight className="ml-2 w-4 h-4" />
+                    </Link>
+                  </div>
+                </div>
+              ))}
           </div>
         </div>
       </section>
@@ -400,7 +602,7 @@ const Home: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <img src="https://ghanapublishing.gov.gh/wp-content/uploads/2025/03/gpclogo.png" className='w-38 h-12' alt="" />
+                <img src="https://ghanapublishing.gov.gh/wp-content/uploads/2025/03/gpclogo.png" className='w-38 h-14' alt="" />
               </div>
               <p className="text-gray-400">
                 Official digital gazette services from Ghana Publishing Company Ltd.
