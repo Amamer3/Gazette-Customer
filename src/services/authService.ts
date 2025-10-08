@@ -117,9 +117,10 @@ class AuthService {
       const authenticatedUser: User = {
         id: user.id,
         email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
+        fullName: user.fullName,
         phone: user.phone,
+        gender: user.gender,
+        dateOfBirth: user.dateOfBirth,
         createdAt: user.createdAt
       };
       
@@ -169,9 +170,10 @@ class AuthService {
       const newUser: User = {
         id: generateUserId(),
         email: userData.email,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
+        fullName: userData.fullName,
         phone: userData.phone,
+        gender: userData.gender,
+        dateOfBirth: userData.dateOfBirth,
         createdAt: new Date().toISOString()
       };
 

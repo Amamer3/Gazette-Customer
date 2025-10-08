@@ -3,8 +3,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
+import Auth from './pages/Auth';
 import Dashboard from './pages/Dashboard';
 import Application from './pages/Application';
 import Payment from './pages/Payment';
@@ -13,10 +12,10 @@ import ApplicationDetail from './pages/ApplicationDetail';
 import AuthService from './services/authService';
 import type { User } from './types/auth.js';
 
-const Applications = () => <div className="p-8">Applications - Coming Soon</div>;
-const Profile = () => <div className="p-8">Profile - Coming Soon</div>;
-const Services = () => <div className="p-8">Services - Coming Soon</div>;
-const About = () => <div className="p-8">About - Coming Soon</div>;
+import Applications from './pages/Applications'; 
+import Profile from './pages/Profile';
+import Services from './pages/Services';
+import About from './pages/About';
 
 function AppContent() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -52,15 +51,14 @@ function AppContent() {
       {!isDashboard && (
         <Navigation 
           isAuthenticated={isAuthenticated} 
-          userFirstName={currentUser?.firstName}
+          userFullName={currentUser?.fullName}
         />
       )}
       
       <main className={isDashboard ? '' : 'pt-16 sm:pt-18'}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/auth" element={<Auth />} />
             <Route path="/services" element={<Services />} />
             <Route path="/about" element={<About />} />
             

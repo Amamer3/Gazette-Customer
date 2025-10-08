@@ -4,10 +4,10 @@ import AuthService from '../services/authService';
 
 interface NavigationProps {
   isAuthenticated: boolean;
-  userFirstName?: string;
+  userFullName?: string;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFirstName }) => {
+const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFullName }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -118,7 +118,7 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFirstName 
               <div className="flex items-center space-x-4">
                 <div className="bg-gradient-to-r from-violet-50 to-purple-50 px-4 py-2 rounded-xl border border-violet-100">
                   <span className="text-sm font-medium text-gray-700">
-                    Welcome, <span className="font-bold text-violet-700">{userFirstName}</span>
+                    Welcome, <span className="font-bold text-violet-700">{userFullName}</span>
                   </span>
                 </div>
                 <button
@@ -131,20 +131,14 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFirstName 
             ) : (
               <div className="flex items-center space-x-3">
                 <Link
-                  to="/login"
+                  to="/auth"
                   className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
-                    isActive('/login')
+                    isActive('/auth')
                       ? 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-900 shadow-md'
                       : 'text-gray-700 hover:text-gray-900 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md hover:scale-105'
-                  }`}
+                  }`} 
                 >
-                  Login
-                </Link>
-                <Link
-                  to="/register"
-                  className="bg-gradient-to-r from-violet-600 to-purple-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:from-violet-700 hover:to-purple-800 transition-all duration-300 shadow-lg shadow-violet-500/25 hover:shadow-xl hover:shadow-violet-500/30 hover:scale-105"
-                >
-                  Register
+                  Login/Register
                 </Link>
               </div>
             )}
@@ -191,7 +185,7 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFirstName 
             <>
               <div className="bg-gradient-to-r from-violet-50 to-purple-50 px-4 py-2 rounded-xl border border-violet-100 mb-2">
                 <span className="text-sm font-medium text-gray-700">
-                  👋 Welcome, <span className="font-bold text-violet-700">{userFirstName}</span>
+                  👋 Welcome, <span className="font-bold text-violet-700">{userFullName}</span>
                 </span>
               </div>
               <Link
@@ -263,22 +257,15 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFirstName 
               </Link>
               <div className="pt-4 space-y-3 border-t border-violet-100">
                 <Link
-                  to="/login"
+                  to="/auth"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`block px-4 py-3 rounded-xl text-sm sm:text-base font-semibold transition-all duration-300 ${
-                    isActive('/login') 
+                    isActive('/auth') 
                       ? 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-900 shadow-md' 
                       : 'text-gray-700 hover:text-gray-900 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md'
                   }`}
                 >
-                  🔐 Login
-                </Link>
-                <Link
-                  to="/register"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-4 py-3 rounded-xl text-sm sm:text-base font-semibold bg-gradient-to-r from-violet-600 to-purple-700 text-white hover:from-violet-700 hover:to-purple-800 transition-all duration-300 shadow-lg shadow-violet-500/25"
-                >
-                  Register
+                  🔐 Login/Register
                 </Link>
               </div>
             </>

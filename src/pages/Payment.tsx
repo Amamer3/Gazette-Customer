@@ -1,63 +1,75 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { gazetteServices } from '../services/mockData';
-import LocalStorageService from '../services/localStorage';
-import AuthService from '../services/authService';
-import type { Application, GazetteService, PaymentMethod } from '../types/index.js';
-import type { User } from '../types/auth.js';
+import { 
+  CreditCard, 
+  Smartphone, 
+  Building, 
+  Wallet, 
+  Shield, 
+  CheckCircle, 
+  AlertCircle,
+  Lock,
+  ArrowLeft,
+  Info
+} from 'lucide-react';
+import { gazetteServices } from '../data/mockData';
+import type { Application, Order } from '../types/application';
 
 const Payment: React.FC = () => {
   const { applicationId } = useParams<{ applicationId: string }>();
   const navigate = useNavigate();
   const [application, setApplication] = useState<Application | null>(null);
-  const [service, setService] = useState<GazetteService | null>(null);
-  const [user, setUser] = useState<User | null>(null);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod>('mobile-money');
+  const [service, setService] = useState<any>(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('mobile-money');
   const [paymentDetails, setPaymentDetails] = useState<Record<string, string>>({});
   const [isProcessing, setIsProcessing] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const paymentMethods = [
     {
-      id: 'mobile-money' as PaymentMethod,
+      id: 'mobile-money',
       name: 'Mobile Money',
       description: 'Pay with MTN Mobile Money, Vodafone Cash, or AirtelTigo Money',
-      icon: '📱',
+      icon: Smartphone,
+      color: 'from-green-500 to-emerald-600',
       fields: [
-        { key: 'phoneNumber', label: 'Phone Number', type: 'tel', placeholder: '+233 XX XXX XXXX' },
-        { key: 'network', label: 'Network', type: 'select', options: ['MTN', 'Vodafone', 'AirtelTigo'] }
+        { key: 'phoneNumber', label: 'Phone Number', type: 'tel', placeholder: '+233 XX XXX XXXX', required: true },
+        { key: 'network', label: 'Network', type: 'select', options: ['MTN', 'Vodafone', 'AirtelTigo'], required: true }
       ]
     },
     {
-      id: 'bank-card' as PaymentMethod,
+      id: 'bank-card',
       name: 'Bank Card',
       description: 'Pay with your Visa, Mastercard, or local bank card',
-      icon: '💳',
+      icon: CreditCard,
+      color: 'from-blue-500 to-indigo-600',
       fields: [
-        { key: 'cardNumber', label: 'Card Number', type: 'text', placeholder: '1234 5678 9012 3456' },
-        { key: 'expiryDate', label: 'Expiry Date', type: 'text', placeholder: 'MM/YY' },
-        { key: 'cvv', label: 'CVV', type: 'text', placeholder: '123' },
-        { key: 'cardholderName', label: 'Cardholder Name', type: 'text', placeholder: 'John Doe' }
+        { key: 'cardNumber', label: 'Card Number', type: 'text', placeholder: '1234 5678 9012 3456', required: true },
+        { key: 'expiryDate', label: 'Expiry Date', type: 'text', placeholder: 'MM/YY', required: true },
+        { key: 'cvv', label: 'CVV', type: 'text', placeholder: '123', required: true },
+        { key: 'cardholderName', label: 'Cardholder Name', type: 'text', placeholder: 'John Doe', required: true }
       ]
     },
     {
-      id: 'bank-transfer' as PaymentMethod,
+      id: 'bank-transfer',
       name: 'Bank Transfer',
       description: 'Transfer directly from your bank account',
-      icon: '🏦',
+      icon: Building,
+      color: 'from-purple-500 to-violet-600',
       fields: [
-        { key: 'bankName', label: 'Bank Name', type: 'select', options: ['GCB Bank', 'Ecobank', 'Standard Chartered', 'Fidelity Bank', 'Other'] },
-        { key: 'accountNumber', label: 'Account Number', type: 'text', placeholder: 'Your account number' }
+        { key: 'bankName', label: 'Bank Name', type: 'select', options: ['GCB Bank', 'Ecobank', 'Standard Chartered', 'Fidelity Bank', 'Access Bank', 'CalBank', 'Other'], required: true },
+        { key: 'accountNumber', label: 'Account Number', type: 'text', placeholder: 'Your account number', required: true }
       ]
     },
     {
-      id: 'digital-wallet' as PaymentMethod,
+      id: 'digital-wallet',
       name: 'Digital Wallet',
       description: 'Pay with PayPal, Skrill, or other digital wallets',
-      icon: '💰',
+      icon: Wallet,
+      color: 'from-orange-500 to-amber-600',
       fields: [
-        { key: 'walletType', label: 'Wallet Type', type: 'select', options: ['PayPal', 'Skrill', 'Perfect Money', 'Other'] },
-        { key: 'walletEmail', label: 'Wallet Email', type: 'email', placeholder: 'your@email.com' }
+        { key: 'walletType', label: 'Wallet Type', type: 'select', options: ['PayPal', 'Skrill', 'Perfect Money', 'Other'], required: true },
+        { key: 'walletEmail', label: 'Wallet Email', type: 'email', placeholder: 'your@email.com', required: true }
       ]
     }
   ];
@@ -65,19 +77,12 @@ const Payment: React.FC = () => {
   useEffect(() => {
     const initializePage = async () => {
       try {
-        // Check authentication
-        const currentUser = AuthService.getCurrentUser();
-        if (!currentUser) {
-          navigate('/login');
-          return;
-        }
-        setUser(currentUser);
-
-        // Find the application
-        const applications = LocalStorageService.getApplications();
-        const foundApplication = applications.find(app => app.id === applicationId);
+        // Get application from localStorage
+        const applications = JSON.parse(localStorage.getItem('applications') || '[]');
+        const foundApplication = applications.find((app: Application) => app.id === applicationId);
+        
         if (!foundApplication) {
-          navigate('/dashboard');
+          navigate('/applications');
           return;
         }
         setApplication(foundApplication);
@@ -85,13 +90,13 @@ const Payment: React.FC = () => {
         // Find the service
         const foundService = gazetteServices.find(s => s.id === foundApplication.serviceType);
         if (!foundService) {
-          navigate('/dashboard');
+          navigate('/services');
           return;
         }
         setService(foundService);
       } catch (error) {
         console.error('Error initializing payment page:', error);
-        navigate('/dashboard');
+        navigate('/applications');
       } finally {
         setLoading(false);
       }
@@ -104,48 +109,75 @@ const Payment: React.FC = () => {
     setPaymentDetails(prev => ({ ...prev, [field]: value }));
   };
 
+  const isPaymentFormValid = () => {
+    const selectedMethod = paymentMethods.find(method => method.id === selectedPaymentMethod);
+    if (!selectedMethod) return false;
+
+    return selectedMethod.fields.every(field => {
+      if (field.required) {
+        return paymentDetails[field.key] && paymentDetails[field.key].trim() !== '';
+      }
+      return true;
+    });
+  };
+
   const handlePayment = async () => {
-    if (!application || !service) return;
+    if (!application || !service || !isPaymentFormValid()) return;
 
     setIsProcessing(true);
     
     try {
       // Simulate payment processing
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 3000));
+
+      // Create order record
+      const order: Order = {
+        id: `order-${Date.now()}`,
+        applicationId: application.id,
+        userId: 'user-001', // In real app, get from auth context
+        serviceName: service.name,
+        amount: service.price,
+        currency: 'GHS',
+        status: 'paid',
+        paymentMethod: paymentMethods.find(m => m.id === selectedPaymentMethod)?.name || 'Unknown',
+        paymentReference: `PAY-${Date.now()}`,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days from now
+      };
 
       // Update application with payment info
       const updatedApplication = {
         ...application,
         status: 'submitted' as const,
-        paymentStatus: 'completed' as const,
-        paymentReference: `PAY-${Date.now()}`,
-        updatedAt: new Date().toISOString()
+        paymentStatus: 'paid' as const,
+        paymentId: order.id,
+        lastUpdated: new Date().toISOString()
       };
 
-      // Update in localStorage
-      const applications = LocalStorageService.getApplications();
-      const updatedApplications = applications.map(app => 
+      // Save to localStorage
+      const applications = JSON.parse(localStorage.getItem('applications') || '[]');
+      const updatedApplications = applications.map((app: Application) => 
         app.id === application.id ? updatedApplication : app
       );
-      LocalStorageService.saveApplications(updatedApplications);
+      localStorage.setItem('applications', JSON.stringify(updatedApplications));
 
-      // Add success notification
-      const notifications = LocalStorageService.getNotifications();
-      const newNotification = {
-        id: `notif-${Date.now()}`,
-        userId: application.userId,
-        title: 'Payment Successful',
-        message: `Payment of GHS ${service.price.toFixed(2)} has been processed successfully for your ${service.name} application.`,
-        type: 'success' as const,
-        read: false,
-        createdAt: new Date().toISOString()
-      };
-      LocalStorageService.saveNotifications([newNotification, ...notifications]);
+      // Save order
+      const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+      orders.push(order);
+      localStorage.setItem('orders', JSON.stringify(orders));
 
       // Navigate to success page
-      navigate('/payment-success', { state: { application: updatedApplication, service } });
+      navigate('/payment-success', { 
+        state: { 
+          application: updatedApplication, 
+          service,
+          order
+        } 
+      });
     } catch (error) {
       console.error('Payment processing error:', error);
+      // In real app, show proper error handling
       alert('Payment processing failed. Please try again.');
     } finally {
       setIsProcessing(false);
@@ -154,26 +186,27 @@ const Payment: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-violet-600 mx-auto mb-4"></div>
-          <p className="text-sm sm:text-base text-gray-600">Loading payment details...</p>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-violet-600"></div>
+          <p className="mt-4 text-gray-600">Loading payment details...</p>
         </div>
       </div>
     );
   }
 
-  if (!application || !service || !user) {
+  if (!application || !service) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Application Not Found</h2>
-          <p className="text-sm sm:text-base text-gray-600 mb-6">The requested application could not be found.</p>
+          <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">Application Not Found</h3>
+          <p className="text-gray-600 mb-6">The requested application could not be found.</p>
           <button
-            onClick={() => navigate('/dashboard')}
-            className="px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white text-sm sm:text-base rounded-md hover:bg-blue-700 transition-colors"
+            onClick={() => navigate('/applications')}
+            className="px-6 py-3 bg-violet-600 text-white rounded-xl font-semibold hover:bg-violet-700 transition-colors"
           >
-            Return to Dashboard
+            Return to Applications
           </button>
         </div>
       </div>
@@ -183,78 +216,89 @@ const Payment: React.FC = () => {
   const selectedMethod = paymentMethods.find(method => method.id === selectedPaymentMethod);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-4 sm:py-8">
-      <div className="container mx-auto px-4 max-w-4xl">
-        {/* Breadcrumb */}
-        <nav className="mb-4 sm:mb-6">
-          <ol className="flex items-center space-x-2 text-xs sm:text-sm text-gray-500">
-            <li>
-              <button onClick={() => navigate('/dashboard')} className="hover:text-blue-600 transition-colors">
-                Dashboard
-              </button>
-            </li>
-            <li className="flex items-center">
-              <svg className="w-3 h-3 sm:w-4 sm:h-4 mx-2" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-              </svg>
-              <span>{service.name}</span>
-            </li>
-            <li className="flex items-center">
-              <svg className="w-3 h-3 sm:w-4 sm:h-4 mx-2" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-              </svg>
-              <span className="text-gray-900 font-medium text-xs sm:text-sm">Payment</span>
-            </li>
-          </ol>
-        </nav>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => navigate('/applications')}
+              className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Complete Payment</h1>
+              <p className="text-gray-600">Secure payment for your gazette application</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Payment Methods */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">Choose Payment Method</h2>
+            <div className="bg-white rounded-2xl shadow-sm p-8">
+              <div className="flex items-center mb-6">
+                <Shield className="w-6 h-6 text-green-600 mr-3" />
+                <h2 className="text-2xl font-bold text-gray-900">Choose Payment Method</h2>
+              </div>
               
-              <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
-                {paymentMethods.map((method) => (
-                  <div key={method.id} className="border rounded-md sm:rounded-lg p-3 sm:p-4">
-                    <label className="flex items-start cursor-pointer">
-                      <input
-                        type="radio"
-                        name="paymentMethod"
-                        value={method.id}
-                        checked={selectedPaymentMethod === method.id}
-                        onChange={(e) => setSelectedPaymentMethod(e.target.value as PaymentMethod)}
-                        className="mt-1 mr-2 sm:mr-3"
-                      />
-                      <div className="flex-1">
-                        <div className="flex items-center mb-2">
-                          <span className="text-xl sm:text-2xl mr-2 sm:mr-3">{method.icon}</span>
-                          <div>
-                            <h3 className="font-medium text-gray-900 text-sm sm:text-base">{method.name}</h3>
-                            <p className="text-xs sm:text-sm text-gray-600">{method.description}</p>
+              <div className="space-y-4 mb-8">
+                {paymentMethods.map((method) => {
+                  const IconComponent = method.icon;
+                  return (
+                    <div 
+                      key={method.id} 
+                      className={`border-2 rounded-xl p-6 cursor-pointer transition-all duration-300 ${
+                        selectedPaymentMethod === method.id
+                          ? 'border-violet-500 bg-violet-50'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                      onClick={() => setSelectedPaymentMethod(method.id)}
+                    >
+                      <div className="flex items-start">
+                        <input
+                          type="radio"
+                          name="paymentMethod"
+                          value={method.id}
+                          checked={selectedPaymentMethod === method.id}
+                          onChange={(e) => setSelectedPaymentMethod(e.target.value)}
+                          className="mt-1 mr-4"
+                        />
+                        <div className="flex-1">
+                          <div className="flex items-center mb-3">
+                            <div className={`w-12 h-12 bg-gradient-to-br ${method.color} rounded-xl flex items-center justify-center mr-4`}>
+                              <IconComponent className="w-6 h-6 text-white" />
+                            </div>
+                            <div>
+                              <h3 className="text-lg font-semibold text-gray-900">{method.name}</h3>
+                              <p className="text-gray-600">{method.description}</p>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </label>
-                  </div>
-                ))}
+                    </div>
+                  );
+                })}
               </div>
 
               {/* Payment Details Form */}
               {selectedMethod && (
-                <div className="border-t pt-4 sm:pt-6">
-                  <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-3 sm:mb-4">Payment Details</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                <div className="border-t pt-8">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-6">Payment Details</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {selectedMethod.fields.map((field) => (
                       <div key={field.key} className={field.key === 'cardNumber' || field.key === 'accountNumber' ? 'md:col-span-2' : ''}>
-                        <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
-                          {field.label}
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          {field.label} {field.required && <span className="text-red-500">*</span>}
                         </label>
                         {field.type === 'select' ? (
                           <select
                             value={paymentDetails[field.key] || ''}
                             onChange={(e) => handlePaymentDetailChange(field.key, e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500 text-sm sm:text-base"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                           >
                             <option value="">Select {field.label}</option>
                             {field.options?.map((option) => (
@@ -267,7 +311,7 @@ const Payment: React.FC = () => {
                             value={paymentDetails[field.key] || ''}
                             onChange={(e) => handlePaymentDetailChange(field.key, e.target.value)}
                             placeholder={field.placeholder}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500 text-sm sm:text-base"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                           />
                         )}
                       </div>
@@ -275,51 +319,107 @@ const Payment: React.FC = () => {
                   </div>
                 </div>
               )}
+
+              {/* Security Notice */}
+              <div className="mt-8 bg-blue-50 border border-blue-200 rounded-xl p-6">
+                <div className="flex items-start">
+                  <Lock className="w-5 h-5 text-blue-600 mr-3 mt-0.5" />
+                  <div>
+                    <h4 className="font-semibold text-blue-900">Secure Payment</h4>
+                    <p className="text-sm text-blue-800 mt-1">
+                      Your payment information is encrypted and secure. We use industry-standard SSL encryption to protect your data.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 sticky top-8">
-              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-3 sm:mb-4">Order Summary</h3>
+            <div className="bg-white rounded-2xl shadow-sm p-6 sticky top-8">
+              <h3 className="text-xl font-bold text-gray-900 mb-6">Order Summary</h3>
               
-              <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
-                <div className="flex justify-between">
-                  <span className="text-gray-600 text-xs sm:text-sm">Service:</span>
-                  <span className="font-medium text-xs sm:text-sm text-right">{service.name}</span>
+              <div className="space-y-4 mb-6">
+                <div className="flex justify-between items-start">
+                  <span className="text-gray-600">Service:</span>
+                  <span className="font-medium text-gray-900 text-right max-w-xs">{service.name}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600 text-xs sm:text-sm">Processing Time:</span>
-                  <span className="text-xs sm:text-sm">{service.processingTime}</span>
+                  <span className="text-gray-600">Processing Time:</span>
+                  <span className="text-gray-900">{service.processingTime}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600 text-xs sm:text-sm">Application ID:</span>
-                  <span className="text-xs sm:text-sm font-mono">{application.id}</span>
+                  <span className="text-gray-600">Application ID:</span>
+                  <span className="text-gray-900 font-mono text-sm">{application.id}</span>
                 </div>
-                <hr className="my-3 sm:my-4" />
-                <div className="flex justify-between text-base sm:text-lg font-bold">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Category:</span>
+                  <span className="text-gray-900">{service.category}</span>
+                </div>
+              </div>
+
+              <hr className="my-6" />
+
+              <div className="space-y-3 mb-6">
+                <div className="flex justify-between text-lg">
+                  <span className="font-semibold">Subtotal:</span>
+                  <span className="font-semibold">GHS {service.price.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-sm text-gray-600">
+                  <span>Processing Fee:</span>
+                  <span>GHS 0.00</span>
+                </div>
+                <div className="flex justify-between text-sm text-gray-600">
+                  <span>Tax:</span>
+                  <span>GHS 0.00</span>
+                </div>
+                <hr />
+                <div className="flex justify-between text-xl font-bold">
                   <span>Total:</span>
-                  <span className="text-blue-600">GHS {service.price.toFixed(2)}</span>
+                  <span className="text-violet-600">GHS {service.price.toFixed(2)}</span>
                 </div>
               </div>
 
               <button
                 onClick={handlePayment}
-                disabled={isProcessing}
-                className="w-full px-4 sm:px-6 py-2 sm:py-3 bg-violet-600 text-white text-sm sm:text-base rounded-md hover:bg-violet-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                disabled={isProcessing || !isPaymentFormValid()}
+                className="w-full px-6 py-4 bg-gradient-to-r from-violet-600 to-blue-600 text-white rounded-xl font-semibold hover:from-violet-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 {isProcessing ? (
                   <div className="flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-white mr-2"></div>
-                    <span className="text-sm sm:text-base">Processing...</span>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
+                    Processing Payment...
                   </div>
                 ) : (
                   `Pay GHS ${service.price.toFixed(2)}`
                 )}
               </button>
 
-              <div className="mt-3 sm:mt-4 text-xs text-gray-500 text-center">
-                <p>🔒 Your payment information is secure and encrypted</p>
+              <div className="mt-4 text-center">
+                <div className="flex items-center justify-center text-sm text-gray-500">
+                  <Shield className="w-4 h-4 mr-2" />
+                  <span>256-bit SSL Encrypted</span>
+                </div>
+              </div>
+
+              {/* Payment Methods Info */}
+              <div className="mt-6 p-4 bg-gray-50 rounded-xl">
+                <div className="flex items-center mb-3">
+                  <Info className="w-4 h-4 text-gray-600 mr-2" />
+                  <span className="text-sm font-medium text-gray-700">Accepted Payment Methods</span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {paymentMethods.map((method) => {
+                    const IconComponent = method.icon;
+                    return (
+                      <div key={method.id} className="flex items-center px-2 py-1 bg-white rounded-lg">
+                        <IconComponent className="w-4 h-4 text-gray-600 mr-1" />
+                        <span className="text-xs text-gray-600">{method.name}</span>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>

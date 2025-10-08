@@ -7,8 +7,7 @@ import type { User } from './types/auth';
 const testUser: User = {
   id: '1',
   email: 'test@example.com',
-  firstName: 'Test',
-  lastName: 'User',
+  fullName: 'Test User',
   phone: '+233123456789',
   createdAt: new Date().toISOString()
 };

@@ -289,16 +289,14 @@ export const mockUsers: User[] = [
   {
     id: 'user-1',
     email: 'john.doe@example.com',
-    firstName: 'John',
-    lastName: 'Doe',
+    fullName: 'John Doe',
     phone: '+233123456789',
     createdAt: '2024-01-15T10:00:00Z'
   },
   {
     id: 'user-2',
     email: 'jane.smith@example.com',
-    firstName: 'Jane',
-    lastName: 'Smith',
+    fullName: 'Jane Smith',
     phone: '+233209876543',
     createdAt: '2024-02-20T14:30:00Z'
   }

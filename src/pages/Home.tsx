@@ -42,13 +42,13 @@ const Home: React.FC = () => {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
               <Link
-                to="/register"
+                to="/auth"
                 className="group inline-flex items-center justify-center px-8 py-4 bg-white text-violet-700 rounded-xl font-semibold text-lg hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
               >
                 Get Started Today
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link
+              <Link 
                 to="/dashboard"
                 className="inline-flex items-center justify-center px-8 py-4 border-2 border-white/30 text-white rounded-xl font-semibold text-lg hover:bg-white/10 backdrop-blur-sm transition-all duration-300"
               >
@@ -557,7 +557,7 @@ const Home: React.FC = () => {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link
-                to="/register"
+                to="/auth"
                 className="group inline-flex items-center px-8 py-4 bg-white text-violet-600 rounded-2xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-white/25"
               >
                 <span>Get Started Free</span>

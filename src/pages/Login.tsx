@@ -9,7 +9,7 @@ const Login: React.FC = () => {
   const [step, setStep] = useState<'phone' | 'otp'>('phone');
   const [formData, setFormData] = useState<LoginFormData>({
     phone: '',
-    otp: ''
+    otp: '' 
   });
   const [otpRequested, setOtpRequested] = useState(false);
   const [resendTimer, setResendTimer] = useState(0);

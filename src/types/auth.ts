@@ -2,16 +2,21 @@
 export interface User {
   id: string;
   email: string;
-  firstName: string;
-  lastName: string;
+  fullName: string;
   phone: string;
+  gender?: string;
+  dateOfBirth?: string;
   createdAt: string;
 }
-
+ 
 export interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   token: string | null;
+}
+
+export interface PhoneVerificationData {
+  phone: string;
 }
 
 export interface LoginFormData {
@@ -23,12 +28,19 @@ export interface OTPRequestData {
   phone: string;
 }
 
-
 export interface RegisterFormData {
-  firstName: string;
-  lastName: string;
+  fullName: string;
   email: string;
   phone: string;
+  gender: string;
+  dateOfBirth: string;
   password: string;
   confirmPassword: string;
+}
+
+export interface AuthResponse {
+  success: boolean;
+  user?: User;
+  error?: string;
+  isNewUser?: boolean;
 }

@@ -1,99 +1,92 @@
 import type { GazetteService } from '../types/application';
 
+// Based on Ghana Publishing Company E-Gazette Services
 export const gazetteServices: GazetteService[] = [
   {
-    id: 'birth-certificate',
-    name: 'Birth Certificate',
-    description: 'Official birth certificate registration and issuance',
-    price: 50,
-    processingTime: '5-7 business days',
-    category: 'Civil Registration',
+    id: 'appointment-marriage-officers',
+    name: 'APPOINTMENT OF MARRIAGE OFFICERS',
+    description: 'Official appointment of marriage officers for religious institutions',
+    price: 500.00,
+    processingTime: '10-14 business days',
+    category: 'Marriage Services',
     requiredDocuments: [
-      'Hospital Birth Record',
-      'Parent ID Cards',
-      'Marriage Certificate (if applicable)',
-      'Passport Photos'
-    ],
-    icon: 'FileText'
-  },
-  {
-    id: 'death-certificate',
-    name: 'Death Certificate',
-    description: 'Official death certificate registration and issuance',
-    price: 45,
-    processingTime: '3-5 business days',
-    category: 'Civil Registration',
-    requiredDocuments: [
-      'Medical Certificate of Death',
-      'ID Card of Deceased',
-      'Next of Kin ID',
-      'Burial Permit'
-    ],
-    icon: 'FileText'
-  },
-  {
-    id: 'marriage-certificate',
-    name: 'Marriage Certificate',
-    description: 'Official marriage certificate registration and issuance',
-    price: 60,
-    processingTime: '7-10 business days',
-    category: 'Civil Registration',
-    requiredDocuments: [
-      'Marriage License',
-      'Both Parties ID Cards',
-      'Birth Certificates',
+      'Application Letter',
+      'Certificate of Registration of Religious Body',
+      'Recommendation from Religious Head',
+      'Police Clearance Certificate',
       'Passport Photos',
-      'Witness Statements'
+      'Educational Certificates'
     ],
     icon: 'Heart'
   },
   {
-    id: 'business-registration',
-    name: 'Business Registration',
-    description: 'Register your business with the Registrar General',
-    price: 150,
-    processingTime: '10-14 business days',
-    category: 'Business Services',
+    id: 'change-name-company-school-hospital',
+    name: 'CHANGE OF NAME OF COMPANY/SCHOOL/HOSPITAL ETC',
+    description: 'Official change of name for registered entities',
+    price: 300.00,
+    processingTime: '7-10 business days',
+    category: 'Corporate Services',
     requiredDocuments: [
-      'Business Name Search',
-      'Memorandum of Association',
-      'Articles of Association',
-      'Director ID Cards',
-      'Statutory Declaration'
+      'Application Letter',
+      'Certificate of Incorporation',
+      'Board Resolution',
+      'New Name Search Report',
+      'Updated Constitution/Articles',
+      'Payment Receipt'
     ],
     icon: 'Building'
   },
   {
-    id: 'passport-application',
-    name: 'Passport Application',
-    description: 'Apply for Ghana passport or renewal',
-    price: 300,
-    processingTime: '21-30 business days',
-    category: 'Immigration Services',
+    id: 'change-name-confirmation-date-birth',
+    name: 'CHANGE OF NAME/CONFIRMATION OF NAME/CHANGE OF DATE OF BIRTH',
+    description: 'Official name change or date of birth correction',
+    price: 200.00,
+    processingTime: '5-7 business days',
+    category: 'Personal Services',
     requiredDocuments: [
+      'Application Letter',
       'Birth Certificate',
       'National ID Card',
+      'Affidavit',
+      'Police Clearance',
       'Passport Photos',
-      'Guarantor Form',
-      'Previous Passport (for renewal)'
+      'Supporting Documents'
     ],
-    icon: 'Globe'
+    icon: 'User'
   },
   {
-    id: 'drivers-license',
-    name: 'Driver\'s License',
-    description: 'Apply for or renew your driver\'s license',
-    price: 80,
-    processingTime: '7-14 business days',
-    category: 'Transportation',
+    id: 'incorporation-commencement-companies',
+    name: 'INCORPORATION/COMMENCEMENT OF COMPANIES',
+    description: 'Official incorporation and commencement of business companies',
+    price: 400.00,
+    processingTime: '10-14 business days',
+    category: 'Corporate Services',
     requiredDocuments: [
-      'Medical Certificate',
-      'Eye Test Report',
-      'Passport Photos',
-      'National ID Card',
-      'Driving School Certificate'
+      'Memorandum of Association',
+      'Articles of Association',
+      'Name Search Report',
+      'Statutory Declaration',
+      'Director Details',
+      'Registered Office Address'
     ],
-    icon: 'Car'
+    icon: 'Briefcase'
+  },
+  {
+    id: 'public-place-worship-marriage-license',
+    name: 'PUBLIC PLACE OF WORSHIP AND LICENCE FOR THE CELEBRATION OF MARRIAGES',
+    description: 'Licensing of public places of worship for marriage ceremonies',
+    price: 600.00,
+    processingTime: '14-21 business days',
+    category: 'Religious Services',
+    requiredDocuments: [
+      'Application Letter',
+      'Certificate of Registration',
+      'Building Plan Approval',
+      'Fire Safety Certificate',
+      'Environmental Health Certificate',
+      'Recommendation from Religious Council'
+    ],
+    icon: 'Church'
   }
 ];
 

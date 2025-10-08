@@ -84,7 +84,7 @@ const Dashboard: React.FC = () => {
                   </div>
                   <div className="min-w-0 flex-1">
                     <h1 className="text-lg sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-white mb-1 sm:mb-2 truncate">
-                      Welcome back, {user?.firstName}!
+                      Welcome back, {user?.fullName}!
                     </h1>
                     <p className="text-white/90 text-xs sm:text-sm lg:text-base xl:text-lg">
                       Ready to manage your applications and explore our services?
