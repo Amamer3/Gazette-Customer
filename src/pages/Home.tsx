@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { gazettePricingServices } from '../services/mockData';
-import { Clock, Shield, FileText, ArrowRight, Users, Award } from 'lucide-react';
+import { Clock, Shield, FileText, ArrowRight, Users, Award, Star } from 'lucide-react';
 // import heroIllustration from '../assets/hero-illustration.svg';
 // import birthCertificate from '../assets/birth-certificate.svg';
 // import nameChange from '../assets/name-change.svg';
@@ -381,7 +381,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-24 bg-[#e9eefe] relative overflow-hidden">
+      <section className="py-24 bg-blue-900 relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-0 left-0 w-96 h-96 bg-violet-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
@@ -401,16 +401,17 @@ const Home: React.FC = () => {
           
           <div className="text-center mb-20">
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm text-violet-700 text-sm font-medium mb-6 shadow-lg">
+              <Star className="w-4 h-4 mr-2 text-yellow-500" />
               {/* <Star className="w-4 h-4 mr-2" /> */}
               Why Choose Us
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-100 mb-6">
               Built for
               <span className="block bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
                 Excellence
               </span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-gray-100 max-w-3xl mx-auto leading-relaxed">
               Experience government services like never before with our cutting-edge platform designed for speed, security, and simplicity
             </p>
           </div>
@@ -427,10 +428,10 @@ const Home: React.FC = () => {
                   </svg>
                 </div>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-violet-700 transition-colors">
+              <h3 className="text-2xl font-bold text-gray-100 mb-4 group-hover:text-violet-700 transition-colors">
                 Lightning Fast
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-100 leading-relaxed">
                 Process documents in minutes, not days. Our AI-powered system ensures rapid verification and approval
               </p>
               <div className="mt-4 inline-flex items-center text-violet-600 font-semibold">
@@ -450,10 +451,10 @@ const Home: React.FC = () => {
                   </svg>
                 </div>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-700 transition-colors">
+              <h3 className="text-2xl font-bold text-gray-100 mb-4 group-hover:text-blue-700 transition-colors">
                 Bank-Level Security
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-100 leading-relaxed">
                 Your data is protected with military-grade encryption and multi-layer security protocols
               </p>
               <div className="mt-4 inline-flex items-center text-blue-600 font-semibold">
@@ -473,10 +474,10 @@ const Home: React.FC = () => {
                   </svg>
                 </div>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-indigo-700 transition-colors">
+              <h3 className="text-2xl font-bold text-gray-100 mb-4 group-hover:text-indigo-700 transition-colors">
                 Expert Support
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-100 leading-relaxed">
                 Get instant help from our certified specialists available 24/7 via chat, phone, or email
               </p>
               <div className="mt-4 inline-flex items-center text-indigo-600 font-semibold">
@@ -489,31 +490,31 @@ const Home: React.FC = () => {
       </section>
 
       {/* Statistics Section */}
-      <section className="bg-blue-50 py-20">
+        <section className="bg-blue-900 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-4xl font-bold text-violet-600 mb-2">50,000+</div>
-              <div className="text-gray-600">Certificates Issued</div>
+              <div className="text-4xl font-bold text-gray-100 mb-2">50,000+</div>
+              <div className="text-gray-100">Certificates Issued</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-blue-600 mb-2">98%</div>
-              <div className="text-gray-600">Customer Satisfaction</div>
+              <div className="text-4xl font-bold text-gray-100 mb-2">98%</div>
+              <div className="text-gray-100">Customer Satisfaction</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-violet-600 mb-2">5-7</div>
-              <div className="text-gray-600">Days Average Processing</div>
+              <div className="text-4xl font-bold text-gray-100 mb-2">5-7</div>
+              <div className="text-gray-100">Days Average Processing</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-blue-600 mb-2">24/7</div>
-              <div className="text-gray-600">Online Support</div>
+              <div className="text-4xl font-bold text-gray-100 mb-2">24/7</div>
+                <div className="text-gray-100">Online Support</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="relative py-24 bg-gradient-to-br from-violet-600 via-blue-600 to-indigo-700 overflow-hidden">
+      <section className="relative py-24 bg-blue-400 overflow-hidden">
         {/* Background Elements */}
         <div className="absolute inset-0">
           <div className="absolute top-0 left-0 w-72 h-72 bg-white/10 rounded-full mix-blend-overlay filter blur-xl animate-pulse"></div>
