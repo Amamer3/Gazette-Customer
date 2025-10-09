@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import GazetteApplicationForm from '../components/GazetteApplicationForm';
 import type { ApplicationFormData } from '../types/application';
 
 const Application: React.FC = () => {
-  const { serviceId } = useParams<{ serviceId: string }>();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 

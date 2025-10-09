@@ -408,7 +408,7 @@ const Auth: React.FC = () => {
   );
 
   const renderRegisterScreen = () => (
-    <div className="bg-white/90 backdrop-blur-md p-8 rounded-2xl shadow-lg border border-gray-100">
+    <div className="bg-white/90 backdrop-blur-md p-10 rounded-2xl shadow-lg border border-gray-100 max-w-2xl mx-auto">
       {/* Back Button */}
       <button
         onClick={handleBackToPhone}
@@ -418,15 +418,15 @@ const Auth: React.FC = () => {
         Back to phone number
       </button>
 
-      <div className="text-center mb-6">
-        <div className="mx-auto h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-          <User className="h-6 w-6 text-blue-600" />
+      <div className="text-center mb-8">
+        <div className="mx-auto h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+          <User className="h-8 w-8 text-blue-600" />
         </div>
-        <h2 className="text-xl font-semibold text-gray-900">Complete Your Registration</h2>
-        <p className="text-sm text-gray-600 mt-2">This phone number ({phoneData.phone}) is not registered yet. Please complete your registration below.</p>
+        <h2 className="text-2xl font-semibold text-gray-900 mb-2">Complete Your Registration</h2>
+        <p className="text-base text-gray-600">This phone number ({phoneData.phone}) is not registered yet. Please complete your registration below.</p>
       </div>
 
-      <form onSubmit={handleRegister} className="space-y-4">
+      <form onSubmit={handleRegister} className="space-y-6">
         {error && (
           <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded text-sm text-red-700 animate-fade-in">
             {error}
@@ -435,7 +435,7 @@ const Auth: React.FC = () => {
 
         {/* Full Name */}
         <div>
-          <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="fullName" className="block text-base font-medium text-gray-700 mb-2">
             Full Name
           </label>
           <div className="relative">
@@ -455,7 +455,7 @@ const Auth: React.FC = () => {
 
         {/* Email */}
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="email" className="block text-base font-medium text-gray-700 mb-2">
             Email Address
           </label>
           <div className="relative">
@@ -475,7 +475,7 @@ const Auth: React.FC = () => {
 
         {/* Gender */}
         <div>
-          <label htmlFor="gender" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="gender" className="block text-base font-medium text-gray-700 mb-2">
             Gender
           </label>
           <select
@@ -489,13 +489,12 @@ const Auth: React.FC = () => {
             <option value="">Select gender</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
-            <option value="other">Other</option>
           </select>
         </div>
 
         {/* Date of Birth */}
         <div>
-          <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="dateOfBirth" className="block text-base font-medium text-gray-700 mb-2">
             Date of Birth
           </label>
           <div className="relative">
@@ -514,7 +513,7 @@ const Auth: React.FC = () => {
 
         {/* Password */}
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="password" className="block text-base font-medium text-gray-700 mb-2">
             Password
           </label>
           <div className="relative">
@@ -541,7 +540,7 @@ const Auth: React.FC = () => {
 
         {/* Confirm Password */}
         <div>
-          <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="confirmPassword" className="block text-base font-medium text-gray-700 mb-2">
             Confirm Password
           </label>
           <div className="relative">
@@ -570,7 +569,7 @@ const Auth: React.FC = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full flex items-center justify-center py-3 rounded-lg text-sm font-medium text-white bg-green-600 hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm hover:shadow-md"
+          className="w-full flex items-center justify-center py-4 rounded-lg text-base font-medium text-white bg-green-600 hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm hover:shadow-md"
         >
           {loading ? (
             <>

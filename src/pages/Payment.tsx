@@ -6,7 +6,6 @@ import {
   Building, 
   Wallet, 
   Shield, 
-  CheckCircle, 
   AlertCircle,
   Lock,
   ArrowLeft,

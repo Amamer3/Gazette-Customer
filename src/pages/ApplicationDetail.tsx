@@ -9,17 +9,13 @@ import {
   Download, 
   Eye, 
   User, 
-  MapPin, 
   Phone, 
   Mail,
   Building,
   Heart,
   Briefcase,
   Church,
-  Calendar,
   CreditCard,
-  Shield,
-  Bell,
   MessageCircle
 } from 'lucide-react';
 import { gazetteServices } from '../data/mockData';

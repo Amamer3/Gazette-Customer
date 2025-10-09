@@ -93,6 +93,7 @@ export interface Order {
   status: 'pending' | 'paid' | 'failed' | 'refunded';
   paymentMethod?: string;
   paymentReference?: string;
+  receiptUrl?: string;
   createdAt: string;
   updatedAt: string;
   dueDate?: string;

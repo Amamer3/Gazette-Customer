@@ -16,24 +16,6 @@ const Services: React.FC = () => {
     return icons[iconName as keyof typeof icons] || FileText;
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'premium-plus': return 'from-blue-600 to-cyan-600';
-      case 'premium-gazette': return 'from-purple-600 to-pink-600';
-      case 'regular-gazette': return 'from-green-600 to-emerald-600';
-      default: return 'from-gray-600 to-gray-700';
-    }
-  };
-
-  const getStatusLabel = (status: string) => {
-    switch (status) {
-      case 'premium-plus': return 'PREMIUM PLUS';
-      case 'premium-gazette': return 'PREMIUM GAZETTE';
-      case 'regular-gazette': return 'REGULAR GAZETTE';
-      default: return 'STANDARD';
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header Section */}

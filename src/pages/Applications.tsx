@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Search, 
-  Filter, 
   Eye, 
   Download, 
   Clock, 
@@ -10,7 +9,6 @@ import {
   XCircle, 
   AlertCircle,
   FileText,
-  Calendar,
   User,
   Building,
   Heart,
@@ -19,11 +17,14 @@ import {
 } from 'lucide-react';
 import type { Application, Order } from '../types/application';
 import { mockApplications } from '../data/mockData';
+import ReceiptModal from '../components/ReceiptModal';
 
 const Applications: React.FC = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedReceipt, setSelectedReceipt] = useState<Order | null>(null);
+  const [isReceiptModalOpen, setIsReceiptModalOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [serviceFilter, setServiceFilter] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
@@ -43,6 +44,7 @@ const Applications: React.FC = () => {
           status: 'paid',
           paymentMethod: 'Mobile Money',
           paymentReference: 'MTN-123456789',
+          receiptUrl: 'https://example.com/receipts/order-001.pdf',
           createdAt: '2024-01-15T10:30:00Z',
           updatedAt: '2024-01-15T10:30:00Z',
           dueDate: '2024-01-22T10:30:00Z'
@@ -57,6 +59,7 @@ const Applications: React.FC = () => {
           status: 'pending',
           paymentMethod: 'Bank Transfer',
           paymentReference: 'BT-987654321',
+          receiptUrl: 'https://example.com/receipts/order-002.pdf',
           createdAt: '2024-01-20T14:15:00Z',
           updatedAt: '2024-01-20T14:15:00Z',
           dueDate: '2024-01-27T14:15:00Z'
@@ -125,6 +128,16 @@ const Applications: React.FC = () => {
       hour: '2-digit',
       minute: '2-digit'
     });
+  };
+
+  const handleViewReceipt = (order: Order) => {
+    setSelectedReceipt(order);
+    setIsReceiptModalOpen(true);
+  };
+
+  const handleCloseReceipt = () => {
+    setIsReceiptModalOpen(false);
+    setSelectedReceipt(null);
   };
 
   const filteredApplications = applications.filter(app => {
@@ -380,7 +393,10 @@ const Applications: React.FC = () => {
                           {formatDateTime(order.createdAt)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <button className="text-violet-600 hover:text-violet-900">
+                          <button 
+                            onClick={() => handleViewReceipt(order)}
+                            className="text-violet-600 hover:text-violet-900 font-medium transition-colors"
+                          >
                             View Receipt
                           </button>
                         </td>
@@ -393,6 +409,13 @@ const Applications: React.FC = () => {
           )}
         </div>
       </div>
+
+      {/* Receipt Modal */}
+      <ReceiptModal
+        order={selectedReceipt}
+        isOpen={isReceiptModalOpen}
+        onClose={handleCloseReceipt}
+      />
     </div>
   );
 };
