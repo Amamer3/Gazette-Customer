@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navigation from './components/Navigation';
+import PWAInstallPrompt from './components/PWAInstallPrompt';
 import Home from './pages/Home';
 import Auth from './pages/Auth';
 import Dashboard from './pages/Dashboard';
@@ -72,6 +73,9 @@ function AppContent() {
             <Route path="/profile" element={<Profile />} />
           </Routes>
       </main>
+      
+      {/* PWA Install Prompt */}
+      <PWAInstallPrompt />
     </div>
   );
 }
