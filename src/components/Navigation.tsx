@@ -34,7 +34,7 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFullName }
                 <div className="absolute -inset-1 rounded-xl opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-xl font-bold text-gray-900">E-Gazette</h1>
+                <h1 className="text-sm font-bold text-gray-900">Ghana Publishing <br /> Company Ltd</h1>
               </div>
             </Link>
 
