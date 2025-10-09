@@ -2,12 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { gazettePricingServices } from '../services/mockData';
 import { Clock, Shield, FileText, ArrowRight, Users, Award, Star } from 'lucide-react';
-// import heroIllustration from '../assets/hero-illustration.svg';
-// import birthCertificate from '../assets/birth-certificate.svg';
-// import nameChange from '../assets/name-change.svg';
-// import marriageCertificate from '../assets/marriage-certificate.svg';
-// import businessLicense from '../assets/business-license.svg';
-// import featuresIllustration from '../assets/features-illustration.svg';
 
 const Home: React.FC = () => {
   return (
@@ -84,7 +78,7 @@ const Home: React.FC = () => {
                 <img 
                   src="/image.png"
                   alt="Ghana E-Gazette Digital Services" 
-                  className="w-full max-w-md rounded-2xl lg:max-w-lg xl:max-w-xl h-auto"
+                  className="max-w-md rounded-2xl lg:max-w-lg xl:max-w-xl h-96"
                 />
                 {/* Floating Animation Elements */}
                 <div className="absolute -top-4 -left-4 w-8 h-8 bg-white/20 rounded-full animate-bounce"></div>
