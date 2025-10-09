@@ -174,6 +174,74 @@ const Services: React.FC = () => {
         </div>
       </section>
 
+      {/* Processing Durations Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Processing Durations
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Choose the processing speed that best fits your needs. All gazette services are available in three different processing tiers.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Premium Plus */}
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 border border-blue-200 hover:shadow-lg transition-all duration-300">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Clock className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-blue-800 mb-4">PREMIUM PLUS</h3>
+                <div className="text-4xl font-bold text-blue-600 mb-2">24 HOURS</div>
+                <p className="text-blue-700 font-semibold mb-4">Fastest Processing</p>
+                <p className="text-gray-600 text-sm">
+                  Get your gazette published within 24 hours for urgent applications and time-sensitive matters.
+                </p>
+              </div>
+            </div>
+
+            {/* Premium Gazette */}
+            <div className="bg-gradient-to-br from-violet-50 to-violet-100 rounded-2xl p-8 border border-violet-200 hover:shadow-lg transition-all duration-300">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-violet-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Clock className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-violet-800 mb-4">PREMIUM GAZETTE</h3>
+                <div className="text-4xl font-bold text-violet-600 mb-2">3 WORKING DAYS</div>
+                <p className="text-violet-700 font-semibold mb-4">Standard Processing</p>
+                <p className="text-gray-600 text-sm">
+                  Standard processing time for most applications with reliable and efficient service delivery.
+                </p>
+              </div>
+            </div>
+
+            {/* Regular Gazette */}
+            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 border border-gray-200 hover:shadow-lg transition-all duration-300">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gray-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Clock className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">REGULAR GAZETTE</h3>
+                <div className="text-4xl font-bold text-gray-600 mb-2">3 WORKING WEEKS</div>
+                <p className="text-gray-700 font-semibold mb-4">Economical Option</p>
+                <p className="text-gray-600 text-sm">
+                  Most cost-effective option for applications that are not time-sensitive.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="text-gray-600 text-sm max-w-4xl mx-auto">
+              <strong>Note:</strong> Processing times are calculated from the date of complete application submission with all required documents. 
+              Working days exclude weekends and public holidays. All gazette types provide the same official documentation and legal validity.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Services Grid */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -383,7 +451,7 @@ const Services: React.FC = () => {
 
       {/* Gazette Type Selection Modal */}
       {showGazetteTypeModal && selectedService && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-fadeIn">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-[70] p-4 animate-fadeIn">
           <div className="bg-white rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden shadow-2xl border border-gray-200 animate-slideUp">
             {/* Modal Header */}
             <div className="bg-blue-600 text-white p-6">
@@ -435,6 +503,9 @@ const Services: React.FC = () => {
                             <div className="text-2xl font-bold text-blue-600 mb-2">
                               GHC {service.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                             </div>
+                            <div className="text-xs text-gray-600 mb-3 bg-blue-100 px-2 py-1 rounded-full">
+                              Processing: {service.processingTime}
+                            </div>
                             <Link 
                               to={`/application/${selectedService.id}`}
                               onClick={closeModal}
@@ -471,6 +542,9 @@ const Services: React.FC = () => {
                             <div className="text-2xl font-bold text-blue-600 mb-2">
                               GHC {service.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                             </div>
+                            <div className="text-xs text-gray-600 mb-3 bg-blue-100 px-2 py-1 rounded-full">
+                              Processing: {service.processingTime}
+                            </div>
                             <Link 
                               to={`/application/${selectedService.id}`}
                               onClick={closeModal}
@@ -506,6 +580,9 @@ const Services: React.FC = () => {
                             <h4 className="font-semibold text-gray-900 mb-2 text-sm">{service.name}</h4>
                             <div className="text-2xl font-bold text-blue-600 mb-2">
                               GHC {service.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                            </div>
+                            <div className="text-xs text-gray-600 mb-3 bg-blue-100 px-2 py-1 rounded-full">
+                              Processing: {service.processingTime}
                             </div>
                             <Link 
                               to={`/application/${selectedService.id}`}

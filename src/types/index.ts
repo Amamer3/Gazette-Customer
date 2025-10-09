@@ -30,6 +30,7 @@ export interface GazettePricingService {
   price: number;
   gazetteType: GazetteType;
   requirements: string[];
+  processingTime: string;
 }
 
 // Status and Method Types

@@ -67,7 +67,8 @@ export const gazettePricingServices: GazettePricingService[] = [
     gazetteType: 'premium-plus',
     requirements: [
       'Statutory Declaration'
-    ]
+    ],
+    processingTime: '24 hours'
   },
   {
     id: 'premium-plus-date-of-birth',
@@ -77,7 +78,8 @@ export const gazettePricingServices: GazettePricingService[] = [
     gazetteType: 'premium-plus',
     requirements: [
       'Statutory Declaration'
-    ]
+    ],
+    processingTime: '24 hours'
   },
   {
     id: 'premium-plus-mrs-to-miss',
@@ -88,7 +90,8 @@ export const gazettePricingServices: GazettePricingService[] = [
     requirements: [
       'Statutory Declaration from Notary Public',
       'Divorce Certificate'
-    ]
+    ],
+    processingTime: '24 hours'
   },
   {
     id: 'premium-plus-miss-to-mrs',
@@ -99,7 +102,8 @@ export const gazettePricingServices: GazettePricingService[] = [
     requirements: [
       'Statutory Declaration',
       'Marriage Certificate from Imam'
-    ]
+    ],
+    processingTime: '24 hours'
   },
   {
     id: 'premium-plus-marriage-officer',
@@ -109,7 +113,8 @@ export const gazettePricingServices: GazettePricingService[] = [
     gazetteType: 'premium-plus',
     requirements: [
       'Letter from the Attorney General Department'
-    ]
+    ],
+    processingTime: '24 hours'
   },
   {
     id: 'premium-plus-public-place-of-worship',
@@ -119,7 +124,8 @@ export const gazettePricingServices: GazettePricingService[] = [
     gazetteType: 'premium-plus',
     requirements: [
       'Letter from the MMC / Regional Coordinating Council'
-    ]
+    ],
+    processingTime: '24 hours'
   },
   {
     id: 'premium-plus-chiefs-and-queen-mothers',
@@ -130,7 +136,8 @@ export const gazettePricingServices: GazettePricingService[] = [
     requirements: [
       'Extract from the National House of Chiefs',
       'Statutory Declaration certified by the Notary Public'
-    ]
+    ],
+    processingTime: '24 hours'
   },
 
   // PREMIUM GAZETTE
@@ -142,7 +149,8 @@ export const gazettePricingServices: GazettePricingService[] = [
     gazetteType: 'premium-gazette',
     requirements: [
       'Statutory Declaration'
-    ]
+    ],
+    processingTime: '3 working days'
   },
   {
     id: 'premium-gazette-date-of-birth',
@@ -152,7 +160,8 @@ export const gazettePricingServices: GazettePricingService[] = [
     gazetteType: 'premium-gazette',
     requirements: [
       'Statutory Declaration'
-    ]
+    ],
+    processingTime: '3 working days'
   },
   {
     id: 'premium-gazette-marriage-officer',
@@ -162,7 +171,8 @@ export const gazettePricingServices: GazettePricingService[] = [
     gazetteType: 'premium-gazette',
     requirements: [
       'Letter from the Attorney General Department'
-    ]
+    ],
+    processingTime: '3 working days'
   },
   {
     id: 'premium-gazette-mrs-to-miss',
@@ -173,7 +183,8 @@ export const gazettePricingServices: GazettePricingService[] = [
     requirements: [
       'Statutory Declaration from Notary Public',
       'Divorce Certificate'
-    ]
+    ],
+    processingTime: '3 working days'
   },
   {
     id: 'premium-gazette-miss-to-mrs',
@@ -184,7 +195,8 @@ export const gazettePricingServices: GazettePricingService[] = [
     requirements: [
       'Statutory Declaration',
       'Marriage Certificate from Imam'
-    ]
+    ],
+    processingTime: '3 working days'
   },
   {
     id: 'premium-gazette-chiefs-and-queen-mothers',
@@ -195,7 +207,8 @@ export const gazettePricingServices: GazettePricingService[] = [
     requirements: [
       'Extract from the National House of Chiefs',
       'Statutory Declaration certified by the Notary Public'
-    ]
+    ],
+    processingTime: '3 working days'
   },
   {
     id: 'premium-gazette-public-place-of-worship',
@@ -205,7 +218,8 @@ export const gazettePricingServices: GazettePricingService[] = [
     gazetteType: 'premium-gazette',
     requirements: [
       'Letter from the MMC / Regional Coordinating Council'
-    ]
+    ],
+    processingTime: '3 working days'
   },
 
   // REGULAR GAZETTE
@@ -217,7 +231,8 @@ export const gazettePricingServices: GazettePricingService[] = [
     gazetteType: 'regular-gazette',
     requirements: [
       'Statutory Declaration'
-    ]
+    ],
+    processingTime: '3 working weeks'
   },
   {
     id: 'regular-gazette-date-of-birth',
@@ -227,7 +242,8 @@ export const gazettePricingServices: GazettePricingService[] = [
     gazetteType: 'regular-gazette',
     requirements: [
       'Statutory Declaration'
-    ]
+    ],
+    processingTime: '3 working weeks'
   },
   {
     id: 'regular-gazette-miss-to-mrs',
@@ -238,7 +254,8 @@ export const gazettePricingServices: GazettePricingService[] = [
     requirements: [
       'Statutory Declaration',
       'Marriage Certificate from Imam'
-    ]
+    ],
+    processingTime: '3 working weeks'
   },
   {
     id: 'regular-gazette-chiefs-and-queen-mothers',
@@ -249,7 +266,8 @@ export const gazettePricingServices: GazettePricingService[] = [
     requirements: [
       'Extract from the National House of Chiefs',
       'Statutory Declaration certified by the Notary Public'
-    ]
+    ],
+    processingTime: '3 working weeks'
   },
   {
     id: 'regular-gazette-mrs-to-miss',
@@ -260,7 +278,8 @@ export const gazettePricingServices: GazettePricingService[] = [
     requirements: [
       'Statutory Declaration from Notary Public',
       'Divorce Certificate'
-    ]
+    ],
+    processingTime: '3 working weeks'
   },
   {
     id: 'regular-gazette-public-place-of-worship',
@@ -270,7 +289,8 @@ export const gazettePricingServices: GazettePricingService[] = [
     gazetteType: 'regular-gazette',
     requirements: [
       'Letter from the MMC / Regional Coordinating Council'
-    ]
+    ],
+    processingTime: '3 working weeks'
   },
   {
     id: 'regular-gazette-marriage-officer',
@@ -280,7 +300,8 @@ export const gazettePricingServices: GazettePricingService[] = [
     gazetteType: 'regular-gazette',
     requirements: [
       'Letter from the Attorney General Department'
-    ]
+    ],
+    processingTime: '3 working weeks'
   }
 ];
 

@@ -124,7 +124,7 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({ order, isOpen, onClose }) =
   const qrCodeData = `Ghana Publishing Company Limited\nReceipt: ${order.id}\nAmount: ${formatCurrency(order.amount, order.currency)}\nDate: ${formatDate(order.createdAt)}\nReference: ${order.paymentReference || 'N/A'}\nStatus: ${order.status.toUpperCase()}`;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[70] p-4">
       <div className="bg-white shadow-2xl max-w-4xl w-full max-h-[95vh] overflow-y-auto">
         {/* Close Button */}
         <div className="flex justify-end p-4">
