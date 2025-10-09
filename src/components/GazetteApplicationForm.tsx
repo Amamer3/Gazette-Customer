@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { gazetteServices } from '../data/mockData';
 import type { ApplicationFormData, PersonalInfo, CompanyInfo, ReligiousInfo } from '../types/application';
+import LocalStorageService from '../services/localStorage';
 
 interface GazetteApplicationFormProps {
   onSubmit: (data: ApplicationFormData) => void;
@@ -49,7 +50,20 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
     const paymentCompleted = urlParams.get('paymentCompleted');
     if (paymentCompleted === 'true') {
       setPaymentCompleted(true);
-      setCurrentStep(4); // Skip to documents step
+      setCurrentStep(5); // Skip to documents step
+      
+      // Restore form data from localStorage if available
+      const applications = LocalStorageService.getApplications();
+      const latestApplication = applications[applications.length - 1];
+      if (latestApplication && latestApplication.serviceType === service.id) {
+        setFormData(prev => ({
+          ...prev,
+          personalInfo: latestApplication.personalInfo || prev.personalInfo,
+          companyInfo: latestApplication.companyInfo || prev.companyInfo,
+          religiousInfo: latestApplication.religiousInfo || prev.religiousInfo,
+          additionalNotes: latestApplication.notes || prev.additionalNotes
+        }));
+      }
     }
   }, [service, navigate]);
 
@@ -144,12 +158,39 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
   };
 
   const handleSubmit = () => {
-    onSubmit(formData);
+    // Get the latest application from localStorage (should have payment info)
+    const applications = LocalStorageService.getApplications();
+    const latestApplication = applications[applications.length - 1];
+    
+    if (latestApplication && latestApplication.paymentStatus === 'paid') {
+      // Update the application with final form data and documents
+      const updatedApplication = {
+        ...latestApplication,
+        documents: uploadedFiles,
+        additionalNotes: formData.additionalNotes,
+        status: 'submitted' as const,
+        lastUpdated: new Date().toISOString()
+      };
+      
+      // Update localStorage
+      const updatedApplications = applications.map((app: any) => 
+        app.id === latestApplication.id ? updatedApplication : app
+      );
+      LocalStorageService.saveApplications(updatedApplications);
+      
+      // Call the onSubmit callback with the complete application data
+      onSubmit(updatedApplication);
+    } else {
+      // Fallback to original form data if no paid application found
+      onSubmit(formData);
+    }
   };
 
   const isStepValid = (step: number) => {
     switch (step) {
       case 1:
+        return formData.gazetteType !== undefined;
+      case 2:
         return formData.personalInfo?.fullName && 
                formData.personalInfo?.email && 
                formData.personalInfo?.phone &&
@@ -158,7 +199,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                formData.personalInfo?.occupation &&
                formData.personalInfo?.dateOfBirth &&
                !idNumberError;
-      case 2:
+      case 3:
         if (service.id === 'appointment-marriage-officers' || service.id === 'public-place-worship-marriage-license') {
           return formData.religiousInfo?.religiousBodyName && 
                  formData.religiousInfo?.denomination &&
@@ -177,16 +218,122 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                  formData.companyInfo?.paidUpCapital;
         }
         return true;
-      case 3:
-        return true; // Payment step - always valid
       case 4:
-        return paymentCompleted && uploadedFiles.length > 0;
+        return true; // Payment step - always valid
       case 5:
-        return true;
+        return paymentCompleted && uploadedFiles.length >= service.requiredDocuments.length;
+      case 6:
+        return true; // Review step - always valid
       default:
         return false;
     }
   };
+
+  const renderGazetteTypeStep = () => (
+    <div className="space-y-6">
+      <div className="text-center mb-8">
+        <div className="w-16 h-16 bg-gradient-to-br from-violet-100 to-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <FileText className="w-8 h-8 text-violet-600" />
+        </div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">Select Gazette Type</h2>
+        <p className="text-gray-600">Choose the type of gazette publication for your application</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div 
+          className={`border-2 rounded-xl p-6 cursor-pointer transition-all ${
+            formData.gazetteType === 'regular-gazette' 
+              ? 'border-violet-500 bg-violet-50' 
+              : 'border-gray-200 hover:border-gray-300'
+          }`}
+          onClick={() => handleInputChange('gazetteType', 'regular-gazette')}
+        >
+          <div className="flex items-center mb-4">
+            <input
+              type="radio"
+              name="gazetteType"
+              value="regular-gazette"
+              checked={formData.gazetteType === 'regular-gazette'}
+              onChange={(e) => handleInputChange('gazetteType', e.target.value)}
+              className="mr-3"
+            />
+            <h4 className="font-semibold text-gray-900">Regular Gazette</h4>
+          </div>
+          <p className="text-sm text-gray-600 mb-4">Standard publication with basic formatting and standard processing time.</p>
+          <div className="text-2xl font-bold text-violet-600">GHS {service.price.toFixed(2)}</div>
+          <p className="text-xs text-gray-500 mt-2">Standard processing time</p>
+        </div>
+
+        <div 
+          className={`border-2 rounded-xl p-6 cursor-pointer transition-all ${
+            formData.gazetteType === 'premium-gazette' 
+              ? 'border-violet-500 bg-violet-50' 
+              : 'border-gray-200 hover:border-gray-300'
+          }`}
+          onClick={() => handleInputChange('gazetteType', 'premium-gazette')}
+        >
+          <div className="flex items-center mb-4">
+            <input
+              type="radio"
+              name="gazetteType"
+              value="premium-gazette"
+              checked={formData.gazetteType === 'premium-gazette'}
+              onChange={(e) => handleInputChange('gazetteType', e.target.value)}
+              className="mr-3"
+            />
+            <h4 className="font-semibold text-gray-900">Premium Gazette</h4>
+          </div>
+          <p className="text-sm text-gray-600 mb-4">Enhanced formatting, priority processing, and premium presentation.</p>
+          <div className="text-2xl font-bold text-violet-600">GHS {(service.price * 1.5).toFixed(2)}</div>
+          <p className="text-xs text-gray-500 mt-2">Priority processing (5-7 days)</p>
+        </div>
+
+        <div 
+          className={`border-2 rounded-xl p-6 cursor-pointer transition-all ${
+            formData.gazetteType === 'premium-plus' 
+              ? 'border-violet-500 bg-violet-50' 
+              : 'border-gray-200 hover:border-gray-300'
+          }`}
+          onClick={() => handleInputChange('gazetteType', 'premium-plus')}
+        >
+          <div className="flex items-center mb-4">
+            <input
+              type="radio"
+              name="gazetteType"
+              value="premium-plus"
+              checked={formData.gazetteType === 'premium-plus'}
+              onChange={(e) => handleInputChange('gazetteType', e.target.value)}
+              className="mr-3"
+            />
+            <h4 className="font-semibold text-gray-900">Premium Plus</h4>
+          </div>
+          <p className="text-sm text-gray-600 mb-4">Highest priority, expedited processing, and premium formatting with additional features.</p>
+          <div className="text-2xl font-bold text-violet-600">GHS {(service.price * 2).toFixed(2)}</div>
+          <p className="text-xs text-gray-500 mt-2">Expedited processing (3-5 days)</p>
+        </div>
+      </div>
+
+      {formData.gazetteType && (
+        <div className="bg-green-50 border border-green-200 rounded-xl p-4">
+          <div className="flex items-center text-green-800">
+            <CheckCircle className="w-5 h-5 mr-2" />
+            <span className="font-medium">
+              {formData.gazetteType === 'premium-plus' ? 'Premium Plus' :
+               formData.gazetteType === 'premium-gazette' ? 'Premium Gazette' :
+               'Regular Gazette'} selected
+            </span>
+          </div>
+          <p className="text-sm text-green-700 mt-1">
+            Total cost: GHS {formData.gazetteType === 'premium-plus' 
+              ? (service.price * 2).toFixed(2)
+              : formData.gazetteType === 'premium-gazette'
+              ? (service.price * 1.5).toFixed(2)
+              : service.price.toFixed(2)}
+          </p>
+        </div>
+      )}
+    </div>
+  );
 
   const renderStep1 = () => (
     <div className="space-y-6">
@@ -573,15 +720,43 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
       </div>
 
       <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-6">
-        <h3 className="text-lg font-semibold text-blue-900 mb-3">Required Documents</h3>
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-lg font-semibold text-blue-900">Required Documents</h3>
+          <div className="text-sm text-blue-700">
+            {uploadedFiles.length} of {service.requiredDocuments.length} uploaded
+          </div>
+        </div>
         <ul className="space-y-2">
           {service.requiredDocuments.map((doc, index) => (
             <li key={index} className="flex items-center text-blue-800">
-              <Check className="w-4 h-4 mr-2 text-blue-600" />
+              {index < uploadedFiles.length ? (
+                <CheckCircle className="w-4 h-4 mr-2 text-green-600" />
+              ) : (
+                <div className="w-4 h-4 mr-2 border-2 border-blue-400 rounded-full" />
+              )}
               {doc}
             </li>
           ))}
         </ul>
+        {uploadedFiles.length < service.requiredDocuments.length ? (
+          <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <div className="flex items-center text-yellow-800">
+              <AlertCircle className="w-4 h-4 mr-2" />
+              <span className="text-sm font-medium">
+                Please upload all {service.requiredDocuments.length} required documents to continue
+              </span>
+            </div>
+          </div>
+        ) : (
+          <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+            <div className="flex items-center text-green-800">
+              <CheckCircle className="w-4 h-4 mr-2" />
+              <span className="text-sm font-medium">
+                All required documents uploaded! You can now proceed to the next step.
+              </span>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className={`border-2 border-dashed rounded-xl p-8 text-center transition-colors ${
@@ -607,7 +782,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
             {paymentCompleted ? 'Click to upload documents' : 'Payment required to upload documents'}
           </p>
           <p className={`text-sm ${paymentCompleted ? 'text-gray-600' : 'text-gray-400'}`}>
-            PDF, JPG, PNG, DOC, DOCX files up to 10MB each
+            Upload all {service.requiredDocuments.length} required documents • PDF, JPG, PNG, DOC, DOCX files up to 10MB each
           </p>
         </label>
       </div>
@@ -655,12 +830,44 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
             <span className="font-medium text-gray-900">{service.name}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Price:</span>
+            <span className="text-gray-600">Gazette Type:</span>
+            <span className="font-medium text-gray-900">
+              {formData.gazetteType === 'premium-plus' ? 'Premium Plus' :
+               formData.gazetteType === 'premium-gazette' ? 'Premium Gazette' :
+               formData.gazetteType === 'regular-gazette' ? 'Regular Gazette' : 'Not selected'}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-600">Base Price:</span>
             <span className="font-medium text-gray-900">GHS {service.price.toFixed(2)}</span>
+          </div>
+          {formData.gazetteType && formData.gazetteType !== 'regular-gazette' && (
+            <div className="flex justify-between">
+              <span className="text-gray-600">Gazette Type Premium:</span>
+              <span className="font-medium text-gray-900">
+                GHS {formData.gazetteType === 'premium-gazette' 
+                  ? (service.price * 0.5).toFixed(2) 
+                  : service.price.toFixed(2)}
+              </span>
+            </div>
+          )}
+          <div className="flex justify-between text-lg font-semibold border-t pt-3">
+            <span className="text-gray-900">Total Price:</span>
+            <span className="text-violet-600">
+              GHS {formData.gazetteType === 'premium-plus' 
+                ? (service.price * 2).toFixed(2)
+                : formData.gazetteType === 'premium-gazette'
+                ? (service.price * 1.5).toFixed(2)
+                : service.price.toFixed(2)}
+            </span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-600">Processing Time:</span>
-            <span className="font-medium text-gray-900">{service.processingTime}</span>
+            <span className="font-medium text-gray-900">
+              {formData.gazetteType === 'premium-plus' ? 'Expedited (3-5 days)' :
+               formData.gazetteType === 'premium-gazette' ? 'Priority (5-7 days)' :
+               service.processingTime}
+            </span>
           </div>
         </div>
       </div>
@@ -697,7 +904,39 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
     // Generate application ID for payment
     const applicationId = `app-${Date.now()}`;
     
-    // Store form data temporarily
+    // Calculate total price based on gazette type
+    const getTotalPrice = () => {
+      if (formData.gazetteType === 'premium-plus') {
+        return service.price * 2;
+      } else if (formData.gazetteType === 'premium-gazette') {
+        return service.price * 1.5;
+      }
+      return service.price;
+    };
+
+    // Create application object that matches the Payment component's expected structure
+    const application = {
+      id: applicationId,
+      serviceType: service.id,
+      status: 'draft' as const,
+      submittedAt: new Date().toISOString(),
+      personalInfo: formData.personalInfo,
+      companyInfo: formData.companyInfo,
+      religiousInfo: formData.religiousInfo,
+      documents: [],
+      paymentStatus: 'pending' as const,
+      notes: formData.additionalNotes,
+      lastUpdated: new Date().toISOString(),
+      gazetteType: formData.gazetteType,
+      totalPrice: getTotalPrice()
+    };
+    
+    // Store application in localStorage (this is what Payment component looks for)
+    const applications = LocalStorageService.getApplications();
+    applications.push(application);
+    LocalStorageService.saveApplications(applications);
+    
+    // Also store form data temporarily for form-specific handling
     localStorage.setItem(`temp_application_${applicationId}`, JSON.stringify(formData));
     
     // Navigate to payment page
@@ -759,7 +998,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
           <span>Proceed to Payment</span>
         </button>
         <button
-          onClick={() => setCurrentStep(2)}
+          onClick={() => setCurrentStep(3)}
           className="px-6 py-3 text-gray-600 font-medium hover:text-gray-800 transition-colors"
         >
           Back
@@ -769,11 +1008,12 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
   );
 
   const steps = [
-    { number: 1, title: 'Personal Info', component: renderStep1 },
-    { number: 2, title: 'Service Details', component: renderStep2 },
-    { number: 3, title: 'Payment', component: renderPaymentStep },
-    { number: 4, title: 'Documents', component: renderStep3 },
-    { number: 5, title: 'Review', component: renderStep4 }
+    { number: 1, title: 'Gazette Type', component: renderGazetteTypeStep },
+    { number: 2, title: 'Personal Info', component: renderStep1 },
+    { number: 3, title: 'Service Details', component: renderStep2 },
+    { number: 4, title: 'Payment', component: renderPaymentStep },
+    { number: 5, title: 'Documents', component: renderStep3 },
+    { number: 6, title: 'Review', component: renderStep4 }
   ];
 
   return (

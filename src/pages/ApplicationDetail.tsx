@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { gazetteServices } from '../data/mockData';
 import type { Application, Order } from '../types/application';
+import LocalStorageService from '../services/localStorage';
 
 const ApplicationDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -31,12 +32,22 @@ const ApplicationDetail: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      // Get application from localStorage
-      const applications = JSON.parse(localStorage.getItem('applications') || '[]');
-      const foundApplication = applications.find((app: Application) => app.id === id);
+      // Try to get application from LocalStorageService first
+      let applications = LocalStorageService.getApplications();
+      let foundApplication = applications.find((app: any) => app.id === id);
+      
+      // If not found, try the old localStorage key as fallback
+      if (!foundApplication) {
+        try {
+          const oldApplications = JSON.parse(localStorage.getItem('applications') || '[]');
+          foundApplication = oldApplications.find((app: any) => app.id === id);
+        } catch (error) {
+          console.error('Error reading from localStorage:', error);
+        }
+      }
       
       if (foundApplication) {
-        setApplication(foundApplication);
+        setApplication(foundApplication as Application);
         const foundService = gazetteServices.find(s => s.id === foundApplication.serviceType);
         setService(foundService || null);
         

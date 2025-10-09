@@ -18,6 +18,7 @@ import {
 import type { Application, Order } from '../types/application';
 import { mockApplications } from '../data/mockData';
 import ReceiptModal from '../components/ReceiptModal';
+import LocalStorageService from '../services/localStorage';
 
 const Applications: React.FC = () => {
   const [applications, setApplications] = useState<Application[]>([]);
@@ -30,43 +31,68 @@ const Applications: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading applications and orders
-    setTimeout(() => {
-      setApplications(mockApplications);
-      setOrders([
-        {
-          id: 'order-001',
-          applicationId: 'app-001',
-          userId: 'user-001',
-          serviceName: 'APPOINTMENT OF MARRIAGE OFFICERS',
-          amount: 500.00,
-          currency: 'GHS',
-          status: 'paid',
-          paymentMethod: 'Mobile Money',
-          paymentReference: 'MTN-123456789',
-          receiptUrl: 'https://example.com/receipts/order-001.pdf',
-          createdAt: '2024-01-15T10:30:00Z',
-          updatedAt: '2024-01-15T10:30:00Z',
-          dueDate: '2024-01-22T10:30:00Z'
-        },
-        {
-          id: 'order-002',
-          applicationId: 'app-002',
-          userId: 'user-001',
-          serviceName: 'CHANGE OF NAME OF COMPANY',
-          amount: 300.00,
-          currency: 'GHS',
-          status: 'pending',
-          paymentMethod: 'Bank Transfer',
-          paymentReference: 'BT-987654321',
-          receiptUrl: 'https://example.com/receipts/order-002.pdf',
-          createdAt: '2024-01-20T14:15:00Z',
-          updatedAt: '2024-01-20T14:15:00Z',
-          dueDate: '2024-01-27T14:15:00Z'
+    // Load applications and orders from localStorage
+    const loadData = () => {
+      try {
+        // Try LocalStorageService first
+        let storedApplications = LocalStorageService.getApplications();
+        const storedOrders = JSON.parse(localStorage.getItem('orders') || '[]');
+        
+        // If no applications from LocalStorageService, try old localStorage key
+        if (storedApplications.length === 0) {
+          storedApplications = JSON.parse(localStorage.getItem('applications') || '[]');
         }
-      ]);
+        
+        // If still no applications, use mock data for demonstration
+        if (storedApplications.length === 0) {
+          setApplications(mockApplications);
+          setOrders([
+            {
+              id: 'order-001',
+              applicationId: 'app-001',
+              userId: 'user-001',
+              serviceName: 'APPOINTMENT OF MARRIAGE OFFICERS',
+              amount: 500.00,
+              currency: 'GHS',
+              status: 'paid',
+              paymentMethod: 'Mobile Money',
+              paymentReference: 'MTN-123456789',
+              receiptUrl: 'https://example.com/receipts/order-001.pdf',
+              createdAt: '2024-01-15T10:30:00Z',
+              updatedAt: '2024-01-15T10:30:00Z',
+              dueDate: '2024-01-22T10:30:00Z'
+            },
+            {
+              id: 'order-002',
+              applicationId: 'app-002',
+              userId: 'user-001',
+              serviceName: 'CHANGE OF NAME OF COMPANY',
+              amount: 300.00,
+              currency: 'GHS',
+              status: 'pending',
+              paymentMethod: 'Bank Transfer',
+              paymentReference: 'BT-987654321',
+              receiptUrl: 'https://example.com/receipts/order-002.pdf',
+              createdAt: '2024-01-20T14:15:00Z',
+              updatedAt: '2024-01-20T14:15:00Z',
+              dueDate: '2024-01-27T14:15:00Z'
+            }
+          ]);
+        } else {
+          setApplications(storedApplications);
+          setOrders(storedOrders);
+        }
+      } catch (error) {
+        console.error('Error loading applications:', error);
+        // Fallback to mock data
+        setApplications(mockApplications);
+        setOrders([]);
+      }
       setIsLoading(false);
-    }, 1000);
+    };
+
+    // Simulate loading delay
+    setTimeout(loadData, 500);
   }, []);
 
   const getStatusIcon = (status: string) => {

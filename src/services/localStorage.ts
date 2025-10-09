@@ -1,5 +1,6 @@
 import type { User, AuthState } from '../types/auth.js';
-import type { Application, Notification } from '../types/index.js';
+import type { Application } from '../types/application.js';
+import type { Notification } from '../types/index.js';
 
 // Local Storage Keys
 const STORAGE_KEYS = {

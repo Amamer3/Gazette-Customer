@@ -61,6 +61,7 @@ export interface Application {
   priority?: 'low' | 'normal' | 'high' | 'urgent';
   assignedTo?: string;
   lastUpdated?: string;
+  gazetteType?: 'premium-plus' | 'premium-gazette' | 'regular-gazette';
 }
 
 export interface DocumentFile {
@@ -81,6 +82,7 @@ export interface ApplicationFormData {
   documents: File[];
   additionalNotes?: string;
   serviceType: string;
+  gazetteType?: 'premium-plus' | 'premium-gazette' | 'regular-gazette';
 }
 
 export interface Order {

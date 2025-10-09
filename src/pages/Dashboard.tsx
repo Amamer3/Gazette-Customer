@@ -24,7 +24,8 @@ import {
   Calendar
 } from 'lucide-react';
 import type { User as UserType } from '../types/auth.js';
-import type { GazetteService, Application } from '../types/index.js';
+import type { GazetteService } from '../types/index.js';
+import type { Application } from '../types/application.js';
 
 const Dashboard: React.FC = () => {
   const [user, setUser] = useState<UserType | null>(null);

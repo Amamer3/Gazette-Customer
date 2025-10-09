@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { gazetteServices } from '../data/mockData';
 import type { Application, Order } from '../types/application';
+import LocalStorageService from '../services/localStorage';
 
 const Payment: React.FC = () => {
   const { applicationId } = useParams<{ applicationId: string }>();
@@ -77,7 +78,7 @@ const Payment: React.FC = () => {
     const initializePage = async () => {
       try {
         // Get application from localStorage
-        const applications = JSON.parse(localStorage.getItem('applications') || '[]');
+        const applications = LocalStorageService.getApplications();
         const foundApplication = applications.find((app: Application) => app.id === applicationId);
         
         if (!foundApplication) {
@@ -135,7 +136,7 @@ const Payment: React.FC = () => {
         applicationId: application.id,
         userId: 'user-001', // In real app, get from auth context
         serviceName: service.name,
-        amount: service.price,
+        amount: (application as any).totalPrice || service.price,
         currency: 'GHS',
         status: 'paid',
         paymentMethod: paymentMethods.find(m => m.id === selectedPaymentMethod)?.name || 'Unknown',
@@ -155,11 +156,11 @@ const Payment: React.FC = () => {
       };
 
       // Save to localStorage
-      const applications = JSON.parse(localStorage.getItem('applications') || '[]');
+      const applications = LocalStorageService.getApplications();
       const updatedApplications = applications.map((app: Application) => 
         app.id === application.id ? updatedApplication : app
       );
-      localStorage.setItem('applications', JSON.stringify(updatedApplications));
+      LocalStorageService.saveApplications(updatedApplications);
 
       // Save order
       const orders = JSON.parse(localStorage.getItem('orders') || '[]');
@@ -373,9 +374,19 @@ const Payment: React.FC = () => {
 
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-lg">
-                  <span className="font-semibold">Subtotal:</span>
+                  <span className="font-semibold">Base Service:</span>
                   <span className="font-semibold">GHS {service.price.toFixed(2)}</span>
                 </div>
+                {(application as any).gazetteType && (application as any).gazetteType !== 'regular-gazette' && (
+                  <div className="flex justify-between text-sm text-gray-600">
+                    <span>Gazette Type Premium:</span>
+                    <span>
+                      GHS {((application as any).gazetteType === 'premium-gazette' 
+                        ? service.price * 0.5 
+                        : service.price).toFixed(2)}
+                    </span>
+                  </div>
+                )}
                 <div className="flex justify-between text-sm text-gray-600">
                   <span>Processing Fee:</span>
                   <span>GHS 0.00</span>
@@ -387,7 +398,7 @@ const Payment: React.FC = () => {
                 <hr />
                 <div className="flex justify-between text-xl font-bold">
                   <span>Total:</span>
-                  <span className="text-violet-600">GHS {service.price.toFixed(2)}</span>
+                  <span className="text-violet-600">GHS {((application as any).totalPrice || service.price).toFixed(2)}</span>
                 </div>
               </div>
 
@@ -402,7 +413,7 @@ const Payment: React.FC = () => {
                     Processing Payment...
                   </div>
                 ) : (
-                  `Pay GHS ${service.price.toFixed(2)}`
+                  `Pay GHS ${((application as any).totalPrice || service.price).toFixed(2)}`
                 )}
               </button>
 
