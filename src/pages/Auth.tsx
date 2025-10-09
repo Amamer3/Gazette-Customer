@@ -602,7 +602,7 @@ const Auth: React.FC = () => {
         {/* Header */}
         <div className="text-center space-y-4">
           <img 
-            src="https://ghanapublishing.gov.gh/wp-content/uploads/2025/03/gpclogo.png" 
+            src="/ghanaPublish-logo.png" 
             className="mx-auto h-20 w-auto transition-transform duration-300 hover:scale-105" 
             alt="GPC Logo"
           />
