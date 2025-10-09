@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   Phone, 
   MessageSquare, 
@@ -20,6 +20,7 @@ import type { LoginFormData, RegisterFormData, PhoneVerificationData } from '../
 
 const Auth: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [step, setStep] = useState<'phone' | 'otp' | 'register'>('phone');
   const [phoneData, setPhoneData] = useState<PhoneVerificationData>({ phone: '' });
   const [loginData, setLoginData] = useState<LoginFormData>({ phone: '', otp: '' });
@@ -162,7 +163,10 @@ const Auth: React.FC = () => {
     try {
       const result = await AuthService.login(loginData);
       if (result.success && result.user) {
-        navigate('/dashboard');
+        // Check for redirect URL
+        const urlParams = new URLSearchParams(location.search);
+        const redirectUrl = urlParams.get('redirect');
+        navigate(redirectUrl || '/dashboard');
       } else {
         setError(result.error || 'Invalid OTP. Please try again.');
       }
@@ -220,7 +224,10 @@ const Auth: React.FC = () => {
       const result = await AuthService.register(registerData);
       
       if (result.success) {
-        navigate('/dashboard');
+        // Check for redirect URL
+        const urlParams = new URLSearchParams(location.search);
+        const redirectUrl = urlParams.get('redirect');
+        navigate(redirectUrl || '/dashboard');
         window.location.reload();
       } else {
         setError(result.error || 'Registration failed. Please try again.');

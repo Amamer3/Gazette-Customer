@@ -27,6 +27,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [formData, setFormData] = useState<ApplicationFormData>({
     serviceType: serviceId || '',
     documents: [],
@@ -39,6 +40,14 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
     if (!service) {
       navigate('/services');
       return;
+    }
+
+    // Check if payment was completed
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentCompleted = urlParams.get('paymentCompleted');
+    if (paymentCompleted === 'true') {
+      setPaymentCompleted(true);
+      setCurrentStep(4); // Skip to documents step
     }
   }, [service, navigate]);
 
@@ -472,6 +481,15 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
         </div>
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Upload Documents</h2>
         <p className="text-gray-600">Please upload all required supporting documents</p>
+        
+        {!paymentCompleted && (
+          <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <div className="flex items-center justify-center space-x-2">
+              <AlertCircle className="w-5 h-5 text-yellow-600" />
+              <span className="text-yellow-800 font-medium">Payment required before document upload</span>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-6">
@@ -486,7 +504,11 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
         </ul>
       </div>
 
-      <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-violet-400 transition-colors">
+      <div className={`border-2 border-dashed rounded-xl p-8 text-center transition-colors ${
+        paymentCompleted 
+          ? 'border-gray-300 hover:border-violet-400 cursor-pointer' 
+          : 'border-gray-200 bg-gray-50 cursor-not-allowed opacity-60'
+      }`}>
         <input
           type="file"
           multiple
@@ -494,11 +516,19 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
           onChange={handleFileUpload}
           className="hidden"
           id="file-upload"
+          disabled={!paymentCompleted}
         />
-        <label htmlFor="file-upload" className="cursor-pointer">
-          <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <p className="text-lg font-medium text-gray-900 mb-2">Click to upload documents</p>
-          <p className="text-gray-600">PDF, JPG, PNG, DOC, DOCX files up to 10MB each</p>
+        <label 
+          htmlFor="file-upload" 
+          className={paymentCompleted ? "cursor-pointer" : "cursor-not-allowed"}
+        >
+          <Upload className={`w-12 h-12 mx-auto mb-4 ${paymentCompleted ? 'text-gray-400' : 'text-gray-300'}`} />
+          <p className={`text-lg font-medium mb-2 ${paymentCompleted ? 'text-gray-900' : 'text-gray-500'}`}>
+            {paymentCompleted ? 'Click to upload documents' : 'Payment required to upload documents'}
+          </p>
+          <p className={`text-sm ${paymentCompleted ? 'text-gray-600' : 'text-gray-400'}`}>
+            PDF, JPG, PNG, DOC, DOCX files up to 10MB each
+          </p>
         </label>
       </div>
 
@@ -583,11 +613,83 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
     </div>
   );
 
+  const renderPaymentStep = () => (
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+      <div className="text-center mb-8">
+        <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <Shield className="w-8 h-8 text-green-600" />
+        </div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">Payment Required</h2>
+        <p className="text-gray-600">
+          Complete payment to proceed with document upload and application submission.
+        </p>
+      </div>
+
+      <div className="bg-gradient-to-r from-blue-50 to-violet-50 rounded-xl p-6 border border-blue-200 mb-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900">{service.name}</h3>
+            <p className="text-gray-600 text-sm">Processing: {service.processingTime}</p>
+          </div>
+          <div className="text-right">
+            <div className="text-2xl font-bold text-violet-600">GHS {service.price.toFixed(2)}</div>
+            <p className="text-gray-500 text-sm">Total Amount</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-4 mb-8">
+        <div className="flex items-center p-4 bg-green-50 rounded-lg border border-green-200">
+          <Check className="w-5 h-5 text-green-600 mr-3" />
+          <span className="text-green-800 text-sm font-medium">
+            Secure payment processing with SSL encryption
+          </span>
+        </div>
+        <div className="flex items-center p-4 bg-blue-50 rounded-lg border border-blue-200">
+          <Check className="w-5 h-5 text-blue-600 mr-3" />
+          <span className="text-blue-800 text-sm font-medium">
+            Multiple payment methods available
+          </span>
+        </div>
+        <div className="flex items-center p-4 bg-violet-50 rounded-lg border border-violet-200">
+          <Check className="w-5 h-5 text-violet-600 mr-3" />
+          <span className="text-violet-800 text-sm font-medium">
+            Instant payment confirmation
+          </span>
+        </div>
+      </div>
+
+      <div className="flex space-x-4">
+        <button
+          onClick={() => {
+            // Generate application ID for payment
+            const applicationId = `app-${Date.now()}`;
+            // Store form data temporarily
+            localStorage.setItem(`temp_application_${applicationId}`, JSON.stringify(formData));
+            // Navigate to payment page
+            navigate(`/payment/${applicationId}`);
+          }}
+          className="flex-1 bg-gradient-to-r from-violet-600 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-violet-700 hover:to-blue-700 transition-all duration-300 flex items-center justify-center space-x-2"
+        >
+          <Shield className="w-5 h-5" />
+          <span>Proceed to Payment</span>
+        </button>
+        <button
+          onClick={() => setCurrentStep(2)}
+          className="px-6 py-3 text-gray-600 font-medium hover:text-gray-800 transition-colors"
+        >
+          Back
+        </button>
+      </div>
+    </div>
+  );
+
   const steps = [
     { number: 1, title: 'Personal Info', component: renderStep1 },
     { number: 2, title: 'Service Details', component: renderStep2 },
-    { number: 3, title: 'Documents', component: renderStep3 },
-    { number: 4, title: 'Review', component: renderStep4 }
+    { number: 3, title: 'Payment', component: renderPaymentStep },
+    { number: 4, title: 'Documents', component: renderStep3 },
+    { number: 5, title: 'Review', component: renderStep4 }
   ];
 
   return (

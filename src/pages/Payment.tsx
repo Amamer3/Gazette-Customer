@@ -166,14 +166,25 @@ const Payment: React.FC = () => {
       orders.push(order);
       localStorage.setItem('orders', JSON.stringify(orders));
 
-      // Navigate to success page
-      navigate('/payment-success', { 
-        state: { 
-          application: updatedApplication, 
-          service,
-          order
-        } 
-      });
+      // Check if this is a temporary application (from form flow)
+      const tempApplicationData = localStorage.getItem(`temp_application_${applicationId}`);
+      if (tempApplicationData) {
+        // Store payment completion flag
+        localStorage.setItem(`payment_completed_${applicationId}`, 'true');
+        // Clean up temporary data
+        localStorage.removeItem(`temp_application_${applicationId}`);
+        // Navigate back to application form
+        navigate(`/application/${service.id}?paymentCompleted=true`);
+      } else {
+        // Navigate to success page for regular applications
+        navigate('/payment-success', { 
+          state: { 
+            application: updatedApplication, 
+            service,
+            order
+          } 
+        });
+      }
     } catch (error) {
       console.error('Payment processing error:', error);
       // In real app, show proper error handling
