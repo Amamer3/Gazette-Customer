@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { gazetteServices } from '../data/mockData';
 import { gazettePricingServices } from '../services/mockData';
-import { ArrowRight, FileText, Building, Heart, User, Briefcase, Church, X, Star, Clock, Shield, CheckCircle } from 'lucide-react';
+import { ArrowRight, FileText, Building, Heart, User, Briefcase, Church, X, Clock, Shield, CheckCircle } from 'lucide-react';
 
 const Services: React.FC = () => {
   const [selectedService, setSelectedService] = useState<any>(null);
@@ -101,7 +101,7 @@ const Services: React.FC = () => {
         `
       }} />
       {/* Header Section */}
-      <section className="bg-gradient-to-br from-violet-900 via-violet-800 to-blue-900 py-20">
+      <section className="bg-blue-900 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm font-medium mb-8">
             <FileText className="w-4 h-4 mr-2" />
@@ -228,7 +228,7 @@ const Services: React.FC = () => {
                     {/* Category Badge */}
                     <div className="mb-6">
                       <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-gradient-to-r from-violet-100 to-blue-100 text-violet-800 border border-violet-200">
-                        <Star className="w-3 h-3 mr-1" />
+                        
                         {service.category}
                       </span>
                     </div>
@@ -282,7 +282,7 @@ const Services: React.FC = () => {
                     {/* Apply Button */}
                     <button 
                       onClick={() => handleServiceClick(service)}
-                      className="w-full inline-flex items-center justify-center px-6 py-4 bg-gradient-to-r from-violet-600 via-violet-500 to-blue-600 text-white rounded-2xl font-bold text-sm hover:from-violet-700 hover:via-violet-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl group/btn"
+                      className="w-full inline-flex items-center justify-center px-6 py-4 bg-blue-600 text-white rounded-2xl font-bold text-sm hover:from-violet-700 hover:via-violet-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl group/btn"
                     >
                       <span className="relative z-10">Apply Now</span>
                       <ArrowRight className="ml-2 w-5 h-5 group-hover/btn:translate-x-1 transition-transform duration-300" />
@@ -355,7 +355,7 @@ const Services: React.FC = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-br from-violet-600 via-blue-600 to-indigo-700">
+      <section className="py-16 bg-blue-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
             Ready to Get Started?
@@ -366,7 +366,7 @@ const Services: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/auth"
-              className="inline-flex items-center px-8 py-4 bg-white text-violet-600 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-2xl"
+              className="inline-flex items-center px-8 py-4 bg-white text-blue-600 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-2xl"
             >
               Get Started
               <ArrowRight className="ml-2 w-5 h-5" />
@@ -386,7 +386,7 @@ const Services: React.FC = () => {
         <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-fadeIn">
           <div className="bg-white rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden shadow-2xl border border-gray-200 animate-slideUp">
             {/* Modal Header */}
-            <div className="bg-gradient-to-r from-violet-600 to-blue-600 text-white p-6">
+            <div className="bg-blue-600 text-white p-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
@@ -416,11 +416,9 @@ const Services: React.FC = () => {
               <div className="space-y-6">
                 {/* PREMIUM PLUS */}
                 {getFilteredGazetteServices(selectedService.id).some(service => service.gazetteType === 'premium-plus') && (
-                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
+                  <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
                     <div className="flex items-center mb-4">
-                      <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
-                        <Star className="w-4 h-4 text-white" />
-                      </div>
+                      
                       <h3 className="text-lg font-bold text-blue-800">PREMIUM PLUS</h3>
                     </div>
                     
@@ -438,7 +436,7 @@ const Services: React.FC = () => {
                               GHC {service.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                             </div>
                             <Link 
-                              to={`/application/${service.id}`}
+                              to={`/application/${selectedService.id}`}
                               onClick={closeModal}
                               className="w-full inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
                             >
@@ -454,12 +452,10 @@ const Services: React.FC = () => {
 
                 {/* PREMIUM GAZETTE */}
                 {getFilteredGazetteServices(selectedService.id).some(service => service.gazetteType === 'premium-gazette') && (
-                  <div className="bg-gradient-to-r from-purple-50 to-violet-50 rounded-xl p-6 border border-purple-200">
+                  <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
                     <div className="flex items-center mb-4">
-                      <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center mr-3">
-                        <Star className="w-4 h-4 text-white" />
-                      </div>
-                      <h3 className="text-lg font-bold text-purple-800">PREMIUM GAZETTE</h3>
+                      
+                      <h3 className="text-lg font-bold text-blue-800">PREMIUM GAZETTE</h3>
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -468,17 +464,17 @@ const Services: React.FC = () => {
                         .map((service) => (
                         <div 
                           key={service.id} 
-                          className="bg-white rounded-lg p-4 border border-purple-200 hover:border-purple-300 transition-all duration-300 hover:shadow-md"
+                          className="bg-white rounded-lg p-4 border border-blue-200 hover:border-blue-300 transition-all duration-300 hover:shadow-md"
                         >
                           <div className="text-center">
                             <h4 className="font-semibold text-gray-900 mb-2 text-sm">{service.name}</h4>
-                            <div className="text-2xl font-bold text-purple-600 mb-2">
+                            <div className="text-2xl font-bold text-blue-600 mb-2">
                               GHC {service.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                             </div>
                             <Link 
-                              to={`/application/${service.id}`}
+                              to={`/application/${selectedService.id}`}
                               onClick={closeModal}
-                              className="w-full inline-flex items-center justify-center px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors"
+                              className="w-full inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
                             >
                               Select
                               <ArrowRight className="ml-1 w-3 h-3" />
@@ -492,12 +488,10 @@ const Services: React.FC = () => {
 
                 {/* REGULAR GAZETTE */}
                 {getFilteredGazetteServices(selectedService.id).some(service => service.gazetteType === 'regular-gazette') && (
-                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
+                  <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
                     <div className="flex items-center mb-4">
-                      <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center mr-3">
-                        <Star className="w-4 h-4 text-white" />
-                      </div>
-                      <h3 className="text-lg font-bold text-green-800">REGULAR GAZETTE</h3>
+                      
+                      <h3 className="text-lg font-bold text-blue-800">REGULAR GAZETTE</h3>
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -506,17 +500,17 @@ const Services: React.FC = () => {
                         .map((service) => (
                         <div 
                           key={service.id} 
-                          className="bg-white rounded-lg p-4 border border-green-200 hover:border-green-300 transition-all duration-300 hover:shadow-md"
+                          className="bg-white rounded-lg p-4 border border-blue-200 hover:border-blue-300 transition-all duration-300 hover:shadow-md"
                         >
                           <div className="text-center">
                             <h4 className="font-semibold text-gray-900 mb-2 text-sm">{service.name}</h4>
-                            <div className="text-2xl font-bold text-green-600 mb-2">
+                            <div className="text-2xl font-bold text-blue-600 mb-2">
                               GHC {service.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                             </div>
                             <Link 
-                              to={`/application/${service.id}`}
+                              to={`/application/${selectedService.id}`}
                               onClick={closeModal}
-                              className="w-full inline-flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
+                              className="w-full inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
                             >
                               Select
                               <ArrowRight className="ml-1 w-3 h-3" />
