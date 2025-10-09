@@ -189,17 +189,17 @@ const Home: React.FC = () => {
               each designed to meet specific legal and administrative requirements with professional excellence.
             </p>
           </div>
-
+          
           {/* Service Categories */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-14 lg:mb-16">
             {/* Personal Services */}
             <div className="group bg-white rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
               <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-violet-100 to-violet-200 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
                 <User className="w-6 h-6 sm:w-8 sm:h-8 text-violet-600" />
-              </div>
+                    </div>
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-violet-700 transition-colors">
                 Personal Services
-              </h3>
+                    </h3>
               <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 leading-relaxed">
                 Name changes, birth certificate corrections, and personal document publications with official recognition.
               </p>
@@ -215,8 +215,8 @@ const Home: React.FC = () => {
                 <li className="flex items-center text-xs sm:text-sm text-gray-600">
                   <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-violet-500 rounded-full mr-2 sm:mr-3"></span>
                   Personal Document Publications
-                </li>
-              </ul>
+                          </li>
+                      </ul>
               <Link 
                 to="/services"
                 className="inline-flex items-center text-violet-600 font-semibold hover:text-violet-700 transition-colors text-sm sm:text-base"
@@ -224,13 +224,13 @@ const Home: React.FC = () => {
                 Learn More
                 <ArrowRight className="ml-2 w-3 h-3 sm:w-4 sm:h-4" />
               </Link>
-            </div>
-
+                    </div>
+                    
             {/* Corporate Services */}
             <div className="group bg-white rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
               <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
                 <Building className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
-              </div>
+                    </div>
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-blue-700 transition-colors">
                 Corporate Services
               </h3>
@@ -251,23 +251,23 @@ const Home: React.FC = () => {
                   Corporate Publications
                 </li>
               </ul>
-              <Link 
+                    <Link 
                 to="/services"
                 className="inline-flex items-center text-blue-600 font-semibold hover:text-blue-700 transition-colors text-sm sm:text-base"
-              >
+                    >
                 Learn More
                 <ArrowRight className="ml-2 w-3 h-3 sm:w-4 sm:h-4" />
-              </Link>
-            </div>
-
+                    </Link>
+          </div>
+          
             {/* Religious Services */}
             <div className="group bg-white rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
               <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-green-100 to-green-200 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
                 <Church className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" />
-              </div>
+                    </div>
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-green-700 transition-colors">
                 Religious Services
-              </h3>
+                    </h3>
               <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 leading-relaxed">
                 Marriage officer appointments, place of worship licensing, and religious institution publications.
               </p>
@@ -283,16 +283,16 @@ const Home: React.FC = () => {
                 <li className="flex items-center text-xs sm:text-sm text-gray-600">
                   <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-500 rounded-full mr-2 sm:mr-3"></span>
                   Religious Publications
-                </li>
-              </ul>
-              <Link 
+                          </li>
+                      </ul>
+                    <Link 
                 to="/services"
                 className="inline-flex items-center text-green-600 font-semibold hover:text-green-700 transition-colors text-sm sm:text-base"
-              >
+                    >
                 Learn More
                 <ArrowRight className="ml-2 w-3 h-3 sm:w-4 sm:h-4" />
-              </Link>
-            </div>
+                    </Link>
+                  </div>
           </div>
 
           {/* CTA Section */}
@@ -311,13 +311,13 @@ const Home: React.FC = () => {
                 View All Services
                 <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
               </Link>
-              <Link
+                    <Link 
                 to="/auth"
                 className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-white/10 backdrop-blur-sm text-white rounded-lg sm:rounded-xl font-semibold text-base sm:text-lg hover:bg-white/20 transition-all duration-300 border border-white/20"
-              >
+                    >
                 Get Started
-              </Link>
-            </div>
+                    </Link>
+                  </div>
           </div>
         </div>
       </section>

@@ -11,6 +11,7 @@ import {
   ArrowLeft,
   ArrowRight,
   Check,
+  CheckCircle,
   AlertCircle,
   X
 } from 'lucide-react';
@@ -28,6 +29,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
   const [currentStep, setCurrentStep] = useState(1);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [paymentCompleted, setPaymentCompleted] = useState(false);
+  const [idNumberError, setIdNumberError] = useState('');
   const [formData, setFormData] = useState<ApplicationFormData>({
     serviceType: serviceId || '',
     documents: [],
@@ -92,6 +94,16 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
         [field]: value
       } as PersonalInfo
     }));
+
+    // Validate National ID Number
+    if (field === 'idNumber') {
+      const idValue = value.toUpperCase();
+      if (idValue && !/^GHA\d{12}$/.test(idValue)) {
+        setIdNumberError('National ID must be in format: GHA000000000000 (GHA followed by 12 digits)');
+      } else {
+        setIdNumberError('');
+      }
+    }
   };
 
   const handleCompanyInfoChange = (field: keyof CompanyInfo, value: any) => {
@@ -138,18 +150,38 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
   const isStepValid = (step: number) => {
     switch (step) {
       case 1:
-        return formData.personalInfo?.fullName && formData.personalInfo?.email && formData.personalInfo?.phone;
+        return formData.personalInfo?.fullName && 
+               formData.personalInfo?.email && 
+               formData.personalInfo?.phone &&
+               formData.personalInfo?.address &&
+               formData.personalInfo?.idNumber &&
+               formData.personalInfo?.occupation &&
+               formData.personalInfo?.dateOfBirth &&
+               !idNumberError;
       case 2:
         if (service.id === 'appointment-marriage-officers' || service.id === 'public-place-worship-marriage-license') {
-          return formData.religiousInfo?.religiousBodyName && formData.religiousInfo?.denomination;
+          return formData.religiousInfo?.religiousBodyName && 
+                 formData.religiousInfo?.denomination &&
+                 formData.religiousInfo?.registrationNumber &&
+                 formData.religiousInfo?.headOfReligiousBody &&
+                 formData.religiousInfo?.contactPerson &&
+                 formData.religiousInfo?.placeOfWorship &&
+                 formData.religiousInfo?.capacity;
         }
         if (service.id === 'change-name-company-school-hospital' || service.id === 'incorporation-commencement-companies') {
-          return formData.companyInfo?.companyName && formData.companyInfo?.businessType;
+          return formData.companyInfo?.companyName && 
+                 formData.companyInfo?.businessType &&
+                 formData.companyInfo?.registrationNumber &&
+                 formData.companyInfo?.registeredAddress &&
+                 formData.companyInfo?.authorizedCapital &&
+                 formData.companyInfo?.paidUpCapital;
         }
         return true;
       case 3:
-        return uploadedFiles.length > 0;
+        return true; // Payment step - always valid
       case 4:
+        return paymentCompleted && uploadedFiles.length > 0;
+      case 5:
         return true;
       default:
         return false;
@@ -173,6 +205,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
           </label>
           <input
             type="text"
+            required
             value={formData.personalInfo?.fullName || ''}
             onChange={(e) => handlePersonalInfoChange('fullName', e.target.value)}
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
@@ -186,6 +219,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
           </label>
           <input
             type="date"
+            required
             value={formData.personalInfo?.dateOfBirth || ''}
             onChange={(e) => handlePersonalInfoChange('dateOfBirth', e.target.value)}
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
@@ -198,6 +232,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
           </label>
           <input
             type="email"
+            required
             value={formData.personalInfo?.email || ''}
             onChange={(e) => handlePersonalInfoChange('email', e.target.value)}
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
@@ -211,6 +246,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
           </label>
           <input
             type="tel"
+            required
             value={formData.personalInfo?.phone || ''}
             onChange={(e) => handlePersonalInfoChange('phone', e.target.value)}
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
@@ -223,6 +259,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
             Address *
           </label>
           <textarea
+            required
             value={formData.personalInfo?.address || ''}
             onChange={(e) => handlePersonalInfoChange('address', e.target.value)}
             rows={3}
@@ -233,23 +270,55 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            National ID Number
+            National ID Number *
           </label>
-          <input
-            type="text"
-            value={formData.personalInfo?.idNumber || ''}
-            onChange={(e) => handlePersonalInfoChange('idNumber', e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-            placeholder="Enter your national ID number"
-          />
+          <div className="relative">
+            <input
+              type="text"
+              required
+              value={formData.personalInfo?.idNumber || ''}
+              onChange={(e) => {
+                const value = e.target.value.toUpperCase();
+                // Auto-format: Ensure GHA prefix and limit to 15 characters (GHA + 12 digits)
+                const formattedValue = value.startsWith('GHA') 
+                  ? value.substring(0, 15) 
+                  : value.length <= 3 
+                    ? value 
+                    : 'GHA' + value.replace(/[^0-9]/g, '').substring(0, 12);
+                handlePersonalInfoChange('idNumber', formattedValue);
+              }}
+              className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all ${
+                idNumberError 
+                  ? 'border-red-300 bg-red-50 focus:ring-red-500' 
+                  : 'border-gray-300 hover:border-gray-400'
+              }`}
+              placeholder="GHA000000000000"
+              maxLength={15}
+            />
+            {formData.personalInfo?.idNumber && !idNumberError && (
+              <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                <CheckCircle className="w-5 h-5 text-green-500" />
+              </div>
+            )}
+          </div>
+          {idNumberError && (
+            <div className="mt-2 flex items-center text-red-600 text-sm">
+              <AlertCircle className="w-4 h-4 mr-2" />
+              {idNumberError}
+            </div>
+          )}
+          <p className="mt-1 text-xs text-gray-500">
+            Format: GHA followed by 12 digits (e.g., GHA123456789012)
+          </p>
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Occupation
+            Occupation *
           </label>
           <input
             type="text"
+            required
             value={formData.personalInfo?.occupation || ''}
             onChange={(e) => handlePersonalInfoChange('occupation', e.target.value)}
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
@@ -279,6 +348,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
               </label>
               <input
                 type="text"
+                required
                 value={formData.religiousInfo?.religiousBodyName || ''}
                 onChange={(e) => handleReligiousInfoChange('religiousBodyName', e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
@@ -292,6 +362,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
               </label>
               <input
                 type="text"
+                required
                 value={formData.religiousInfo?.registrationNumber || ''}
                 onChange={(e) => handleReligiousInfoChange('registrationNumber', e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
@@ -305,6 +376,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
               </label>
               <input
                 type="text"
+                required
                 value={formData.religiousInfo?.denomination || ''}
                 onChange={(e) => handleReligiousInfoChange('denomination', e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
@@ -318,6 +390,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
               </label>
               <input
                 type="text"
+                required
                 value={formData.religiousInfo?.headOfReligiousBody || ''}
                 onChange={(e) => handleReligiousInfoChange('headOfReligiousBody', e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
@@ -331,6 +404,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
               </label>
               <input
                 type="text"
+                required
                 value={formData.religiousInfo?.contactPerson || ''}
                 onChange={(e) => handleReligiousInfoChange('contactPerson', e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
@@ -344,6 +418,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
               </label>
               <input
                 type="text"
+                required
                 value={formData.religiousInfo?.placeOfWorship || ''}
                 onChange={(e) => handleReligiousInfoChange('placeOfWorship', e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
@@ -353,10 +428,11 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Capacity
+                Capacity *
               </label>
               <input
                 type="number"
+                required
                 value={formData.religiousInfo?.capacity || ''}
                 onChange={(e) => handleReligiousInfoChange('capacity', parseInt(e.target.value))}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
@@ -411,6 +487,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                 Business Type *
               </label>
               <select
+                required
                 value={formData.companyInfo?.businessType || ''}
                 onChange={(e) => handleCompanyInfoChange('businessType', e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
@@ -432,6 +509,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                 Registered Address *
               </label>
               <textarea
+                required
                 value={formData.companyInfo?.registeredAddress || ''}
                 onChange={(e) => handleCompanyInfoChange('registeredAddress', e.target.value)}
                 rows={3}
@@ -442,10 +520,11 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Authorized Capital
+                Authorized Capital *
               </label>
               <input
                 type="number"
+                required
                 value={formData.companyInfo?.authorizedCapital || ''}
                 onChange={(e) => handleCompanyInfoChange('authorizedCapital', parseFloat(e.target.value))}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
@@ -455,10 +534,11 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Paid Up Capital
+                Paid Up Capital *
               </label>
               <input
                 type="number"
+                required
                 value={formData.companyInfo?.paidUpCapital || ''}
                 onChange={(e) => handleCompanyInfoChange('paidUpCapital', parseFloat(e.target.value))}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
@@ -613,11 +693,22 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
     </div>
   );
 
+  const handlePaymentNavigation = () => {
+    // Generate application ID for payment
+    const applicationId = `app-${Date.now()}`;
+    
+    // Store form data temporarily
+    localStorage.setItem(`temp_application_${applicationId}`, JSON.stringify(formData));
+    
+    // Navigate to payment page
+    navigate(`/payment/${applicationId}`);
+  };
+
   const renderPaymentStep = () => (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
       <div className="text-center mb-8">
         <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <Shield className="w-8 h-8 text-green-600" />
+          <CheckCircle className="w-8 h-8 text-green-600" />
         </div>
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Payment Required</h2>
         <p className="text-gray-600">
@@ -628,11 +719,11 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
       <div className="bg-gradient-to-r from-blue-50 to-violet-50 rounded-xl p-6 border border-blue-200 mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">{service.name}</h3>
-            <p className="text-gray-600 text-sm">Processing: {service.processingTime}</p>
+            <h3 className="text-lg font-semibold text-gray-900">{service?.name}</h3>
+            <p className="text-gray-600 text-sm">Processing: {service?.processingTime}</p>
           </div>
           <div className="text-right">
-            <div className="text-2xl font-bold text-violet-600">GHS {service.price.toFixed(2)}</div>
+            <div className="text-2xl font-bold text-violet-600">GHS {service?.price?.toFixed(2)}</div>
             <p className="text-gray-500 text-sm">Total Amount</p>
           </div>
         </div>
@@ -661,17 +752,10 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
 
       <div className="flex space-x-4">
         <button
-          onClick={() => {
-            // Generate application ID for payment
-            const applicationId = `app-${Date.now()}`;
-            // Store form data temporarily
-            localStorage.setItem(`temp_application_${applicationId}`, JSON.stringify(formData));
-            // Navigate to payment page
-            navigate(`/payment/${applicationId}`);
-          }}
+          onClick={handlePaymentNavigation}
           className="flex-1 bg-gradient-to-r from-violet-600 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-violet-700 hover:to-blue-700 transition-all duration-300 flex items-center justify-center space-x-2"
         >
-          <Shield className="w-5 h-5" />
+          <CheckCircle className="w-5 h-5" />
           <span>Proceed to Payment</span>
         </button>
         <button
