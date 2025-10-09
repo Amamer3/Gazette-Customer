@@ -2,18 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { gazettePricingServices } from '../services/mockData';
 import { Clock, Shield, FileText, ArrowRight, Users, Award } from 'lucide-react';
-import heroIllustration from '../assets/hero-illustration.svg';
+// import heroIllustration from '../assets/hero-illustration.svg';
 // import birthCertificate from '../assets/birth-certificate.svg';
 // import nameChange from '../assets/name-change.svg';
 // import marriageCertificate from '../assets/marriage-certificate.svg';
 // import businessLicense from '../assets/business-license.svg';
-import featuresIllustration from '../assets/features-illustration.svg';
+// import featuresIllustration from '../assets/features-illustration.svg';
 
 const Home: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-violet-900 via-violet-800 to-blue-900">
+      <section className="relative overflow-hidden bg-blue-900">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-20">
           <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
@@ -82,7 +82,7 @@ const Home: React.FC = () => {
             <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
               <div className="relative">
                 <img 
-                  src={heroIllustration} 
+                  src="/image.png"
                   alt="Ghana E-Gazette Digital Services" 
                   className="w-full max-w-md rounded-2xl lg:max-w-lg xl:max-w-xl h-auto"
                 />
@@ -381,7 +381,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-24 bg-gradient-to-br from-violet-50 via-blue-50 to-white relative overflow-hidden">
+      <section className="py-24 bg-[#e9eefe] relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-0 left-0 w-96 h-96 bg-violet-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
@@ -393,7 +393,7 @@ const Home: React.FC = () => {
           {/* Features Illustration */}
           <div className="flex justify-center mb-12">
             <img 
-              src={featuresIllustration} 
+              src="/image.png" 
               alt="Digital Government Services Features" 
               className="w-full max-w-2xl h-auto opacity-90 rounded-2xl"
             />
