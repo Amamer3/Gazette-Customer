@@ -84,8 +84,8 @@ const Applications: React.FC = () => {
         }
       } catch (error) {
         console.error('Error loading applications:', error);
-        // Fallback to mock data
-        setApplications(mockApplications);
+        // Fallback to empty array
+        setApplications([]);
         setOrders([]);
       }
       setIsLoading(false);
