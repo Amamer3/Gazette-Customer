@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { gazetteServices } from '../data/mockData';
 import { gazettePricingServices } from '../services/mockData';
-import { ArrowRight, FileText, Building, Heart, User, Briefcase, Church, X, Clock, Shield, CheckCircle } from 'lucide-react';
+import { ArrowRight, FileText, Building, Heart, User, Briefcase, Church, X, Shield, CheckCircle } from 'lucide-react';
 
 const Services: React.FC = () => {
   const [selectedService, setSelectedService] = useState<any>(null);
@@ -127,11 +127,11 @@ const Services: React.FC = () => {
               Ghana Publishing Company
             </h2>
             <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              <span className="font-semibold text-violet-700">Now We are one click away from you</span>
+              <span className="font-semibold text-blue-700">Now We are one click away from you</span>
             </p>
           </div>
           
-          <div className="bg-gradient-to-br from-violet-50 to-blue-50 rounded-2xl p-8 md:p-12">
+          <div className="bg-gradient-to-br from-blue-50 to-blue-50 rounded-2xl p-8 md:p-12">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">
@@ -147,7 +147,7 @@ const Services: React.FC = () => {
                   <p>
                     We exist primarily to print and publish very high quality books and stationery for Educational Institutions, Government Departments and the General Public at competitive prices.
                   </p>
-                  <p className="font-semibold text-violet-700">
+                  <p className="font-semibold text-blue-700">
                     We aim at nothing but the best in all our Services. As a Printing and Publishing Company, our values drive us to offer World Class Services to our clients and the General Public.
                   </p>
                 </div>
@@ -160,8 +160,8 @@ const Services: React.FC = () => {
                     const IconComponent = getServiceIcon(service.icon);
                     return (
                       <li key={service.id} className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-gradient-to-br from-violet-100 to-blue-100 rounded-lg flex items-center justify-center">
-                          <IconComponent className="w-4 h-4 text-violet-600" />
+                        <div className="w-8 h-8 bg-gradient-to-br from-blue-100 to-blue-100 rounded-lg flex items-center justify-center">
+                          <IconComponent className="w-4 h-4 text-blue-600" />
                         </div>
                         <span className="text-gray-700 font-medium">{service.name}</span>
                       </li>
@@ -190,8 +190,8 @@ const Services: React.FC = () => {
             {/* Premium Plus */}
             <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 border border-blue-200 hover:shadow-lg transition-all duration-300">
               <div className="text-center">
-                <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Clock className="w-8 h-8 text-white" />
+                <div className="w-16 h-16 flex items-center justify-center mx-auto">
+                  {/* <Clock className="w-8 h-8 text-white" /> */}
                 </div>
                 <h3 className="text-2xl font-bold text-blue-800 mb-4">PREMIUM PLUS</h3>
                 <div className="text-4xl font-bold text-blue-600 mb-2">24 HOURS</div>
@@ -203,14 +203,14 @@ const Services: React.FC = () => {
             </div>
 
             {/* Premium Gazette */}
-            <div className="bg-gradient-to-br from-violet-50 to-violet-100 rounded-2xl p-8 border border-violet-200 hover:shadow-lg transition-all duration-300">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 border border-blue-200 hover:shadow-lg transition-all duration-300">
               <div className="text-center">
-                <div className="w-16 h-16 bg-violet-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Clock className="w-8 h-8 text-white" />
+                <div className="w-16 h-16 flex items-center justify-center mx-auto">
+                  {/* <Clock className="w-8 h-8 text-white" /> */}
                 </div>
-                <h3 className="text-2xl font-bold text-violet-800 mb-4">PREMIUM GAZETTE</h3>
-                <div className="text-4xl font-bold text-violet-600 mb-2">3 WORKING DAYS</div>
-                <p className="text-violet-700 font-semibold mb-4">Standard Processing</p>
+                <h3 className="text-2xl font-bold text-blue-800 mb-4">PREMIUM GAZETTE</h3>
+                <div className="text-4xl font-bold text-blue-600 mb-2">3 WORKING DAYS</div>
+                <p className="text-blue-700 font-semibold mb-4">Standard Processing</p>
                 <p className="text-gray-600 text-sm">
                   Standard processing time for most applications with reliable and efficient service delivery.
                 </p>
@@ -218,14 +218,14 @@ const Services: React.FC = () => {
             </div>
 
             {/* Regular Gazette */}
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 border border-gray-200 hover:shadow-lg transition-all duration-300">
+            <div className="bg-gradient-to-br from-blue-50 to-gray-100 rounded-2xl p-8 border border-gray-200 hover:shadow-lg transition-all duration-300">
               <div className="text-center">
-                <div className="w-16 h-16 bg-gray-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Clock className="w-8 h-8 text-white" />
+                <div className="w-16 h-16 flex items-center justify-center mx-auto">
+                  {/* <Clock className="w-8 h-8 text-white" /> */}
                 </div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-4">REGULAR GAZETTE</h3>
-                <div className="text-4xl font-bold text-gray-600 mb-2">3 WORKING WEEKS</div>
-                <p className="text-gray-700 font-semibold mb-4">Economical Option</p>
+                <h3 className="text-2xl font-bold text-blue-800 mb-4">REGULAR GAZETTE</h3>
+                <div className="text-4xl font-bold text-blue-600 mb-2">3 WORKING WEEKS</div>
+                <p className="text-blue-700 font-semibold mb-4">Economical Option</p>
                 <p className="text-gray-600 text-sm">
                   Most cost-effective option for applications that are not time-sensitive.
                 </p>
@@ -234,7 +234,7 @@ const Services: React.FC = () => {
           </div>
 
           <div className="text-center mt-12">
-            <p className="text-gray-600 text-sm max-w-4xl mx-auto">
+            <p className="bg-yellow-400 text-sm text-blue-800 p-4 rounded-xl max-w-4xl mx-auto">
               <strong>Note:</strong> Processing times are calculated from the date of complete application submission with all required documents. 
               Working days exclude weekends and public holidays. All gazette types provide the same official documentation and legal validity.
             </p>
@@ -267,24 +267,21 @@ const Services: React.FC = () => {
                   }}
                 >
                   {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  
-                  {/* Floating Elements */}
-                  <div className="absolute top-4 right-4 w-2 h-2 bg-violet-400 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-200"></div>
-                  <div className="absolute bottom-4 left-4 w-1 h-1 bg-blue-400 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-300"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                
                   
                   <div className="relative p-8">
                     {/* Service Icon */}
                     <div className="relative mb-8">
-                      <div className="w-20 h-20 bg-gradient-to-br from-violet-100 via-violet-50 to-blue-100 rounded-3xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
-                        <IconComponent className="w-10 h-10 text-violet-600 group-hover:text-violet-700 transition-colors duration-300" />
+                      <div className="w-20 h-20 bg-gradient-to-br from-blue-100 via-blue-50 to-blue-100 rounded-3xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
+                        <IconComponent className="w-10 h-10 text-blue-600 group-hover:text-blue-700 transition-colors duration-300" />
                       </div>
                       {/* Icon Glow Effect */}
-                      <div className="absolute inset-0 w-20 h-20 bg-gradient-to-br from-violet-400/20 to-blue-400/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      <div className="absolute inset-0 w-20 h-20 bg-gradient-to-br from-blue-400/20 to-blue-400/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     </div>
                     
                     {/* Service Name */}
-                    <h3 className="text-xl font-bold text-gray-900 mb-4 group-hover:text-violet-700 transition-colors duration-300 leading-tight">
+                    <h3 className="text-xl font-bold text-gray-900 mb-4 group-hover:text-blue-700 transition-colors duration-300 leading-tight">
                       {service.name}
                     </h3>
                     
@@ -295,40 +292,17 @@ const Services: React.FC = () => {
                     
                     {/* Category Badge */}
                     <div className="mb-6">
-                      <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-gradient-to-r from-violet-100 to-blue-100 text-violet-800 border border-violet-200">
+                      <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-gradient-to-r from-blue-100 to-blue-100 text-blue-800 border border-blue-200">
                         
                         {service.category}
                       </span>
                     </div>
                     
-                    {/* Price and Processing Time */}
-                    <div className="space-y-4 mb-8">
-                      <div className="flex justify-between items-center p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl border border-gray-200">
-                        <div className="flex items-center">
-                          <div className="w-8 h-8 bg-violet-100 rounded-lg flex items-center justify-center mr-3">
-                            <span className="text-violet-600 font-bold text-sm">₵</span>
-                          </div>
-                          <span className="text-sm font-medium text-gray-700">Price</span>
-                        </div>
-                        <span className="font-bold text-violet-600 text-xl">
-                          GHS {service.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
-                        </span>
-                      </div>
-                      <div className="flex justify-between items-center p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-200">
-                        <div className="flex items-center">
-                          <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                            <Clock className="w-4 h-4 text-blue-600" />
-                          </div>
-                          <span className="text-sm font-medium text-gray-700">Processing</span>
-                        </div>
-                        <span className="text-sm font-semibold text-blue-700">{service.processingTime}</span>
-                      </div>
-                    </div>
                     
                     {/* Required Documents Preview */}
                     <div className="mb-8">
                       <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
-                        <Shield className="w-4 h-4 mr-2 text-violet-600" />
+                        <Shield className="w-4 h-4 mr-2 text-blue-600" />
                         Required Documents
                       </h4>
                       <ul className="space-y-2">
@@ -339,8 +313,8 @@ const Services: React.FC = () => {
                           </li>
                         ))}
                         {service.requiredDocuments.length > 3 && (
-                          <li className="text-sm text-violet-600 font-semibold flex items-center">
-                            <span className="w-4 h-4 bg-violet-100 rounded-full flex items-center justify-center mr-2 text-xs">+</span>
+                          <li className="text-sm text-blue-600 font-semibold flex items-center">
+                            <span className="w-4 h-4 bg-blue-100 rounded-full flex items-center justify-center mr-2 text-xs">+</span>
                             {service.requiredDocuments.length - 3} more documents
                           </li>
                         )}
@@ -350,12 +324,12 @@ const Services: React.FC = () => {
                     {/* Apply Button */}
                     <button 
                       onClick={() => handleServiceClick(service)}
-                      className="w-full inline-flex items-center justify-center px-6 py-4 bg-blue-600 text-white rounded-2xl font-bold text-sm hover:from-violet-700 hover:via-violet-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl group/btn"
+                      className="w-full inline-flex items-center justify-center px-6 py-4 bg-blue-600 text-white rounded-2xl font-bold text-sm hover:from-blue-700 hover:via-blue-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl group/btn"
                     >
                       <span className="relative z-10">Apply Now</span>
                       <ArrowRight className="ml-2 w-5 h-5 group-hover/btn:translate-x-1 transition-transform duration-300" />
                       {/* Button Glow */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-violet-400 to-blue-400 rounded-2xl blur opacity-0 group-hover/btn:opacity-20 transition-opacity duration-300"></div>
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-400 rounded-2xl blur opacity-0 group-hover/btn:opacity-20 transition-opacity duration-300"></div>
                     </button>
                   </div>
                 </div>
@@ -411,7 +385,7 @@ const Services: React.FC = () => {
               }
             ].map((step, index) => (
               <div key={index} className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-violet-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-white font-bold text-lg">{step.step}</span>
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">{step.title}</h3>
@@ -458,7 +432,7 @@ const Services: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                    {React.createElement(getServiceIcon(selectedService.icon), { className: "w-6 h-6 text-white" })}
+                      {React.createElement(getServiceIcon(selectedService.icon), { className: "w-6 h-6 text-white" })}
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold mb-1">
@@ -484,7 +458,7 @@ const Services: React.FC = () => {
               <div className="space-y-6">
                 {/* PREMIUM PLUS */}
                 {getFilteredGazetteServices(selectedService.id).some(service => service.gazetteType === 'premium-plus') && (
-                  <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
+                    <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
                     <div className="flex items-center mb-4">
                       
                       <h3 className="text-lg font-bold text-blue-800">PREMIUM PLUS</h3>
