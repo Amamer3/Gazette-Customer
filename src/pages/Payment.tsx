@@ -11,12 +11,13 @@ import {
   ArrowLeft,
   Info
 } from 'lucide-react';
-import { gazetteServices } from '../data/mockData';
+import { useServices } from '../hooks/useServices';
 import type { Application, Order } from '../types/application';
 import LocalStorageService from '../services/localStorage';
 
 const Payment: React.FC = () => {
   const { applicationId } = useParams<{ applicationId: string }>();
+  const { services: gazetteServices } = useServices();
   const navigate = useNavigate();
   const [application, setApplication] = useState<Application | null>(null);
   const [service, setService] = useState<any>(null);

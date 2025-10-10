@@ -15,7 +15,8 @@ import {
   AlertCircle,
   X
 } from 'lucide-react';
-import { gazetteServices } from '../data/mockData';
+import { useServices } from '../hooks/useServices';
+import ApiService from '../services/apiService';
 import type { ApplicationFormData, PersonalInfo, CompanyInfo, ReligiousInfo } from '../types/application';
 import LocalStorageService from '../services/localStorage';
 
@@ -31,12 +32,15 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [idNumberError, setIdNumberError] = useState('');
+  const [gazettePlans, setGazettePlans] = useState<any[]>([]);
+  const [loadingPlans, setLoadingPlans] = useState(false);
   const [formData, setFormData] = useState<ApplicationFormData>({
     serviceType: serviceId || '',
     documents: [],
     additionalNotes: ''
   });
 
+  const { services: gazetteServices, loading: servicesLoading } = useServices();
   const service = gazetteServices.find(s => s.id === serviceId);
 
   useEffect(() => {
@@ -44,6 +48,33 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
       navigate('/services');
       return;
     }
+
+    // Fetch gazette plans for this service
+    const fetchGazettePlans = async () => {
+      setLoadingPlans(true);
+      try {
+        console.log('Fetching gazette plans for service ID:', service.id);
+        const response = await ApiService.getGazetteTypes("0", "0");
+        console.log('Gazette plans response:', response);
+        if (response.success && response.data.success) {
+          // Filter plans by service name match
+          const filteredPlans = response.data.SearchDetail.filter(plan => 
+            plan.GazzeteType.toLowerCase().includes(service.name.toLowerCase()) ||
+            service.name.toLowerCase().includes(plan.GazzeteType.toLowerCase())
+          );
+          setGazettePlans(filteredPlans.length > 0 ? filteredPlans : response.data.SearchDetail);
+          console.log('Set gazette plans:', filteredPlans.length > 0 ? filteredPlans : response.data.SearchDetail);
+        } else {
+          console.error('Failed to fetch gazette plans:', response.error);
+        }
+      } catch (error) {
+        console.error('Error fetching gazette plans:', error);
+      } finally {
+        setLoadingPlans(false);
+      }
+    };
+
+    fetchGazettePlans();
 
     // Check if payment was completed
     const urlParams = new URLSearchParams(window.location.search);
@@ -66,6 +97,17 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
       }
     }
   }, [service, navigate]);
+
+  if (servicesLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-violet-200 border-t-violet-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading service details...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!service) {
     return (
@@ -235,100 +277,87 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
         <div className="w-16 h-16 bg-gradient-to-br from-violet-100 to-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
           <FileText className="w-8 h-8 text-violet-600" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Select Gazette Type</h2>
-        <p className="text-gray-600">Choose the type of gazette publication for your application</p>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">Select Gazette Plan</h2>
+        <p className="text-gray-600">Choose your preferred gazette plan and processing option</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div 
-          className={`border-2 rounded-xl p-6 cursor-pointer transition-all ${
-            formData.gazetteType === 'regular-gazette' 
-              ? 'border-violet-500 bg-violet-50' 
-              : 'border-gray-200 hover:border-gray-300'
-          }`}
-          onClick={() => handleInputChange('gazetteType', 'regular-gazette')}
-        >
-          <div className="flex items-center mb-4">
-            <input
-              type="radio"
-              name="gazetteType"
-              value="regular-gazette"
-              checked={formData.gazetteType === 'regular-gazette'}
-              onChange={(e) => handleInputChange('gazetteType', e.target.value)}
-              className="mr-3"
-            />
-            <h4 className="font-semibold text-gray-900">Regular Gazette</h4>
+      {loadingPlans ? (
+        <div className="flex items-center justify-center py-16">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-violet-200 border-t-violet-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading gazette plans...</p>
           </div>
-          <p className="text-sm text-gray-600 mb-4">Standard publication with basic formatting and standard processing time.</p>
-          <div className="text-2xl font-bold text-violet-600">GHS {service.price.toFixed(2)}</div>
-          <p className="text-xs text-gray-500 mt-2">Standard processing time</p>
         </div>
-
-        <div 
-          className={`border-2 rounded-xl p-6 cursor-pointer transition-all ${
-            formData.gazetteType === 'premium-gazette' 
-              ? 'border-violet-500 bg-violet-50' 
-              : 'border-gray-200 hover:border-gray-300'
-          }`}
-          onClick={() => handleInputChange('gazetteType', 'premium-gazette')}
-        >
-          <div className="flex items-center mb-4">
-            <input
-              type="radio"
-              name="gazetteType"
-              value="premium-gazette"
-              checked={formData.gazetteType === 'premium-gazette'}
-              onChange={(e) => handleInputChange('gazetteType', e.target.value)}
-              className="mr-3"
-            />
-            <h4 className="font-semibold text-gray-900">Premium Gazette</h4>
+      ) : gazettePlans.length === 0 ? (
+        <div className="flex items-center justify-center py-16">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <AlertCircle className="w-8 h-8 text-red-600" />
+            </div>
+            <p className="text-red-600 mb-2">No gazette plans available</p>
+            <p className="text-gray-600 text-sm">Service ID: {service?.id}</p>
+            <p className="text-gray-600 text-sm">Plans loaded: {gazettePlans.length}</p>
           </div>
-          <p className="text-sm text-gray-600 mb-4">Enhanced formatting, priority processing, and premium presentation.</p>
-          <div className="text-2xl font-bold text-violet-600">GHS {(service.price * 1.5).toFixed(2)}</div>
-          <p className="text-xs text-gray-500 mt-2">Priority processing (5-7 days)</p>
         </div>
-
-        <div 
-          className={`border-2 rounded-xl p-6 cursor-pointer transition-all ${
-            formData.gazetteType === 'premium-plus' 
-              ? 'border-violet-500 bg-violet-50' 
-              : 'border-gray-200 hover:border-gray-300'
-          }`}
-          onClick={() => handleInputChange('gazetteType', 'premium-plus')}
-        >
-          <div className="flex items-center mb-4">
-            <input
-              type="radio"
-              name="gazetteType"
-              value="premium-plus"
-              checked={formData.gazetteType === 'premium-plus'}
-              onChange={(e) => handleInputChange('gazetteType', e.target.value)}
-              className="mr-3"
-            />
-            <h4 className="font-semibold text-gray-900">Premium Plus</h4>
-          </div>
-          <p className="text-sm text-gray-600 mb-4">Highest priority, expedited processing, and premium formatting with additional features.</p>
-          <div className="text-2xl font-bold text-violet-600">GHS {(service.price * 2).toFixed(2)}</div>
-          <p className="text-xs text-gray-500 mt-2">Expedited processing (3-5 days)</p>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {gazettePlans.map((plan) => (
+            <div 
+              key={plan.FeeID}
+              className={`border-2 rounded-xl p-6 cursor-pointer transition-all ${
+                formData.gazetteType === plan.FeeID 
+                  ? 'border-violet-500 bg-violet-50' 
+                  : 'border-gray-200 hover:border-gray-300'
+              }`}
+              onClick={() => handleInputChange('gazetteType', plan.FeeID)}
+            >
+              <div className="flex items-center mb-4">
+                <input
+                  type="radio"
+                  name="gazetteType"
+                  value={plan.FeeID}
+                  checked={formData.gazetteType === plan.FeeID}
+                  onChange={(e) => handleInputChange('gazetteType', e.target.value)}
+                  className="mr-3"
+                />
+                <h4 className="font-semibold text-gray-900">{plan.PaymentPlan}</h4>
+              </div>
+              <p className="text-sm text-gray-600 mb-4">{plan.GazetteDetails}</p>
+              <div className="text-2xl font-bold text-violet-600">GHS {plan.GazetteFee.toFixed(2)}</div>
+              <p className="text-xs text-gray-500 mt-2">{plan.ProcessDays} business days</p>
+              {plan.DocRequired.length > 0 && (
+                <div className="mt-4">
+                  <p className="text-xs font-medium text-gray-700 mb-2">Required Documents:</p>
+                  <ul className="space-y-1">
+                    {plan.DocRequired.slice(0, 2).map((doc: any) => (
+                      <li key={doc.ID} className="text-xs text-gray-600 flex items-start">
+                        <div className="w-1 h-1 bg-violet-400 rounded-full mr-2 mt-2 flex-shrink-0"></div>
+                        {doc.DocName}
+                      </li>
+                    ))}
+                    {plan.DocRequired.length > 2 && (
+                      <li className="text-xs text-violet-600 font-medium ml-3">
+                        +{plan.DocRequired.length - 2} more documents
+                      </li>
+                    )}
+                  </ul>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
-      </div>
+      )}
 
       {formData.gazetteType && (
         <div className="bg-green-50 border border-green-200 rounded-xl p-4">
           <div className="flex items-center text-green-800">
             <CheckCircle className="w-5 h-5 mr-2" />
             <span className="font-medium">
-              {formData.gazetteType === 'premium-plus' ? 'Premium Plus' :
-               formData.gazetteType === 'premium-gazette' ? 'Premium Gazette' :
-               'Regular Gazette'} selected
+              {gazettePlans.find(p => p.FeeID === formData.gazetteType)?.PaymentPlan} selected
             </span>
           </div>
           <p className="text-sm text-green-700 mt-1">
-            Total cost: GHS {formData.gazetteType === 'premium-plus' 
-              ? (service.price * 2).toFixed(2)
-              : formData.gazetteType === 'premium-gazette'
-              ? (service.price * 1.5).toFixed(2)
-              : service.price.toFixed(2)}
+            Total cost: GHS {gazettePlans.find(p => p.FeeID === formData.gazetteType)?.GazetteFee.toFixed(2)}
           </p>
         </div>
       )}
@@ -904,14 +933,10 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
     // Generate application ID for payment
     const applicationId = `app-${Date.now()}`;
     
-    // Calculate total price based on gazette type
+    // Calculate total price based on selected gazette plan
     const getTotalPrice = () => {
-      if (formData.gazetteType === 'premium-plus') {
-        return service.price * 2;
-      } else if (formData.gazetteType === 'premium-gazette') {
-        return service.price * 1.5;
-      }
-      return service.price;
+      const selectedPlan = gazettePlans.find(p => p.FeeID === formData.gazetteType);
+      return selectedPlan ? selectedPlan.GazetteFee : service.price;
     };
 
     // Create application object that matches the Payment component's expected structure
@@ -959,10 +984,17 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-lg font-semibold text-gray-900">{service?.name}</h3>
-            <p className="text-gray-600 text-sm">Processing: {service?.processingTime}</p>
+            <p className="text-gray-600 text-sm">
+              Plan: {gazettePlans.find(p => p.FeeID === formData.gazetteType)?.PaymentPlan || 'Standard'}
+            </p>
+            <p className="text-gray-600 text-sm">
+              Processing: {gazettePlans.find(p => p.FeeID === formData.gazetteType)?.ProcessDays || service?.processingTime} days
+            </p>
           </div>
           <div className="text-right">
-            <div className="text-2xl font-bold text-violet-600">GHS {service?.price?.toFixed(2)}</div>
+            <div className="text-2xl font-bold text-violet-600">
+              GHS {gazettePlans.find(p => p.FeeID === formData.gazetteType)?.GazetteFee?.toFixed(2) || service?.price?.toFixed(2)}
+            </div>
             <p className="text-gray-500 text-sm">Total Amount</p>
           </div>
         </div>

@@ -18,12 +18,13 @@ import {
   CreditCard,
   MessageCircle
 } from 'lucide-react';
-import { gazetteServices } from '../data/mockData';
+import { useServices } from '../hooks/useServices';
 import type { Application, Order } from '../types/application';
 import LocalStorageService from '../services/localStorage';
 
 const ApplicationDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const { services: gazetteServices } = useServices();
   const navigate = useNavigate();
   const [application, setApplication] = useState<Application | null>(null);
   const [service, setService] = useState<any>(null);

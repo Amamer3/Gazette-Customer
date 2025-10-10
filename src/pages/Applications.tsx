@@ -16,7 +16,7 @@ import {
   Church
 } from 'lucide-react';
 import type { Application, Order } from '../types/application';
-import { mockApplications } from '../data/mockData';
+// Removed mock data import - using real API calls only
 import ReceiptModal from '../components/ReceiptModal';
 import LocalStorageService from '../services/localStorage';
 
@@ -43,9 +43,9 @@ const Applications: React.FC = () => {
           storedApplications = JSON.parse(localStorage.getItem('applications') || '[]');
         }
         
-        // If still no applications, use mock data for demonstration
+        // If still no applications, show empty state
         if (storedApplications.length === 0) {
-          setApplications(mockApplications);
+          setApplications([]);
           setOrders([
             {
               id: 'order-001',

@@ -1,5 +1,5 @@
 import type { Application } from '../types/application';
-import { mockApplications } from '../data/mockData';
+// Removed mock data import - using real API calls only
 
 class LocalStorageService {
   private static readonly APPLICATIONS_KEY = 'egazette_applications';
@@ -11,11 +11,11 @@ class LocalStorageService {
       if (stored) {
         return JSON.parse(stored);
       }
-      // Return mock data if no stored applications
-      return mockApplications;
+      // Return empty array if no stored applications
+      return [];
     } catch (error) {
       console.error('Error getting applications from localStorage:', error);
-      return mockApplications;
+      return [];
     }
   }
 

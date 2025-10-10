@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { gazetteServices } from '../services/mockData';
+import { useServices } from '../hooks/useServices';
 import AuthService from '../services/authService';
 import LocalStorageService from '../services/localStorage';
 import { 
@@ -24,14 +24,14 @@ import {
   Calendar
 } from 'lucide-react';
 import type { User as UserType } from '../types/auth.js';
-import type { GazetteService } from '../types/index.js';
-import type { Application } from '../types/application.js';
+import type { Application, GazetteService } from '../types/application.js';
 
 const Dashboard: React.FC = () => {
   const [user, setUser] = useState<UserType | null>(null);
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { services: gazetteServices } = useServices();
 
   const handleLogout = () => {
     AuthService.logout();

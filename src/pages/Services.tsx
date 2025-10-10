@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { gazetteServices } from '../data/mockData';
-import { gazettePricingServices } from '../services/mockData';
+import { useServices } from '../hooks/useServices';
+import ApiService from '../services/apiService';
+// Removed mock data import - using real API calls only
 import { ArrowRight, FileText, Building, Heart, User, Briefcase, Church, X, Shield, CheckCircle } from 'lucide-react';
 
 const Services: React.FC = () => {
   const [selectedService, setSelectedService] = useState<any>(null);
   const [showGazetteTypeModal, setShowGazetteTypeModal] = useState(false);
+  const [gazettePlans, setGazettePlans] = useState<any[]>([]);
+  const [loadingPlans, setLoadingPlans] = useState(false);
+  const { services: gazetteServices, loading, error } = useServices();
 
   const getServiceIcon = (iconName: string) => {
     const icons = {
@@ -20,9 +24,27 @@ const Services: React.FC = () => {
     return icons[iconName as keyof typeof icons] || FileText;
   };
 
-  const handleServiceClick = (service: any) => {
+  const handleServiceClick = async (service: any) => {
     setSelectedService(service);
     setShowGazetteTypeModal(true);
+    
+    // Fetch gazette plans for this service
+    setLoadingPlans(true);
+    try {
+      const response = await ApiService.getGazetteTypes("0", "0");
+      if (response.success && response.data.success) {
+        // Filter plans by service name match
+        const filteredPlans = response.data.SearchDetail.filter(plan => 
+          plan.GazzeteType.toLowerCase().includes(service.name.toLowerCase()) ||
+          service.name.toLowerCase().includes(plan.GazzeteType.toLowerCase())
+        );
+        setGazettePlans(filteredPlans.length > 0 ? filteredPlans : response.data.SearchDetail);
+      }
+    } catch (error) {
+      console.error('Error fetching gazette plans:', error);
+    } finally {
+      setLoadingPlans(false);
+    }
   };
 
   const closeModal = () => {
@@ -30,25 +52,16 @@ const Services: React.FC = () => {
     setSelectedService(null);
   };
 
-  // Map services to their corresponding gazette types
-  const getServiceGazetteTypes = (serviceId: string) => {
-    const serviceGazetteMapping: { [key: string]: string[] } = {
-      'appointment-marriage-officers': ['marriage-officer'],
-      'change-name-confirmation-date-birth': ['name-of-persons', 'date-of-birth', 'mrs-to-miss', 'miss-to-mrs'],
-      'public-place-worship-marriage-license': ['public-place-of-worship'],
-      'change-name-company-school-hospital': ['name-of-persons'],
-      'incorporation-commencement-companies': ['name-of-persons']
-    };
-    
-    return serviceGazetteMapping[serviceId] || [];
-  };
-
   // Filter gazette pricing services based on selected service
-  const getFilteredGazetteServices = (serviceId: string) => {
-    const relevantCategories = getServiceGazetteTypes(serviceId);
-    return gazettePricingServices.filter(service => 
-      relevantCategories.includes(service.category)
-    );
+  const getFilteredGazetteServices = (_serviceId: string) => {
+    // Return the gazette plans from API
+    return gazettePlans.map(plan => ({
+      id: plan.FeeID,
+      name: plan.GazetteName,
+      price: plan.GazetteFee,
+      processingTime: `${plan.ProcessDays} days`,
+      gazetteType: plan.PaymentPlan.toLowerCase().replace(' ', '-')
+    }));
   };
 
   return (
@@ -254,8 +267,32 @@ const Services: React.FC = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {gazetteServices.map((service, index) => {
+          {loading ? (
+            <div className="flex items-center justify-center py-16">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-200 border-t-blue-600 mx-auto mb-4"></div>
+                <p className="text-gray-600">Loading services...</p>
+              </div>
+            </div>
+          ) : error ? (
+            <div className="flex items-center justify-center py-16">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <X className="w-8 h-8 text-red-600" />
+                </div>
+                <p className="text-red-600 mb-2">Failed to load services</p>
+                <p className="text-gray-600 text-sm">{error}</p>
+                <button 
+                  onClick={() => window.location.reload()} 
+                  className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Retry
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {gazetteServices.map((service, index) => {
               const IconComponent = getServiceIcon(service.icon);
               return (
                 <div 
@@ -335,7 +372,8 @@ const Services: React.FC = () => {
                 </div>
               );
             })}
-          </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -454,8 +492,16 @@ const Services: React.FC = () => {
 
             {/* Modal Content */}
             <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
-              {/* All Gazette Types in a Single Row */}
-              <div className="space-y-6">
+              {loadingPlans ? (
+                <div className="flex items-center justify-center py-16">
+                  <div className="text-center">
+                    <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-200 border-t-blue-600 mx-auto mb-4"></div>
+                    <p className="text-gray-600">Loading gazette plans...</p>
+                  </div>
+                </div>
+              ) : (
+                /* All Gazette Types in a Single Row */
+                <div className="space-y-6">
                 {/* PREMIUM PLUS */}
                 {getFilteredGazetteServices(selectedService.id).some(service => service.gazetteType === 'premium-plus') && (
                     <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
@@ -572,7 +618,8 @@ const Services: React.FC = () => {
                     </div>
                   </div>
                 )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
