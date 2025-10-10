@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import AuthService from '../services/authService';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 
 interface NavigationProps {
   isAuthenticated: boolean;
@@ -11,6 +12,11 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFullName }
   const location = useLocation();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const sidebarRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const prefersReducedMotion = useReducedMotion();
 
   const handleLogout = () => {
     AuthService.logout();
@@ -18,12 +24,16 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFullName }
     window.location.reload(); // Force refresh to update auth state
   };
 
-  // Prevent body scroll when mobile menu is open
+  // Prevent body scroll when mobile menu is open and manage focus
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
+      // Focus the sidebar for keyboard navigation
+      sidebarRef.current?.focus();
     } else {
       document.body.style.overflow = 'unset';
+      // Return focus to menu button
+      menuButtonRef.current?.focus();
     }
 
     // Cleanup on unmount
@@ -31,6 +41,51 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFullName }
       document.body.style.overflow = 'unset';
     };
   }, [isMobileMenuOpen]);
+
+  // Touch gesture handling for swipe-to-close
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isRightSwipe = distance < -50; // Negative because we're swiping right
+    
+    if (isRightSwipe) {
+      setIsMobileMenuOpen(false);
+    }
+  };
+
+  // Keyboard navigation
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      setIsMobileMenuOpen(false);
+    }
+  };
+
+  // Analytics tracking
+  const trackSidebarEvent = (action: 'open' | 'close') => {
+    // You can integrate with your analytics service here
+    console.log(`Sidebar ${action}ed`);
+    // Example: analytics.track('sidebar_interaction', { action });
+  };
+
+  const openMobileMenu = () => {
+    setIsMobileMenuOpen(true);
+    trackSidebarEvent('open');
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+    trackSidebarEvent('close');
+  };
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -158,9 +213,14 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFullName }
           {/* Mobile Menu Button */}
           <div className="md:hidden">
             <button
+              ref={menuButtonRef}
               type="button"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              onClick={isMobileMenuOpen ? closeMobileMenu : openMobileMenu}
+              onKeyDown={handleKeyDown}
               className="bg-gradient-to-r from-violet-50 to-purple-50 p-2 sm:p-2.5 rounded-xl text-violet-600 hover:text-violet-700 hover:from-violet-100 hover:to-purple-100 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 border border-violet-100"
+              aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-menu"
             >
               {isMobileMenuOpen ? (
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -176,41 +236,77 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFullName }
         </div>
       </div>
 
-      {/* ✅ Fixed Mobile Sidebar */}
+      {/* ✅ Enhanced Mobile Sidebar */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-[60]">
+        <div className="md:hidden fixed inset-0 z-[9999]" style={{ zIndex: 9999 }}>
           {/* Backdrop */}
           <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300"
-            onClick={() => setIsMobileMenuOpen(false)}
+            className="absolute inset-0 bg-black/50 backdrop-blur-md transition-opacity duration-300"
+            onClick={closeMobileMenu}
+            aria-hidden="true"
+            style={{ zIndex: 9998 }}
           />
 
           {/* Sidebar */}
           <div
-            className={`absolute top-0 left-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl transform transition-transform duration-300 ease-in-out ${
-              isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-            } z-[70]`}
+            ref={sidebarRef}
+            id="mobile-menu"
+            role="navigation"
+            aria-label="Main navigation"
+            tabIndex={-1}
+            className={`absolute top-0 right-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl transform transition-transform duration-300 ease-in-out ${
+              isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+            } overflow-hidden`}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            onKeyDown={handleKeyDown}
+            style={{
+              // Respect reduced motion preference
+              transition: prefersReducedMotion 
+                ? 'none' 
+                : 'transform 300ms ease-in-out',
+              // Ensure solid background and high z-index
+              backgroundColor: 'white',
+              zIndex: 10000,
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              height: '100vh',
+              width: '320px',
+              maxWidth: '85vw',
+              display: 'flex',
+              flexDirection: 'column'
+            }}
           >
             {/* Sidebar Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <img src="/ghanaPublish-logo.png" className="w-14 h-14" alt="Ghana Publishing Company Limited" />
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white" style={{ flexShrink: 0 }}>
+              <div className="flex items-center space-x-3">
+                <img src="/ghanaPublish-logo.png" className="w-10 h-10" alt="Ghana Publishing Company Limited" />
+                <div>
+                  <h2 className="text-sm font-bold text-gray-900">Ghana Publishing</h2>
+                  <p className="text-xs text-gray-600">Company Ltd</p>
+                </div>
+              </div>
               <button
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+                onClick={closeMobileMenu}
+                className="p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
+                aria-label="Close navigation menu"
               >
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
 
+
             {/* Sidebar Links */}
-            <div className="flex flex-col h-full">
-              <div className="flex-1 px-6 py-6 space-y-4 overflow-y-auto">
+            <div className="flex flex-col bg-white" style={{ height: 'calc(100% - 80px)' }}>
+              <div className="flex-1 px-4 py-4 space-y-3 overflow-y-auto">
                 <Link
                   to="/"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block px-4 py-3 rounded-xl text-base font-semibold transition-all duration-300 ${
+                  onClick={closeMobileMenu}
+                  className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 ${
                     isActive('/')
                       ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25'
                       : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
@@ -221,16 +317,16 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFullName }
 
                 {isAuthenticated ? (
                   <>
-                    <div className="bg-gradient-to-r from-violet-50 to-purple-50 px-4 py-3 rounded-xl border border-violet-100 mb-4">
-                      <span className="text-sm font-medium text-gray-700">
+                    <div className="bg-gradient-to-r from-violet-50 to-purple-50 px-3 py-2.5 rounded-lg border border-violet-100 mb-3">
+                      <span className="text-xs font-medium text-gray-700">
                         👋 Welcome, <span className="font-bold text-violet-700">{userFullName}</span>
                       </span>
                     </div>
 
                     <Link
                       to="/dashboard"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={`block px-4 py-3 rounded-xl text-base font-semibold transition-all duration-300 ${
+                      onClick={closeMobileMenu}
+                      className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 ${
                         isActive('/dashboard')
                           ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25'
                           : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
@@ -241,8 +337,8 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFullName }
 
                     <Link
                       to="/applications"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={`block px-4 py-3 rounded-xl text-base font-semibold transition-all duration-300 ${
+                      onClick={closeMobileMenu}
+                      className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 ${
                         isActive('/applications')
                           ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25'
                           : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
@@ -253,8 +349,8 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFullName }
 
                     <Link
                       to="/profile"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={`block px-4 py-3 rounded-xl text-base font-semibold transition-all duration-300 ${
+                      onClick={closeMobileMenu}
+                      className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 ${
                         isActive('/profile')
                           ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25'
                           : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
@@ -267,8 +363,8 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFullName }
                   <>
                     <Link
                       to="/services"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={`block px-4 py-3 rounded-xl text-base font-semibold transition-all duration-300 ${
+                      onClick={closeMobileMenu}
+                      className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 ${
                         isActive('/services')
                           ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/25'
                           : 'text-gray-700 hover:text-amber-700 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 hover:shadow-md'
@@ -279,8 +375,8 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFullName }
 
                     <Link
                       to="/about"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={`block px-4 py-3 rounded-xl text-base font-semibold transition-all duration-300 ${
+                      onClick={closeMobileMenu}
+                      className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 ${
                         isActive('/about')
                           ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/25'
                           : 'text-gray-700 hover:text-emerald-700 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 hover:shadow-md'
@@ -293,22 +389,22 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFullName }
               </div>
 
               {/* Sidebar Footer */}
-              <div className="p-6 border-t border-gray-200">
+              <div className="p-4 border-t border-gray-200 bg-white" style={{ flexShrink: 0 }}>
                 {isAuthenticated ? (
                   <button
                     onClick={() => {
                       handleLogout();
-                      setIsMobileMenuOpen(false);
+                      closeMobileMenu();
                     }}
-                    className="flex items-center w-full px-4 py-3 rounded-xl text-base font-semibold bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-lg shadow-red-500/25"
+                    className="flex items-center w-full px-3 py-2.5 rounded-lg text-sm font-medium bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-lg shadow-red-500/25 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                   >
                     Logout
                   </button>
                 ) : (
                   <Link
                     to="/auth"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`flex items-center w-full px-4 py-3 rounded-xl text-base font-semibold transition-all duration-300 ${
+                    onClick={closeMobileMenu}
+                    className={`flex items-center w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 ${
                       isActive('/auth')
                         ? 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-900 shadow-md'
                         : 'text-gray-700 hover:text-gray-900 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md'
