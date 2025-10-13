@@ -1,20 +1,10 @@
 // Test import file to verify type exports
-// Test import file to verify type exports
 import type { Application, Notification } from './types';
-import type { User } from './types/auth';
 
 // Test usage to avoid unused variable warnings
-const testUser: User = {
-  id: '1',
-  email: 'test@example.com',
-  fullName: 'Test User',
-  phone: '+233123456789',
-  createdAt: new Date().toISOString()
-};
-
 const testApplication: Application = {
   id: '1',
-  userId: testUser.id,
+  userId: 'test-user',
   serviceType: 'birth-certificate',
   status: 'draft',
   applicationData: {},
@@ -26,7 +16,7 @@ const testApplication: Application = {
 
 const testNotification: Notification = {
   id: '1',
-  userId: testUser.id,
+  userId: 'test-user',
   title: 'Test Notification',
   message: 'This is a test notification',
   type: 'info',
@@ -34,4 +24,4 @@ const testNotification: Notification = {
   createdAt: new Date().toISOString()
 };
 
-export { testUser, testApplication, testNotification };
+export { testApplication, testNotification };

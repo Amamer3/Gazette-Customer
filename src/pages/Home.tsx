@@ -80,16 +80,16 @@ const Home: React.FC = () => {
                   className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl h-80 sm:h-96 md:h-[28rem] lg:h-[32rem] xl:h-[36rem] object-cover rounded-2xl"
                 />
                 {/* Floating Animation Elements */}
-                <div className="absolute -top-2 sm:-top-4 -left-2 sm:-left-4 w-6 h-6 sm:w-8 sm:h-8 bg-white/20 rounded-full animate-bounce"></div>
-                <div className="absolute -bottom-2 sm:-bottom-4 -right-2 sm:-right-4 w-4 h-4 sm:w-6 sm:h-6 bg-blue-400/30 rounded-full animate-bounce" style={{animationDelay: '1s'}}></div>
+                {/* <div className="absolute -top-2 sm:-top-4 -left-2 sm:-left-4 w-6 h-6 sm:w-8 sm:h-8 bg-white/20 rounded-full animate-bounce"></div>
+                <div className="absolute -bottom-2 sm:-bottom-4 -right-2 sm:-right-4 w-4 h-4 sm:w-6 sm:h-6 bg-blue-400/30 rounded-full animate-bounce" style={{animationDelay: '1s'}}></div> */}
               </div>
             </div>
           </div>
         </div>
         
         {/* Floating Elements */}
-        <div className="absolute top-10 sm:top-20 left-4 sm:left-10 w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-white/10 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute bottom-10 sm:bottom-20 right-4 sm:right-10 w-16 h-16 sm:w-24 sm:h-24 lg:w-32 lg:h-32 bg-blue-400/20 rounded-full blur-2xl animate-pulse delay-1000"></div>
+        {/* <div className="absolute top-10 sm:top-20 left-4 sm:left-10 w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-white/10 rounded-full blur-xl animate-pulse"></div>
+        <div className="absolute bottom-10 sm:bottom-20 right-4 sm:right-10 w-16 h-16 sm:w-24 sm:h-24 lg:w-32 lg:h-32 bg-blue-400/20 rounded-full blur-2xl animate-pulse delay-1000"></div> */}
       </section>
 
 
@@ -502,7 +502,7 @@ const Home: React.FC = () => {
                 to="/auth"
                 className="group inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-white text-violet-600 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-white/25"
               >
-                <span>Get Started Free</span>
+                <span>Get Started</span>
                 <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               

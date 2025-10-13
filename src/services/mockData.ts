@@ -1,4 +1,3 @@
-import type { User } from '../types/auth.js';
 import type { GazetteService, GazetteServiceType, Application, Notification, GazettePricingService } from '../types/index.js';
 
 // Mock Gazette Services
@@ -305,23 +304,6 @@ export const gazettePricingServices: GazettePricingService[] = [
   }
 ];
 
-// Mock Users (for testing)
-export const mockUsers: User[] = [
-  {
-    id: 'user-1',
-    email: 'john.doe@example.com',
-    fullName: 'John Doe',
-    phone: '+233123456789',
-    createdAt: '2024-01-15T10:00:00Z'
-  },
-  {
-    id: 'user-2',
-    email: 'jane.smith@example.com',
-    fullName: 'Jane Smith',
-    phone: '+233209876543',
-    createdAt: '2024-02-20T14:30:00Z'
-  }
-];
 
 // Mock Applications
 export const mockApplications: Application[] = [

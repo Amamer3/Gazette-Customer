@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useServices } from '../hooks/useServices';
-import AuthService from '../services/authService';
 import LocalStorageService from '../services/localStorage';
 import { 
   FileText, 
@@ -11,7 +10,6 @@ import {
   TrendingUp, 
   ArrowRight, 
   Plus, 
-  LogOut,
   Bell,
   Settings,
   User,
@@ -23,34 +21,19 @@ import {
   Award,
   Calendar
 } from 'lucide-react';
-import type { User as UserType } from '../types/auth.js';
 import type { Application, GazetteService } from '../types/application.js';
 
 const Dashboard: React.FC = () => {
-  const [user, setUser] = useState<UserType | null>(null);
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
   const { services: gazetteServices } = useServices();
 
-  const handleLogout = () => {
-    AuthService.logout();
-    navigate('/');
-    window.location.reload(); // Force refresh to update auth state
-  };
-
   useEffect(() => {
-    const currentUser = AuthService.getCurrentUser();
-    if (!currentUser) {
-      navigate('/auth'); // Redirect to unified auth page
-      return;
-    }
-
-    setUser(currentUser);
-    const userApplications = LocalStorageService.getUserApplications(currentUser.id);
-    setApplications(userApplications);
+    // Load applications from localStorage (mock data)
+    const mockApplications = LocalStorageService.getAllApplications();
+    setApplications(mockApplications);
     setLoading(false);
-  }, [navigate]);
+  }, []);
 
   const getServiceIcon = (iconName: string) => {
     const icons = {
@@ -144,13 +127,6 @@ const Dashboard: React.FC = () => {
               >
                 <Settings className="w-5 h-5" />
               </Link>
-              <button
-                onClick={handleLogout}
-                className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <LogOut className="w-4 h-4" />
-                <span className="text-sm font-medium">Logout</span>
-              </button>
             </div>
           </div>
         </div>
@@ -162,7 +138,7 @@ const Dashboard: React.FC = () => {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                Welcome back, {user?.fullName}! 👋
+                Welcome to E-Gazette! 👋
               </h2>
               <p className="text-lg text-gray-600">
                 Manage your gazette applications and explore our services

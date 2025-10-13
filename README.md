@@ -85,11 +85,9 @@ src/
 │   └── PaymentSuccess.tsx
 ├── services/               # API and data services
 │   ├── mockData.ts
-│   ├── authService.ts
 │   └── localStorage.ts
 ├── types/                  # TypeScript type definitions
-│   ├── index.ts
-│   └── auth.ts
+│   └── index.ts
 └── utils/                  # Utility functions
 ```
 

@@ -1,16 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import AuthService from '../services/authService';
+import { Link, useLocation } from 'react-router-dom';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 
-interface NavigationProps {
-  isAuthenticated: boolean;
-  userFullName?: string;
-}
-
-const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFullName }) => {
+const Navigation: React.FC = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -18,11 +11,6 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFullName }
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const prefersReducedMotion = useReducedMotion();
 
-  const handleLogout = () => {
-    AuthService.logout();
-    navigate('/');
-    window.location.reload(); // Force refresh to update auth state
-  };
 
   // Prevent body scroll when mobile menu is open and manage focus
   useEffect(() => {
@@ -113,102 +101,66 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFullName }
                 to="/"
                 className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
                   isActive('/')
-                    ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25 transform scale-105'
+                    ? 'bg-blue-600 text-white shadow-lg shadow-violet-500/25 transform scale-105'
                     : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md hover:scale-105'
                 }`}
               >
                 Home
               </Link>
 
-              {isAuthenticated ? (
-                <>
-                  <Link
-                    to="/dashboard"
-                    className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
-                      isActive('/dashboard')
-                        ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25 transform scale-105'
-                        : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md hover:scale-105'
-                    }`}
-                  >
-                    Dashboard
-                  </Link>
-                  <Link
-                    to="/applications"
-                    className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
-                      isActive('/applications')
-                        ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25 transform scale-105'
-                        : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md hover:scale-105'
-                    }`}
-                  >
-                    My Applications
-                  </Link>
-                  <Link
-                    to="/profile"
-                    className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
-                      isActive('/profile')
-                        ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25 transform scale-105'
-                        : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md hover:scale-105'
-                    }`}
-                  >
-                    Profile
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link
-                    to="/services"
-                    className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
-                      isActive('/services')
-                        ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/25 transform scale-105'
-                        : 'text-gray-700 hover:text-amber-700 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 hover:shadow-md hover:scale-105'
-                    }`}
-                  >
-                    Services
-                  </Link>
-                  <Link
-                    to="/about"
-                    className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
-                      isActive('/about')
-                        ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/25 transform scale-105'
-                        : 'text-gray-700 hover:text-emerald-700 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 hover:shadow-md hover:scale-105'
-                    }`}
-                  >
-                    About
-                  </Link>
-                </>
-              )}
+              <Link
+                to="/services"
+                className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                  isActive('/services')
+                    ? 'bg-blue-600 text-white shadow-lg shadow-amber-500/25 transform scale-105'
+                    : 'text-gray-700 hover:text-amber-700 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 hover:shadow-md hover:scale-105'
+                }`}
+              >
+                Services
+              </Link>
+              <Link
+                to="/about"
+                className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                  isActive('/about')
+                    ? 'bg-blue-600 text-white shadow-lg shadow-emerald-500/25 transform scale-105'
+                    : 'text-gray-700 hover:text-emerald-700 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 hover:shadow-md hover:scale-105'
+                }`}
+              >
+                About
+              </Link>
+              <Link
+                to="/dashboard"
+                className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                  isActive('/dashboard')
+                    ? 'bg-blue-600 text-white shadow-lg shadow-violet-500/25 transform scale-105'
+                    : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md hover:scale-105'
+                }`}
+              >
+                Dashboard
+              </Link>
+              <Link
+                to="/applications"
+                className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                  isActive('/applications')
+                    ? 'bg-blue-600 text-white shadow-lg shadow-violet-500/25 transform scale-105'
+                    : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md hover:scale-105'
+                }`}
+              >
+                Applications
+              </Link>
+              <Link
+                to="/profile"
+                className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                  isActive('/profile')
+                    ? 'bg-blue-600 text-white shadow-lg shadow-violet-500/25 transform scale-105'
+                    : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md hover:scale-105'
+                }`}
+              >
+                Profile
+              </Link>
             </div>
           </div>
 
-          {/* Desktop User Menu */}
-          <div className="hidden md:flex items-center space-x-4">
-            {isAuthenticated ? (
-              <div className="flex items-center space-x-4">
-                <div className="bg-gradient-to-r from-violet-50 to-purple-50 px-4 py-2 rounded-xl border border-violet-100">
-                  <span className="text-sm font-medium text-gray-700">
-                    Welcome, <span className="font-bold text-violet-700">{userFullName}</span>
-                  </span>
-                </div>
-                <button
-                  onClick={handleLogout}
-                  className="bg-gradient-to-r from-red-500 to-red-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/30 hover:scale-105"
-                >
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <Link
-                to="/auth"
-                className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
-                  isActive('/auth')
-                    ? 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-900 shadow-md'
-                    : 'text-gray-700 hover:text-gray-900 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md hover:scale-105'
-                }`}
-              >
-                Login/Register
-              </Link>
-            )}
-          </div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
@@ -315,105 +267,67 @@ const Navigation: React.FC<NavigationProps> = ({ isAuthenticated, userFullName }
                   Home
                 </Link>
 
-                {isAuthenticated ? (
-                  <>
-                    <div className="bg-gradient-to-r from-violet-50 to-purple-50 px-3 py-2.5 rounded-lg border border-violet-100 mb-3">
-                      <span className="text-xs font-medium text-gray-700">
-                        👋 Welcome, <span className="font-bold text-violet-700">{userFullName}</span>
-                      </span>
-                    </div>
+                <Link
+                  to="/services"
+                  onClick={closeMobileMenu}
+                  className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 ${
+                    isActive('/services')
+                      ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/25'
+                      : 'text-gray-700 hover:text-amber-700 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 hover:shadow-md'
+                  }`}
+                >
+                  Services
+                </Link>
 
-                    <Link
-                      to="/dashboard"
-                      onClick={closeMobileMenu}
-                      className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 ${
-                        isActive('/dashboard')
-                          ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25'
-                          : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
-                      }`}
-                    >
-                      Dashboard
-                    </Link>
+                <Link
+                  to="/about"
+                  onClick={closeMobileMenu}
+                  className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 ${
+                    isActive('/about')
+                      ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/25'
+                      : 'text-gray-700 hover:text-emerald-700 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 hover:shadow-md'
+                  }`}
+                >
+                  About
+                </Link>
 
-                    <Link
-                      to="/applications"
-                      onClick={closeMobileMenu}
-                      className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 ${
-                        isActive('/applications')
-                          ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25'
-                          : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
-                      }`}
-                    >
-                      My Applications
-                    </Link>
+                <Link
+                  to="/dashboard"
+                  onClick={closeMobileMenu}
+                  className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 ${
+                    isActive('/dashboard')
+                      ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25'
+                      : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
+                  }`}
+                >
+                  Dashboard
+                </Link>
 
-                    <Link
-                      to="/profile"
-                      onClick={closeMobileMenu}
-                      className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 ${
-                        isActive('/profile')
-                          ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25'
-                          : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
-                      }`}
-                    >
-                      Profile
-                    </Link>
-                  </>
-                ) : (
-                  <>
-                    <Link
-                      to="/services"
-                      onClick={closeMobileMenu}
-                      className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 ${
-                        isActive('/services')
-                          ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/25'
-                          : 'text-gray-700 hover:text-amber-700 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 hover:shadow-md'
-                      }`}
-                    >
-                      Services
-                    </Link>
+                <Link
+                  to="/applications"
+                  onClick={closeMobileMenu}
+                  className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 ${
+                    isActive('/applications')
+                      ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25'
+                      : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
+                  }`}
+                >
+                  Applications
+                </Link>
 
-                    <Link
-                      to="/about"
-                      onClick={closeMobileMenu}
-                      className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 ${
-                        isActive('/about')
-                          ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/25'
-                          : 'text-gray-700 hover:text-emerald-700 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 hover:shadow-md'
-                      }`}
-                    >
-                      About
-                    </Link>
-                  </>
-                )}
+                <Link
+                  to="/profile"
+                  onClick={closeMobileMenu}
+                  className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 ${
+                    isActive('/profile')
+                      ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25'
+                      : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
+                  }`}
+                >
+                  Profile
+                </Link>
               </div>
 
-              {/* Sidebar Footer */}
-              <div className="p-4 border-t border-gray-200 bg-white" style={{ flexShrink: 0 }}>
-                {isAuthenticated ? (
-                  <button
-                    onClick={() => {
-                      handleLogout();
-                      closeMobileMenu();
-                    }}
-                    className="flex items-center w-full px-3 py-2.5 rounded-lg text-sm font-medium bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-lg shadow-red-500/25 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-                  >
-                    Logout
-                  </button>
-                ) : (
-                  <Link
-                    to="/auth"
-                    onClick={closeMobileMenu}
-                    className={`flex items-center w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 ${
-                      isActive('/auth')
-                        ? 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-900 shadow-md'
-                        : 'text-gray-700 hover:text-gray-900 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md'
-                    }`}
-                  >
-                    Login/Register
-                  </Link>
-                )}
-              </div>
             </div>
           </div>
         </div>

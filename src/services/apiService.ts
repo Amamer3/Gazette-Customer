@@ -1,4 +1,4 @@
-import type { GazetteService } from '../types/application';
+import type { GazetteService } from '../types/index';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api/';
 
@@ -38,12 +38,16 @@ interface GazetteTypeApiResponse {
 }
 
 class ApiService {
+  private static readonly API_TOKEN = 'AyTRfghyNoo987-ghtuHH86YYR';
+  
   private static async makeRequest<T>(
     endpoint: string,
     options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
     try {
       const url = `${API_BASE_URL}${endpoint}`;
+      console.log('Making API request to:', url);
+      
       const response = await fetch(url, {
         headers: {
           'Content-Type': 'application/json',
@@ -57,16 +61,40 @@ class ApiService {
       }
 
       const data = await response.json();
+      
+      // Check for API errors in response
+      if (data.Message && data.Message.includes('error has occurred')) {
+        throw new Error(data.Message);
+      }
+      
+      // Check for specific error types
+      if (data.ExceptionMessage) {
+        throw new Error(data.ExceptionMessage);
+      }
+      
       return {
         success: true,
         data,
       };
     } catch (error) {
       console.error('API request failed:', error);
+      
+      // Provide more specific error messages
+      let errorMessage = 'Unknown error occurred';
+      if (error instanceof Error) {
+        if (error.message.includes('ERR_NAME_NOT_RESOLVED')) {
+          errorMessage = 'API server not found. Please check your API_BASE_URL configuration.';
+        } else if (error.message.includes('Failed to fetch')) {
+          errorMessage = 'Network error. Please check if the API server is running.';
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
       return {
         success: false,
         data: null as T,
-        error: error instanceof Error ? error.message : 'Unknown error occurred',
+        error: errorMessage,
       };
     }
   }
@@ -77,7 +105,7 @@ class ApiService {
       headers: {
         'Content-Type': 'application/json',
         'APPType': 'WEB',
-        'APITocken': 'AyTRfghyNoo987-ghtuHH86YYR'
+        'APITocken': this.API_TOKEN
       },
       body: JSON.stringify({
         "ID": "16"
@@ -106,14 +134,12 @@ class ApiService {
 
     // Transform the API response to match our GazetteService interface
     const transformedServices: GazetteService[] = response.data.SearchDetail.map((service) => ({
-      id: service.ID,
+      id: service.ID as any, // Cast to GazetteServiceType
       name: service.Nm,
       description: `Service for ${service.Nm.toLowerCase()}`,
       price: 0, // Will be fetched from a separate API call if needed
       processingTime: 'Processing time will be determined',
-      category: 'General Services',
       requiredDocuments: [], // Will be fetched from a separate API call if needed
-      icon: 'FileText', // Default icon
     }));
 
     return {
@@ -147,7 +173,7 @@ class ApiService {
       headers: {
         'Content-Type': 'application/json',
         'APPType': 'WEB',
-        'APITocken': 'AyTRfghyNoo987-ghtuHH86YYR'
+        'APITocken': this.API_TOKEN
       },
       body: JSON.stringify({
         "GazetteType": gazetteType,
@@ -156,6 +182,46 @@ class ApiService {
     });
     
     return response;
+  }
+
+  static async submitApplication(applicationData: any): Promise<ApiResponse<any>> {
+    const response = await this.makeRequest<any>('API/GPLoginweb/API_SubmitApplication', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'APPType': 'WEB',
+        'APITocken': this.API_TOKEN
+      },
+      body: JSON.stringify(applicationData)
+    });
+    
+    return response;
+  }
+
+  static async validateToken(): Promise<ApiResponse<boolean>> {
+    try {
+      const response = await this.makeRequest<any>('API/GPLoginweb/API_ValidateToken', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'APPType': 'WEB',
+          'APITocken': this.API_TOKEN
+        },
+        body: JSON.stringify({})
+      });
+      
+      return {
+        success: response.success,
+        data: response.success,
+        error: response.error
+      };
+    } catch (error) {
+      return {
+        success: false,
+        data: false,
+        error: error instanceof Error ? error.message : 'Token validation failed'
+      };
+    }
   }
 }
 

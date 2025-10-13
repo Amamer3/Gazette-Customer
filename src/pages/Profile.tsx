@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   User, 
   Mail, 
@@ -14,60 +14,40 @@ import {
   FileText,
   Settings
 } from 'lucide-react';
-import type { User as UserType } from '../types/auth';
 
 const Profile: React.FC = () => {
-  const [user, setUser] = useState<UserType | null>(null);
+  const [user, setUser] = useState({
+    id: 'user-001',
+    email: 'john.doe@email.com',
+    fullName: 'John Doe',
+    phone: '+233 24 123 4567',
+    createdAt: '2024-01-01T00:00:00Z'
+  });
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState({
-    fullName: '',
-    email: '',
-    phone: ''
+    fullName: 'John Doe',
+    email: 'john.doe@email.com',
+    phone: '+233 24 123 4567'
   });
   const [activeTab, setActiveTab] = useState('profile');
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate loading user data
-    setTimeout(() => {
-      const mockUser: UserType = {
-        id: 'user-001',
-        email: 'john.doe@email.com',
-        fullName: 'John Doe',
-        phone: '+233 24 123 4567',
-        createdAt: '2024-01-01T00:00:00Z'
-      };
-      setUser(mockUser);
-      setEditForm({
-        fullName: mockUser.fullName,
-        email: mockUser.email,
-        phone: mockUser.phone
-      });
-      setIsLoading(false);
-    }, 1000);
-  }, []);
 
   const handleSave = () => {
-    if (user) {
-      setUser({
-        ...user,
-        fullName: editForm.fullName,
-        email: editForm.email,
-        phone: editForm.phone
-      });
-      setIsEditing(false);
-    }
+    setUser({
+      ...user,
+      fullName: editForm.fullName,
+      email: editForm.email,
+      phone: editForm.phone
+    });
+    setIsEditing(false);
   };
 
   const handleCancel = () => {
-    if (user) {
-      setEditForm({
-        fullName: user.fullName,
-        email: user.email,
-        phone: user.phone
-      });
-      setIsEditing(false);
-    }
+    setEditForm({
+      fullName: user.fullName,
+      email: user.email,
+      phone: user.phone
+    });
+    setIsEditing(false);
   };
 
   const formatDate = (dateString: string) => {
@@ -78,25 +58,7 @@ const Profile: React.FC = () => {
     });
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-violet-600"></div>
-      </div>
-    );
-  }
 
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <User className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">User Not Found</h3>
-          <p className="text-gray-600">Please log in to view your profile.</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gray-50">

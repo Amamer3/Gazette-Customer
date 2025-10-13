@@ -1,13 +1,10 @@
-import type { User, AuthState } from '../types/auth.js';
 import type { Application } from '../types/application.js';
 import type { Notification } from '../types/index.js';
 
 // Local Storage Keys
 const STORAGE_KEYS = {
-  AUTH: 'egazette_auth',
   APPLICATIONS: 'egazette_applications',
-  NOTIFICATIONS: 'egazette_notifications',
-  USER_PROFILE: 'egazette_user_profile'
+  NOTIFICATIONS: 'egazette_notifications'
 } as const;
 
 // Generic Local Storage Helper
@@ -38,31 +35,6 @@ class LocalStorageService {
     }
   }
 
-  // Authentication Methods
-  static saveAuthState(authState: AuthState): void {
-    this.setItem(STORAGE_KEYS.AUTH, authState);
-  }
-
-  static getAuthState(): AuthState | null {
-    return this.getItem<AuthState>(STORAGE_KEYS.AUTH);
-  }
-
-  static clearAuthState(): void {
-    this.removeItem(STORAGE_KEYS.AUTH);
-  }
-
-  // User Profile Methods
-  static saveUserProfile(user: User): void {
-    this.setItem(STORAGE_KEYS.USER_PROFILE, user);
-  }
-
-  static getUserProfile(): User | null {
-    return this.getItem<User>(STORAGE_KEYS.USER_PROFILE);
-  }
-
-  static clearUserProfile(): void {
-    this.removeItem(STORAGE_KEYS.USER_PROFILE);
-  }
 
   // Applications Methods
   static saveApplications(applications: Application[]): void {
@@ -93,11 +65,8 @@ class LocalStorageService {
     return applications.find(app => app.id === applicationId) || null;
   }
 
-  static getUserApplications(_userId: string): Application[] {
-    const applications = this.getApplications();
-    // Since Application type doesn't have userId, return all applications for now
-    // In a real app, you'd add userId to the Application interface
-    return applications;
+  static getAllApplications(): Application[] {
+    return this.getApplications();
   }
 
   static clearApplications(): void {
@@ -128,13 +97,12 @@ class LocalStorageService {
     }
   }
 
-  static getUserNotifications(userId: string): Notification[] {
-    const notifications = this.getNotifications();
-    return notifications.filter(notif => notif.userId === userId);
+  static getAllNotifications(): Notification[] {
+    return this.getNotifications();
   }
 
-  static getUnreadNotificationsCount(userId: string): number {
-    const notifications = this.getUserNotifications(userId);
+  static getUnreadNotificationsCount(): number {
+    const notifications = this.getAllNotifications();
     return notifications.filter(notif => !notif.read).length;
   }
 
@@ -144,16 +112,12 @@ class LocalStorageService {
 
   // Utility Methods
   static clearAllData(): void {
-    this.clearAuthState();
-    this.clearUserProfile();
     this.clearApplications();
     this.clearNotifications();
   }
 
   static exportData(): string {
     const data = {
-      auth: this.getAuthState(),
-      userProfile: this.getUserProfile(),
       applications: this.getApplications(),
       notifications: this.getNotifications()
     };
@@ -163,8 +127,6 @@ class LocalStorageService {
   static importData(jsonData: string): boolean {
     try {
       const data = JSON.parse(jsonData);
-      if (data.auth) this.saveAuthState(data.auth);
-      if (data.userProfile) this.saveUserProfile(data.userProfile);
       if (data.applications) this.saveApplications(data.applications);
       if (data.notifications) this.saveNotifications(data.notifications);
       return true;
