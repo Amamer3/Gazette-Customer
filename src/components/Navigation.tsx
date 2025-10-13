@@ -109,16 +109,6 @@ const Navigation: React.FC = () => {
               </Link>
 
               <Link
-                to="/services"
-                className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
-                  isActive('/services')
-                    ? 'bg-blue-600 text-white shadow-lg shadow-amber-500/25 transform scale-105'
-                    : 'text-gray-700 hover:text-amber-700 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 hover:shadow-md hover:scale-105'
-                }`}
-              >
-                Services
-              </Link>
-              <Link
                 to="/about"
                 className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
                   isActive('/about')
@@ -265,18 +255,6 @@ const Navigation: React.FC = () => {
                   }`}
                 >
                   Home
-                </Link>
-
-                <Link
-                  to="/services"
-                  onClick={closeMobileMenu}
-                  className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 ${
-                    isActive('/services')
-                      ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/25'
-                      : 'text-gray-700 hover:text-amber-700 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 hover:shadow-md'
-                  }`}
-                >
-                  Services
                 </Link>
 
                 <Link

@@ -10,7 +10,6 @@ import PaymentSuccess from './pages/PaymentSuccess';
 import ApplicationDetail from './pages/ApplicationDetail';
 import Applications from './pages/Applications'; 
 import Profile from './pages/Profile';
-import Services from './pages/Services';
 import About from './pages/About';
 
 function AppContent() {
@@ -26,7 +25,6 @@ function AppContent() {
       <main className={isDashboard ? '' : 'pt-16 sm:pt-18'}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/services" element={<Services />} />
             <Route path="/about" element={<About />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/application/:serviceId" element={<Application />} />

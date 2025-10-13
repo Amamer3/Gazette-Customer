@@ -301,12 +301,12 @@ const About: React.FC = () => {
               Get Started 
               <ArrowRight className="ml-2 w-5 h-5" />
             </Link>
-            <Link
-              to="/services"
+            <button
+              onClick={() => window.location.href = '/#services-section'}
               className="inline-flex items-center px-8 py-4 bg-white/10 backdrop-blur-sm text-white rounded-xl font-semibold text-lg hover:bg-white/20 transition-all duration-300 border border-white/20"
             >
               View Services
-            </Link>
+            </button>
           </div>
         </div>
       </section>

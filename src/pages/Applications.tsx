@@ -201,13 +201,13 @@ const Applications: React.FC = () => {
               <p className="mt-2 text-gray-600">Track and manage your gazette applications and payments</p>
             </div>
             <div className="mt-4 md:mt-0">
-              <Link
-                to="/services"
+              <button
+                onClick={() => window.location.href = '/#services-section'}
                 className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-violet-600 to-blue-600 text-white rounded-xl font-semibold hover:from-violet-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 <FileText className="w-5 h-5 mr-2" />
                 New Application
-              </Link>
+              </button>
             </div>
           </div>
         </div>
@@ -271,12 +271,12 @@ const Applications: React.FC = () => {
               <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 mb-2">No Applications Found</h3>
               <p className="text-gray-600 mb-6">You haven't submitted any applications yet.</p>
-              <Link
-                to="/services"
+              <button
+                onClick={() => window.location.href = '/#services-section'}
                 className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-violet-600 to-blue-600 text-white rounded-xl font-semibold hover:from-violet-700 hover:to-blue-700 transition-all duration-300"
               >
                 Start Your First Application
-              </Link>
+              </button>
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

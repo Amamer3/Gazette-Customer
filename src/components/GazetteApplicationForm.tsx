@@ -28,24 +28,63 @@ interface GazetteApplicationFormProps {
 const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmit, isLoading = false }) => {
   const { serviceId } = useParams<{ serviceId: string }>();
   const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(2); // Start at step 2 (Personal Info) instead of step 1 (Plan Selection)
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [idNumberError, setIdNumberError] = useState('');
   const [gazettePlans, setGazettePlans] = useState<any[]>([]);
   const [loadingPlans, setLoadingPlans] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<any>(null);
   const [formData, setFormData] = useState<ApplicationFormData>({
     serviceType: serviceId || '',
     documents: [],
     additionalNotes: ''
   });
 
-  const { services: gazetteServices, loading: servicesLoading } = useServices();
+  // Get plan ID from URL parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const planId = urlParams.get('plan');
+
+  const { services: gazetteServices, loading: servicesLoading, error: servicesError } = useServices();
   const service = gazetteServices.find(s => s.id === serviceId);
+  
+  // Debug: Log all service IDs for comparison
+  console.log('GazetteApplicationForm - All service IDs:', gazetteServices.map(s => s.id));
+  console.log('GazetteApplicationForm - Looking for serviceId:', serviceId);
+  console.log('GazetteApplicationForm - Type of serviceId:', typeof serviceId);
+  console.log('GazetteApplicationForm - Type of service.id:', typeof gazetteServices[0]?.id);
 
   useEffect(() => {
+    console.log('GazetteApplicationForm - serviceId:', serviceId);
+    console.log('GazetteApplicationForm - available services:', gazetteServices);
+    console.log('GazetteApplicationForm - found service:', service);
+    console.log('GazetteApplicationForm - servicesLoading:', servicesLoading);
+    
+    // Check if serviceId is missing
+    if (!serviceId) {
+      console.log('GazetteApplicationForm - No serviceId in URL, redirecting to home services section');
+      window.location.href = '/#services-section';
+      return;
+    }
+    
+    // Wait for services to load before checking
+    if (servicesLoading) {
+      console.log('GazetteApplicationForm - Services still loading, waiting...');
+      return;
+    }
+    
+    // Check if there was an error loading services
+    if (servicesError) {
+      console.log('GazetteApplicationForm - Error loading services:', servicesError);
+      // Don't redirect immediately, let the user see the error
+      return;
+    }
+    
     if (!service) {
-      navigate('/services');
+      console.log('GazetteApplicationForm - No service found, redirecting to home services section');
+      console.log('GazetteApplicationForm - Available services:', gazetteServices);
+      console.log('GazetteApplicationForm - Looking for serviceId:', serviceId);
+      window.location.href = '/#services-section';
       return;
     }
 
@@ -62,8 +101,46 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
             plan.GazzeteType.toLowerCase().includes(service.name.toLowerCase()) ||
             service.name.toLowerCase().includes(plan.GazzeteType.toLowerCase())
           );
-          setGazettePlans(filteredPlans.length > 0 ? filteredPlans : response.data.SearchDetail);
-          console.log('Set gazette plans:', filteredPlans.length > 0 ? filteredPlans : response.data.SearchDetail);
+          const plans = filteredPlans.length > 0 ? filteredPlans : response.data.SearchDetail;
+          setGazettePlans(plans);
+          console.log('Set gazette plans:', plans);
+          
+          // Find the selected plan from URL parameter or auto-select default
+          let planToSelect = null;
+          if (planId) {
+            planToSelect = plans.find(plan => plan.FeeID === planId);
+            console.log('Found plan from URL parameter:', planToSelect);
+          }
+          
+          // If no plan found from URL, auto-select the first plan (premium-plus if available, otherwise first plan)
+          if (!planToSelect) {
+            const premiumPlusPlan = plans.find(plan => plan.PaymentPlan === 'PREMIUM PLUS');
+            planToSelect = premiumPlusPlan || plans[0];
+            console.log('Auto-selected default plan:', planToSelect);
+          }
+          
+          if (planToSelect) {
+            setSelectedPlan(planToSelect);
+            // Map payment plan to gazetteType
+            const mapPaymentPlanToGazetteType = (paymentPlan: string) => {
+              switch (paymentPlan) {
+                case 'PREMIUM PLUS':
+                  return 'premium-plus';
+                case 'PREMIUM GAZETTE':
+                  return 'premium-gazette';
+                case 'REGULAR GAZETTE':
+                  return 'regular-gazette';
+                default:
+                  return 'regular-gazette';
+              }
+            };
+            
+            // Also set the gazetteType in formData
+            setFormData(prev => ({
+              ...prev,
+              gazetteType: mapPaymentPlanToGazetteType(planToSelect.PaymentPlan) as 'premium-plus' | 'premium-gazette' | 'regular-gazette'
+            }));
+          }
         } else {
           console.error('Failed to fetch gazette plans:', response.error);
         }
@@ -96,7 +173,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
         }));
       }
     }
-  }, [service, navigate]);
+  }, [service, navigate, servicesLoading, serviceId, gazetteServices]);
 
   if (servicesLoading) {
     return (
@@ -104,6 +181,24 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-4 border-violet-200 border-t-violet-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading service details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (servicesError) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">Error Loading Services</h3>
+          <p className="text-gray-600 mb-4">{servicesError}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Retry
+          </button>
         </div>
       </div>
     );
@@ -204,12 +299,21 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
     const applications = LocalStorageService.getApplications();
     const latestApplication = applications[applications.length - 1];
     
+    // Add selected plan to form data
+    const formDataWithPlan = {
+      ...formData,
+      gazetteType: selectedPlan?.PaymentPlan || 'premium-plus',
+      selectedPlan: selectedPlan
+    };
+    
     if (latestApplication && latestApplication.paymentStatus === 'paid') {
       // Update the application with final form data and documents
       const updatedApplication = {
         ...latestApplication,
         documents: uploadedFiles,
         additionalNotes: formData.additionalNotes,
+        gazetteType: selectedPlan?.PaymentPlan || 'premium-plus',
+        selectedPlan: selectedPlan,
         status: 'submitted' as const,
         lastUpdated: new Date().toISOString()
       };
@@ -224,14 +328,14 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
       onSubmit(updatedApplication);
     } else {
       // Fallback to original form data if no paid application found
-      onSubmit(formData);
+      onSubmit(formDataWithPlan);
     }
   };
 
   const isStepValid = (step: number) => {
     switch (step) {
       case 1:
-        return formData.gazetteType !== undefined;
+        return true; // Skip validation for plan selection since we auto-select
       case 2:
         return formData.personalInfo?.fullName && 
                formData.personalInfo?.email && 
@@ -1048,6 +1152,9 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
     { number: 6, title: 'Review', component: renderStep4 }
   ];
 
+  // Filter out step 1 (Gazette Type) from the visible steps
+  const visibleSteps = steps.filter(step => step.number !== 1);
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -1056,7 +1163,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <button
-                onClick={() => navigate('/services')}
+                onClick={() => window.location.href = '/#services-section'}
                 className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
               >
                 <ArrowLeft className="w-5 h-5" />
@@ -1067,7 +1174,20 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                 </div>
                 <div>
                   <h1 className="text-xl font-bold text-gray-900">{service.name}</h1>
-                  <p className="text-gray-600">GHS {service.price.toFixed(2)} • {service.processingTime}</p>
+                  {selectedPlan ? (
+                    <div className="space-y-1">
+                      <p className="text-sm text-gray-600">
+                        <span className="font-semibold text-violet-600">{selectedPlan.PaymentPlan}</span>
+                        {selectedPlan.GazetteName && ` • ${selectedPlan.GazetteName}`}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        <span className="font-bold text-green-600">₵{selectedPlan.GazetteFee.toLocaleString()}</span>
+                        {selectedPlan.ProcessDays && ` • ${selectedPlan.ProcessDays} days processing`}
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="text-gray-600">Loading plan details...</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -1076,10 +1196,32 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
       </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Application Summary Card */}
+        {selectedPlan && (
+          <div className="bg-gradient-to-r from-violet-50 to-blue-50 border border-violet-200 rounded-2xl p-6 mb-8">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-violet-100 to-blue-100 rounded-xl flex items-center justify-center">
+                  <ServiceIcon className="w-8 h-8 text-violet-600" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-gray-900">Application Summary</h2>
+                  <p className="text-sm text-gray-600">{service.name}</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-2xl font-bold text-green-600">₵{selectedPlan.GazetteFee.toLocaleString()}</div>
+                <p className="text-sm text-gray-600">{selectedPlan.PaymentPlan}</p>
+                <p className="text-xs text-gray-500">{selectedPlan.ProcessDays} days processing</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Progress Steps */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
-            {steps.map((step, index) => (
+            {visibleSteps.map((step, index) => (
               <div key={step.number} className="flex items-center">
                 <div className={`flex items-center justify-center w-10 h-10 rounded-full border-2 ${
                   currentStep >= step.number
@@ -1115,8 +1257,8 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
         {/* Navigation Buttons */}
         <div className="flex items-center justify-between mt-8">
           <button
-            onClick={() => setCurrentStep(prev => Math.max(1, prev - 1))}
-            disabled={currentStep === 1}
+            onClick={() => setCurrentStep(prev => Math.max(2, prev - 1))}
+            disabled={currentStep === 2}
             className="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />

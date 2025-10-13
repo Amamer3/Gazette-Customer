@@ -1,8 +1,70 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Clock, Shield, FileText, ArrowRight, Users, Award, Star, User, Building, Church } from 'lucide-react';
+import { Clock, Shield, FileText, ArrowRight, Users, Award, Star, User, Building, Church, X, CheckCircle, Heart, Briefcase } from 'lucide-react';
+import { useServices } from '../hooks/useServices';
+import ApiService from '../services/apiService';
 
 const Home: React.FC = () => {
+  const [selectedService, setSelectedService] = useState<any>(null);
+  const [showGazetteTypeModal, setShowGazetteTypeModal] = useState(false);
+  const [gazettePlans, setGazettePlans] = useState<any[]>([]);
+  const [loadingPlans, setLoadingPlans] = useState(false);
+  const { services: gazetteServices, loading, error } = useServices();
+
+  const getServiceIcon = (serviceName: string) => {
+    const name = serviceName.toLowerCase();
+    
+    if (name.includes('marriage') || name.includes('officer')) {
+      return Heart;
+    } else if (name.includes('company') || name.includes('incorporation') || name.includes('school') || name.includes('hospital')) {
+      return Building;
+    } else if (name.includes('name') || name.includes('birth')) {
+      return User;
+    } else if (name.includes('worship') || name.includes('religious')) {
+      return Church;
+    } else if (name.includes('business') || name.includes('license')) {
+      return Briefcase;
+    }
+    
+    return FileText;
+  };
+
+  const handleServiceClick = async (service: any) => {
+    console.log('Home - handleServiceClick called with service:', service);
+    console.log('Home - service.id:', service.id);
+    setSelectedService(service);
+    setShowGazetteTypeModal(true);
+    
+    // Fetch gazette plans for this service
+    setLoadingPlans(true);
+    try {
+      const response = await ApiService.getGazetteTypes("0", "0");
+      if (response.success && response.data.success) {
+        // Filter plans by service name match
+        const filteredPlans = response.data.SearchDetail.filter(plan => 
+          plan.GazzeteType.toLowerCase().includes(service.name.toLowerCase()) ||
+          service.name.toLowerCase().includes(plan.GazzeteType.toLowerCase())
+        );
+        setGazettePlans(filteredPlans.length > 0 ? filteredPlans : response.data.SearchDetail);
+      }
+    } catch (error) {
+      console.error('Error fetching gazette plans:', error);
+    } finally {
+      setLoadingPlans(false);
+    }
+  };
+
+  const closeModal = () => {
+    setShowGazetteTypeModal(false);
+    setSelectedService(null);
+  };
+
+  const getFilteredGazetteServices = (_serviceId: string) => {
+    // For now, return all gazette pricing services
+    // In a real app, this would filter based on the selected service
+    return gazettePlans;
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -41,12 +103,12 @@ const Home: React.FC = () => {
                 Get Started Today
                 <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link 
-                to="/dashboard"
+              <button 
+                onClick={() => document.getElementById('services-section')?.scrollIntoView({ behavior: 'smooth' })}
                 className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 border-2 border-white/30 text-white rounded-xl font-semibold text-base sm:text-lg hover:bg-white/10 backdrop-blur-sm transition-all duration-300"
               >
                 Explore Services
-              </Link>
+              </button>
             </div>
             
             {/* Trust Indicators */}
@@ -94,83 +156,76 @@ const Home: React.FC = () => {
 
 
       {/* Services Section */}
-      {/* <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
+      <section id="services-section" className="py-12 sm:py-16 lg:py-20 xl:py-24 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-violet-100 text-violet-700 text-sm font-medium mb-6">
-              <FileText className="w-4 h-4 mr-2" />
+          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+            <div className="inline-flex items-center px-3 sm:px-4 py-2 rounded-full bg-violet-100 text-violet-700 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+              <FileText className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
               Our Services
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
               Government Services
               <span className="block text-violet-600">Made Simple</span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-sm sm:text-base lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
               Access all essential government documents and certificates through our streamlined digital platform
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {gazetteServices.map((service, index) => {
-              
-              const serviceImages = {
-                'birth-certificate': birthCertificate,
-                'name-change': nameChange,
-                'marriage-certificate': marriageCertificate,
-                'business-license': businessLicense
-              };
-              
-              return (
-                <div 
-                  key={service.id} 
-                  className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 overflow-hidden"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                > */}
-                  {/* Gradient Overlay */}
-                  {/* <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  
-                  <div className="relative p-8"> */}
-                    {/* Service Image */}
-                    {/* <div className="w-20 h-20 mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                      <img 
-                        src={serviceImages[service.id as keyof typeof serviceImages]} 
-                        alt={service.name}
-                        className="w-full h-full object-contain"
-                      />
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-16 w-16 border-4 border-violet-200 border-t-violet-600 mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading services...</p>
+            </div>
+          ) : error ? (
+            <div className="text-center py-12">
+              <p className="text-red-600">Error loading services: {error}</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
+              {gazetteServices.map((service, index) => {
+                const IconComponent = getServiceIcon(service.name);
+                
+                return (
+                  <div 
+                    key={service.id} 
+                    className="group relative bg-white rounded-2xl sm:rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 sm:hover:-translate-y-3 border border-gray-100 overflow-hidden cursor-pointer"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                    onClick={() => handleServiceClick(service)}
+                  >
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    
+                    <div className="relative p-4 sm:p-6 lg:p-8">
+                      {/* Service Icon */}
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 mx-auto mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <div className="w-full h-full bg-gradient-to-br from-violet-100 to-blue-100 rounded-2xl sm:rounded-3xl flex items-center justify-center shadow-inner">
+                          <IconComponent className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-violet-600" />
+                        </div>
+                      </div>
+                      
+                      <h3 className="text-sm sm:text-base lg:text-lg font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-violet-700 transition-colors text-center leading-tight">
+                        {service.name}
+                      </h3>
+                      
+                      {/* Service Description */}
+                      <p className="text-gray-600 mb-6 sm:mb-8 leading-relaxed text-center text-xs sm:text-sm line-clamp-3">
+                        {service.description || `Professional ${service.name.toLowerCase()} service`}
+                      </p>
+                      
+                      {/* Apply Button */}
+                      <div className="w-full inline-flex items-center justify-center px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-r from-violet-600 to-blue-600 text-white rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm hover:from-violet-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group-hover:shadow-2xl">
+                        Apply Now
+                        <ArrowRight className="ml-2 w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
+                      </div>
                     </div>
-                    
-                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-violet-700 transition-colors">
-                      {service.name}
-                    </h3>
-                    <p className="text-gray-600 mb-6 leading-relaxed">{service.description}</p> */}
-                    
-                    {/* Price and Processing */}
-                    {/* <div className="space-y-3">
-                      <div className="flex justify-between items-center p-3 bg-gray-50 rounded-xl">
-                        <span className="text-sm font-medium text-gray-700">Price:</span>
-                        <span className="font-bold text-blue-600 text-lg">GHS {service.price.toFixed(2)}</span>
-                      </div>
-                      <div className="flex justify-between items-center p-3 bg-violet-50 rounded-xl">
-                        <span className="text-sm font-medium text-gray-700">Processing:</span>
-                        <span className="text-sm font-semibold text-violet-700">{service.processingTime}</span>
-                      </div>
-                    </div> */}
-                    
-                    {/* Apply Button */}
-                    {/* <Link 
-                      to={`/application/${service.id}`}
-                      className="mt-6 w-full inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-violet-600 to-blue-600 text-white rounded-xl font-semibold hover:from-violet-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-                    >
-                      Apply Now
-                      <ArrowRight className="ml-2 w-4 h-4" />
-                    </Link>
                   </div>
-                </div>
-              );
+                );
             })}
           </div>
+          )}
         </div>
-      </section> */}
+      </section>
 
       {/* Services Overview Section */}
       <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-br from-gray-50 to-white">
@@ -181,7 +236,7 @@ const Home: React.FC = () => {
               Our Services
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
-              Professional Gazette Services
+              Gazette Services
               <span className="block text-violet-600">Tailored to Your Needs</span>
             </h2>
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
@@ -217,13 +272,13 @@ const Home: React.FC = () => {
                   Personal Document Publications
                           </li>
                       </ul>
-              <Link 
-                to="/services"
+              <button 
+                onClick={() => document.getElementById('services-section')?.scrollIntoView({ behavior: 'smooth' })}
                 className="inline-flex items-center text-violet-600 font-semibold hover:text-violet-700 transition-colors text-sm sm:text-base"
               >
                 Learn More
                 <ArrowRight className="ml-2 w-3 h-3 sm:w-4 sm:h-4" />
-              </Link>
+              </button>
                     </div>
                     
             {/* Corporate Services */}
@@ -251,13 +306,13 @@ const Home: React.FC = () => {
                   Corporate Publications
                 </li>
               </ul>
-                    <Link 
-                to="/services"
+                    <button 
+                onClick={() => document.getElementById('services-section')?.scrollIntoView({ behavior: 'smooth' })}
                 className="inline-flex items-center text-blue-600 font-semibold hover:text-blue-700 transition-colors text-sm sm:text-base"
                     >
                 Learn More
                 <ArrowRight className="ml-2 w-3 h-3 sm:w-4 sm:h-4" />
-                    </Link>
+                    </button>
           </div>
           
             {/* Religious Services */}
@@ -285,13 +340,13 @@ const Home: React.FC = () => {
                   Religious Publications
                           </li>
                       </ul>
-                    <Link 
-                to="/services"
+                    <button 
+                onClick={() => document.getElementById('services-section')?.scrollIntoView({ behavior: 'smooth' })}
                 className="inline-flex items-center text-green-600 font-semibold hover:text-green-700 transition-colors text-sm sm:text-base"
                     >
                 Learn More
                 <ArrowRight className="ml-2 w-3 h-3 sm:w-4 sm:h-4" />
-                    </Link>
+                    </button>
                   </div>
           </div>
 
@@ -304,13 +359,13 @@ const Home: React.FC = () => {
               Explore our comprehensive range of gazette services and find the perfect solution for your needs.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12 justify-center text-center">
-              <Link
-                to="/services"
+              <button
+                onClick={() => document.getElementById('services-section')?.scrollIntoView({ behavior: 'smooth' })}
                 className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-white text-violet-600 rounded-lg sm:rounded-xl font-bold text-base sm:text-lg  hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-2xl"
               >
                 View All Services
                 <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
-              </Link>
+              </button>
                     <Link 
                 to="/auth"
                 className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-white/10 backdrop-blur-sm text-white rounded-lg sm:rounded-xl font-semibold text-base sm:text-lg hover:bg-white/20 transition-all duration-300 border border-white/20"
@@ -587,6 +642,160 @@ const Home: React.FC = () => {
           </div>
         </div>
       </footer>
+
+      {/* Gazette Type Selection Modal */}
+      {showGazetteTypeModal && selectedService && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <h3 className="text-2xl font-bold text-gray-900">Select Gazette Plan</h3>
+                <button
+                  onClick={closeModal}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                >
+                  <X className="w-6 h-6 text-gray-500" />
+                </button>
+              </div>
+              <p className="text-gray-600 mt-2">Choose your preferred gazette plan and processing option.</p>
+            </div>
+
+            <div className="p-6">
+              {loadingPlans ? (
+                <div className="text-center py-12">
+                  <div className="animate-spin rounded-full h-16 w-16 border-4 border-violet-200 border-t-violet-600 mx-auto mb-4"></div>
+                  <p className="text-gray-600">Loading plans...</p>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {/* PREMIUM PLUS */}
+                  {getFilteredGazetteServices(selectedService.id).some(service => service.PaymentPlan === 'premium-plus') && (
+                    <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-200">
+                      <div className="flex items-center mb-4">
+                        <Shield className="w-6 h-6 text-purple-600 mr-2" />
+                        <h4 className="text-lg font-semibold text-purple-900">PREMIUM PLUS</h4>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {getFilteredGazetteServices(selectedService.id)
+                          .filter(service => service.PaymentPlan === 'premium-plus')
+                          .map((service) => (
+                          <div 
+                            key={service.FeeID}
+                            className="bg-white rounded-xl p-4 shadow-sm border border-purple-100 hover:shadow-md transition-shadow"
+                          >
+                            <div className="text-center">
+                              <h4 className="font-semibold text-gray-900 mb-2 text-sm">{service.GazzeteType}</h4>
+                              <div className="text-2xl font-bold text-purple-600 mb-2">
+                                GHS {service.GazetteFee.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                              </div>
+                              <div className="text-xs text-gray-600 mb-3 bg-purple-100 px-2 py-1 rounded-full">
+                                Processing: {service.ProcessDays} {service.ProcessDays === 1 ? 'day' : 'days'}
+                              </div>
+                              <Link 
+                                to={`/application/${selectedService.id}`}
+                                onClick={() => {
+                                  console.log('Home - Select clicked, navigating to:', `/application/${selectedService.id}`);
+                                  closeModal();
+                                }}
+                                className="w-full inline-flex items-center justify-center px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors"
+                              >
+                                Select
+                                <ArrowRight className="ml-1 w-3 h-3" />
+                              </Link>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* PREMIUM GAZETTE */}
+                  {getFilteredGazetteServices(selectedService.id).some(service => service.PaymentPlan === 'premium-gazette') && (
+                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
+                      <div className="flex items-center mb-4">
+                        <CheckCircle className="w-6 h-6 text-blue-600 mr-2" />
+                        <h4 className="text-lg font-semibold text-blue-900">PREMIUM GAZETTE</h4>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {getFilteredGazetteServices(selectedService.id)
+                          .filter(service => service.PaymentPlan === 'premium-gazette')
+                          .map((service) => (
+                          <div 
+                            key={service.FeeID}
+                            className="bg-white rounded-xl p-4 shadow-sm border border-blue-100 hover:shadow-md transition-shadow"
+                          >
+                            <div className="text-center">
+                              <h4 className="font-semibold text-gray-900 mb-2 text-sm">{service.GazzeteType}</h4>
+                              <div className="text-2xl font-bold text-blue-600 mb-2">
+                                GHS {service.GazetteFee.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                              </div>
+                              <div className="text-xs text-gray-600 mb-3 bg-blue-100 px-2 py-1 rounded-full">
+                                Processing: {service.ProcessDays} {service.ProcessDays === 1 ? 'day' : 'days'}
+                              </div>
+                              <Link 
+                                to={`/application/${selectedService.id}`}
+                                onClick={() => {
+                                  console.log('Home - Select clicked, navigating to:', `/application/${selectedService.id}`);
+                                  closeModal();
+                                }}
+                                className="w-full inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+                              >
+                                Select
+                                <ArrowRight className="ml-1 w-3 h-3" />
+                              </Link>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* REGULAR GAZETTE */}
+                  {getFilteredGazetteServices(selectedService.id).some(service => service.PaymentPlan === 'regular-gazette') && (
+                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
+                      <div className="flex items-center mb-4">
+                        <FileText className="w-6 h-6 text-green-600 mr-2" />
+                        <h4 className="text-lg font-semibold text-green-900">REGULAR GAZETTE</h4>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {getFilteredGazetteServices(selectedService.id)
+                          .filter(service => service.PaymentPlan === 'regular-gazette')
+                          .map((service) => (
+                          <div 
+                            key={service.FeeID}
+                            className="bg-white rounded-xl p-4 shadow-sm border border-green-100 hover:shadow-md transition-shadow"
+                          >
+                            <div className="text-center">
+                              <h4 className="font-semibold text-gray-900 mb-2 text-sm">{service.GazzeteType}</h4>
+                              <div className="text-2xl font-bold text-green-600 mb-2">
+                                GHS {service.GazetteFee.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                              </div>
+                              <div className="text-xs text-gray-600 mb-3 bg-green-100 px-2 py-1 rounded-full">
+                                Processing: {service.ProcessDays} {service.ProcessDays === 1 ? 'day' : 'days'}
+                              </div>
+                              <Link 
+                                to={`/application/${selectedService.id}`}
+                                onClick={() => {
+                                  console.log('Home - Select clicked, navigating to:', `/application/${selectedService.id}`);
+                                  closeModal();
+                                }}
+                                className="w-full inline-flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
+                              >
+                                Select
+                                <ArrowRight className="ml-1 w-3 h-3" />
+                              </Link>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -25,6 +25,8 @@ const Services: React.FC = () => {
   };
 
   const handleServiceClick = async (service: any) => {
+    console.log('Services - handleServiceClick called with service:', service);
+    console.log('Services - service.id:', service.id);
     setSelectedService(service);
     setShowGazetteTypeModal(true);
     
@@ -528,7 +530,10 @@ const Services: React.FC = () => {
                             </div>
                             <Link 
                               to={`/application/${selectedService.id}`}
-                              onClick={closeModal}
+                              onClick={() => {
+                                console.log('Services - Select clicked, navigating to:', `/application/${selectedService.id}`);
+                                closeModal();
+                              }}
                               className="w-full inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
                             >
                               Select
@@ -567,7 +572,10 @@ const Services: React.FC = () => {
                             </div>
                             <Link 
                               to={`/application/${selectedService.id}`}
-                              onClick={closeModal}
+                              onClick={() => {
+                                console.log('Services - Select clicked, navigating to:', `/application/${selectedService.id}`);
+                                closeModal();
+                              }}
                               className="w-full inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
                             >
                               Select
@@ -606,7 +614,10 @@ const Services: React.FC = () => {
                             </div>
                             <Link 
                               to={`/application/${selectedService.id}`}
-                              onClick={closeModal}
+                              onClick={() => {
+                                console.log('Services - Select clicked, navigating to:', `/application/${selectedService.id}`);
+                                closeModal();
+                              }}
                               className="w-full inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
                             >
                               Select
