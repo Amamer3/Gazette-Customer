@@ -4,7 +4,9 @@ import type { Notification } from '../types/index.js';
 // Local Storage Keys
 const STORAGE_KEYS = {
   APPLICATIONS: 'egazette_applications',
-  NOTIFICATIONS: 'egazette_notifications'
+  NOTIFICATIONS: 'egazette_notifications',
+  AUTH_TOKEN: 'auth_token',
+  USER_DATA: 'user_data'
 } as const;
 
 // Generic Local Storage Helper
@@ -110,10 +112,68 @@ class LocalStorageService {
     this.removeItem(STORAGE_KEYS.NOTIFICATIONS);
   }
 
+  // Authentication Methods
+  static setAuthToken(token: string): void {
+    this.setItem(STORAGE_KEYS.AUTH_TOKEN, token);
+  }
+
+  static getAuthToken(): string | null {
+    return this.getItem<string>(STORAGE_KEYS.AUTH_TOKEN);
+  }
+
+  static removeAuthToken(): void {
+    this.removeItem(STORAGE_KEYS.AUTH_TOKEN);
+  }
+
+  static setUserData(userData: any): void {
+    this.setItem(STORAGE_KEYS.USER_DATA, userData);
+  }
+
+  static getUserData(): any | null {
+    return this.getItem(STORAGE_KEYS.USER_DATA);
+  }
+
+  static removeUserData(): void {
+    this.removeItem(STORAGE_KEYS.USER_DATA);
+  }
+
+  static clearAuthData(): void {
+    this.removeAuthToken();
+    this.removeUserData();
+  }
+
+  // Generic methods for external use
+  static setGenericItem<T>(key: string, value: T): void {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.error(`Error saving to localStorage:`, error);
+    }
+  }
+
+  static getGenericItem<T>(key: string): T | null {
+    try {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : null;
+    } catch (error) {
+      console.error(`Error reading from localStorage:`, error);
+      return null;
+    }
+  }
+
+  static removeGenericItem(key: string): void {
+    try {
+      localStorage.removeItem(key);
+    } catch (error) {
+      console.error(`Error removing from localStorage:`, error);
+    }
+  }
+
   // Utility Methods
-  static clearAllData(): void {
+  static clearAllData(): void { 
     this.clearApplications();
     this.clearNotifications();
+    this.clearAuthData();
   }
 
   static exportData(): string {

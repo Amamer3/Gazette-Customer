@@ -94,9 +94,11 @@ const Applications: React.FC = () => {
     // Simulate loading delay
     setTimeout(loadData, 500);
   }, []);
-
+ 
   const getStatusIcon = (status: string) => {
     switch (status) {
+      case 'draft':
+        return <FileText className="w-5 h-5 text-gray-500" />;
       case 'completed':
         return <CheckCircle className="w-5 h-5 text-green-600" />;
       case 'processing':
@@ -112,6 +114,8 @@ const Applications: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
+      case 'draft':
+        return 'bg-gray-100 text-gray-600';
       case 'completed':
         return 'bg-green-100 text-green-800';
       case 'processing':
@@ -237,6 +241,7 @@ const Applications: React.FC = () => {
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
               >
                 <option value="all">All Status</option>
+                <option value="draft">Draft</option>
                 <option value="submitted">Submitted</option>
                 <option value="under-review">Under Review</option>
                 <option value="processing">Processing</option>

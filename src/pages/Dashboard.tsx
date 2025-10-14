@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { useServices } from '../hooks/useServices';
 import LocalStorageService from '../services/localStorage';
 import Navigation from '../components/Navigation';
 import ApiService from '../services/apiService';
@@ -18,7 +17,6 @@ import {
   Building,
   Briefcase,
   Church,
-  Zap,
   Calendar,
   Activity,
   X
@@ -26,6 +24,7 @@ import {
 import type { Application } from '../types/application.js';
 
 const Dashboard: React.FC = () => {
+  const navigate = useNavigate();
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
   const [showServiceModal, setShowServiceModal] = useState(false);
@@ -33,12 +32,45 @@ const Dashboard: React.FC = () => {
   const [selectedService, setSelectedService] = useState<any>(null);
   const [gazettePlans, setGazettePlans] = useState<any[]>([]);
   const [loadingPlans, setLoadingPlans] = useState(false);
-  const { services: gazetteServices, loading: servicesLoading, error: servicesError } = useServices();
+  const [gazetteServices, setGazetteServices] = useState<any[]>([]);
+  const [servicesLoading, setServicesLoading] = useState(false);
+  const [servicesError, setServicesError] = useState<string | null>(null);
   
   // Debug logging
   console.log('Dashboard - gazetteServices:', gazetteServices);
   console.log('Dashboard - servicesLoading:', servicesLoading);
   console.log('Dashboard - servicesError:', servicesError);
+
+  const fetchServices = async () => {
+    setServicesLoading(true);
+    setServicesError(null);
+    
+    try {
+      const response = await ApiService.getServices();
+      console.log('Services response:', response);
+      
+      if (response.success && response.data) {
+        setGazetteServices(response.data);
+        console.log('Services loaded successfully:', response.data.length);
+      } else {
+        console.error('Failed to fetch services:', response.error);
+        setServicesError(response.error || 'Failed to load services');
+      }
+    } catch (error) {
+      console.error('Error fetching services:', error);
+      setServicesError(error instanceof Error ? error.message : 'Failed to load services');
+    } finally {
+      setServicesLoading(false);
+    }
+  };
+
+  const handleNewApplicationClick = () => {
+    // Only fetch services if we don't have them already
+    if (gazetteServices.length === 0) {
+      fetchServices();
+    }
+    setShowServiceModal(true);
+  };
 
   const handleServiceClick = async (service: any) => {
     setSelectedService(service);
@@ -146,10 +178,10 @@ const Dashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-violet-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+      <div className="min-h-screen bg-blue-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-violet-200 border-t-violet-600 mx-auto mb-4"></div>
-          <p className="text-violet-600 font-medium">Loading your dashboard...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-200 border-t-blue-600 mx-auto mb-4"></div>
+          <p className="text-blue-600 font-medium">Loading your dashboard...</p>
         </div>
       </div>
     );
@@ -270,7 +302,7 @@ const Dashboard: React.FC = () => {
                     <p className="text-sm sm:text-base text-gray-500 mb-4 sm:mb-6 max-w-xs mx-auto px-4 sm:px-0">Start your first gazette service application and track its progress here.</p>
                     <button
                       onClick={() => window.location.href = '/#services-section'}
-                      className="inline-flex items-center px-3 sm:px-4 py-2 sm:py-3 bg-gradient-to-r from-violet-600 to-blue-600 text-white rounded-lg sm:rounded-xl hover:from-violet-700 hover:to-blue-700 transition-all duration-300 text-xs sm:text-sm font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
+                      className="inline-flex items-center px-3 sm:px-4 py-2 sm:py-3 bg-blue-700 text-white rounded-lg sm:rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 text-xs sm:text-sm font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
                     >
                       <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
                       <span>Browse Services</span>
@@ -326,7 +358,7 @@ const Dashboard: React.FC = () => {
                       <div className="text-center pt-4">
                         <Link
                           to="/applications"
-                          className="inline-flex items-center text-violet-600 hover:text-violet-700 text-sm font-semibold transition-colors duration-300"
+                          className="inline-flex items-center text-blue-600 hover:text-blue-700 text-sm font-semibold transition-colors duration-300"
                         >
                           <TrendingUp className="w-4 h-4 mr-2" />
                           <span>View All Applications ({applications.length})</span>
@@ -349,16 +381,16 @@ const Dashboard: React.FC = () => {
                     <h3 className="text-base sm:text-lg lg:text-xl font-bold text-gray-900 mb-1">Quick Actions</h3>
                     <p className="text-xs sm:text-sm lg:text-base text-gray-600">Get started quickly</p>
                   </div>
-                  <div className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-green-100 to-emerald-100 rounded-md sm:rounded-lg lg:rounded-xl flex items-center justify-center">
+                  {/* <div className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-green-100 to-emerald-100 rounded-md sm:rounded-lg lg:rounded-xl flex items-center justify-center">
                     <Zap className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-green-600" />
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="p-3 sm:p-4 lg:p-6">
                 <div className="space-y-3 sm:space-y-4">
                   <button
-                    onClick={() => setShowServiceModal(true)}
-                    className="w-full bg-gradient-to-r from-violet-600 to-blue-600 text-white py-2.5 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl hover:from-violet-700 hover:to-blue-700 transition-all duration-300 text-xs sm:text-sm font-semibold flex items-center justify-center transform hover:scale-105 shadow-lg hover:shadow-xl"
+                    onClick={handleNewApplicationClick}
+                    className="w-full bg-blue-600 text-white py-2.5 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl hover:from-violet-700 hover:to-blue-700 transition-all duration-300 text-xs sm:text-sm font-semibold flex items-center justify-center transform hover:scale-105 shadow-lg hover:shadow-xl"
                   >
                     <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
                     <span>New Application</span>
@@ -419,7 +451,7 @@ const Dashboard: React.FC = () => {
                   <div className="text-red-500 mb-4">Error loading services: {servicesError}</div>
                   <button
                     onClick={() => window.location.reload()}
-                    className="px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                   >
                     Retry
                   </button>
@@ -427,6 +459,12 @@ const Dashboard: React.FC = () => {
               ) : gazetteServices.length === 0 ? (
                 <div className="text-center py-12">
                   <div className="text-gray-500 mb-4">No services available</div>
+                  <button
+                    onClick={fetchServices}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                  >
+                    Retry Loading Services
+                  </button>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -521,19 +559,14 @@ const Dashboard: React.FC = () => {
 
                     // Define the order and colors for plan types
                     const planOrder = ['PREMIUM PLUS', 'PREMIUM GAZETTE', 'REGULAR GAZETTE'] as const;
-                    const planColors: Record<string, string> = {
-                      'PREMIUM PLUS': 'from-purple-500 to-pink-500',
-                      'PREMIUM GAZETTE': 'from-blue-500 to-indigo-500',
-                      'REGULAR GAZETTE': 'from-green-500 to-emerald-500'
-                    };
-
+                      
                     return planOrder.map((planType) => {
                       const plans = groupedPlans[planType];
                       if (!plans || plans.length === 0) return null;
 
                       return (
                         <div key={planType} className="space-y-3">
-                          <div className={`bg-gradient-to-r ${planColors[planType] || 'from-gray-500 to-gray-600'} text-white px-4 py-2 rounded-lg`}>
+                          <div className={`bg-blue-600 || 'from-gray-500 to-gray-600'} text-white px-4 py-2 rounded-lg`}>
                             <h3 className="font-bold text-lg">{planType}</h3>
                             <p className="text-sm opacity-90">
                               {planType === 'PREMIUM PLUS' && 'Fastest processing with premium features'}
@@ -549,15 +582,15 @@ const Dashboard: React.FC = () => {
                                 className="group bg-white border border-gray-200 rounded-xl p-4 hover:border-violet-300 hover:shadow-lg transition-all duration-300 cursor-pointer"
                                 onClick={() => {
                                   setShowGazetteTypeModal(false);
-                                  window.location.href = `/application/${selectedService.id}?plan=${plan.FeeID}`;
+                                  navigate(`/application/${selectedService.id}?plan=${plan.FeeID}`);
                                 }}
                               >
                                 <div className="space-y-3">
                                   <div className="flex items-center justify-between">
-                                    <h4 className="font-bold text-gray-900 group-hover:text-violet-700 transition-colors text-sm">
+                                    <h4 className="font-bold text-gray-900 group-hover:text-blue-700 transition-colors text-sm">
                                       {plan.GazetteName}
                                     </h4>
-                                    <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-violet-600 group-hover:translate-x-1 transition-all" />
+                                    <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
                                   </div>
                                   
                                   <div className="space-y-2">

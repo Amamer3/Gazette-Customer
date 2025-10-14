@@ -1,0 +1,58 @@
+{
+  "gazettePlans": {
+    "regularGazette": {
+      "name": "REGULAR GAZETTE",
+      "amount": "GHC1,262.94",
+      "formFields": {
+        "oldNames": {
+          "label": "OLD NAME(S)",
+          "value": ""
+        },
+        "newName": {
+          "label": "NEW NAME",
+          "value": ""
+        },
+        "telNo": {
+          "label": "TEL NO.",
+          "value": ""
+        }
+      }
+    },
+    "premium": {
+      "name": "PREMIUM",
+      "amount": "GHC2,000.00",
+      "formFields": {
+        "oldNames": {
+          "label": "OLD NAME(S)",
+          "value": ""
+        },
+        "newName": {
+          "label": "NEW NAME",
+          "value": ""
+        },
+        "telNo": {
+          "label": "TEL NO.",
+          "value": ""
+        }
+      }
+    },
+    "premiumPlus": {
+      "name": "PREMIUM PLUS",
+      "amount": "GHC2,000.00",
+      "formFields": {
+        "oldNames": {
+          "label": "OLD NAME(S)",
+          "value": ""
+        },
+        "newName": {
+          "label": "NEW NAME",
+          "value": ""
+        },
+        "telNo": {
+          "label": "TEL NO.",
+          "value": ""
+        }
+      }
+    }
+  }
+}

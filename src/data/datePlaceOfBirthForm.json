@@ -1,0 +1,94 @@
+{
+  "formTitle": "DATE/ PLACE OF BIRTH FORM - B",
+  "company": {
+    "name": "GHANA PUBLISHING COMPANY LIMITED",
+    "logo": "circular_logo_with_star_and_circles",
+    "address": {
+      "recipient": "The Managing Director",
+      "company": "Ghana Publishing Company Ltd",
+      "location": "Assembly Press - Accra"
+    }
+  },
+  "formFields": {
+    "date": {
+      "type": "text", 
+      "label": "Date",
+      "placeholder": "Enter date",
+      "required": true
+    },
+    "tel": {
+      "type": "tel",
+      "label": "Tel",
+      "placeholder": "Enter telephone number",
+      "required": true
+    },
+    "gender": {
+      "type": "radio",
+      "label": "Gender",
+      "options": [
+        {
+          "value": "male",
+          "label": "Male",
+          "checked": false
+        },
+        {
+          "value": "female", 
+          "label": "Female",
+          "checked": false
+        }
+      ],
+      "required": true
+    },
+    "occupation": {
+      "type": "text",
+      "label": "Occupation/ Profession",
+      "placeholder": "Enter occupation or profession",
+      "required": true
+    }
+  },
+  "formMetadata": {
+    "version": "B",
+    "category": "Birth Certificate",
+    "purpose": "Date and place of birth documentation",
+    "targetAudience": "Individuals requiring birth certificate services"
+  },
+  "validationRules": {
+    "date": {
+      "format": "DD/MM/YYYY",
+      "required": true
+    },
+    "tel": {
+      "pattern": "^[0-9+\\-\\s()]+$",
+      "minLength": 7,
+      "maxLength": 15,
+      "required": true
+    },
+    "gender": {
+      "required": true,
+      "options": ["male", "female"]
+    },
+    "occupation": {
+      "minLength": 2,
+      "maxLength": 100,
+      "required": true
+    }
+  },
+  "apiIntegration": {
+    "endpoint": "API/GPLoginweb/API_SubmitApplication",
+    "method": "POST",
+    "headers": {
+      "Content-Type": "application/json",
+      "APPType": "WEB",
+      "APITocken": "AyTRfghyNoo987-ghtuHH86YYR"
+    },
+    "requestBody": {
+      "formType": "DATE_PLACE_OF_BIRTH_FORM_B",
+      "applicantData": {
+        "date": "{{date}}",
+        "tel": "{{tel}}",
+        "gender": "{{gender}}",
+        "occupation": "{{occupation}}"
+      }
+    }
+  }
+}

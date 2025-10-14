@@ -1,15 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import { useReducedMotion } from '../hooks/useReducedMotion';
+import { User, LogOut, Settings } from 'lucide-react';
 
 const Navigation: React.FC = () => {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const prefersReducedMotion = useReducedMotion();
+  const { user, isAuthenticated, logout } = useAuth();
 
 
   // Prevent body scroll when mobile menu is open and manage focus
@@ -29,6 +34,20 @@ const Navigation: React.FC = () => {
       document.body.style.overflow = 'unset';
     };
   }, [isMobileMenuOpen]);
+
+  // Close user menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   // Touch gesture handling for swipe-to-close
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -77,6 +96,11 @@ const Navigation: React.FC = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
+  const handleLogout = () => {
+    logout();
+    setIsUserMenuOpen(false);
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-40 bg-gradient-to-r from-white via-gray-50 to-white shadow-xl border-b border-gray-100 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -118,37 +142,94 @@ const Navigation: React.FC = () => {
               >
                 About
               </Link>
-              <Link
-                to="/dashboard"
-                className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
-                  isActive('/dashboard')
-                    ? 'bg-blue-600 text-white shadow-lg shadow-violet-500/25 transform scale-105'
-                    : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md hover:scale-105'
-                }`}
-              >
-                Dashboard
-              </Link>
-              <Link
-                to="/applications"
-                className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
-                  isActive('/applications')
-                    ? 'bg-blue-600 text-white shadow-lg shadow-violet-500/25 transform scale-105'
-                    : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md hover:scale-105'
-                }`}
-              >
-                Applications
-              </Link>
-              <Link
-                to="/profile"
-                className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
-                  isActive('/profile')
-                    ? 'bg-blue-600 text-white shadow-lg shadow-violet-500/25 transform scale-105'
-                    : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md hover:scale-105'
-                }`}
-              >
-                Profile
-              </Link>
+
+              {/* Show authenticated routes only if user is logged in */}
+              {isAuthenticated && (
+                <>
+                  <Link
+                    to="/dashboard"
+                    className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                      isActive('/dashboard')
+                        ? 'bg-blue-600 text-white shadow-lg shadow-violet-500/25 transform scale-105'
+                        : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md hover:scale-105'
+                    }`}
+                  >
+                    Dashboard
+                  </Link>
+                  <Link
+                    to="/applications"
+                    className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                      isActive('/applications')
+                        ? 'bg-blue-600 text-white shadow-lg shadow-violet-500/25 transform scale-105'
+                        : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md hover:scale-105'
+                    }`}
+                  >
+                    Applications
+                  </Link>
+                </>
+              )}
             </div>
+          </div>
+
+          {/* User Menu / Auth Buttons */}
+          <div className="hidden md:flex items-center space-x-4">
+            {isAuthenticated ? (
+              <div className="relative" ref={userMenuRef}>
+                <button
+                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  className="flex items-center space-x-2 px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md transition-all duration-300"
+                >
+                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-violet-500 rounded-full flex items-center justify-center">
+                    <User className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="hidden lg:block">
+                    {user?.fullName || 'New User'}
+                  </span>
+                </button>
+
+                {/* User Dropdown Menu */}
+                {isUserMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
+                    <div className="px-4 py-2 border-b border-gray-100">
+                      <p className="text-sm font-semibold text-gray-900">
+                        {user?.fullName || 'New User'}
+                      </p>
+                      <p className="text-xs text-gray-500">{user?.phone}</p>
+                    </div>
+                    <Link
+                      to="/profile"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                    >
+                      <Settings className="w-4 h-4 mr-3" />
+                      Profile Settings
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                    >
+                      <LogOut className="w-4 h-4 mr-3" />
+                      Sign Out
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <Link
+                  to="/login"
+                  className="px-4 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-violet-50 hover:shadow-md shadow-md transition-all duration-300"
+                >
+                  Login/Sign Up
+                </Link>
+                {/* <Link
+                  to="/register"
+                  className="px-4 py-2 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  Sign Up
+                </Link> */}
+              </div>
+            )}
           </div>
 
 
@@ -269,43 +350,84 @@ const Navigation: React.FC = () => {
                   About
                 </Link>
 
-                <Link
-                  to="/dashboard"
-                  onClick={closeMobileMenu}
-                  className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 ${
-                    isActive('/dashboard')
-                      ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25'
-                      : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
-                  }`}
-                >
-                  Dashboard
-                </Link>
+                {/* Show authenticated routes only if user is logged in */}
+                {isAuthenticated ? (
+                  <>
+                    <Link
+                      to="/dashboard"
+                      onClick={closeMobileMenu}
+                      className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 ${
+                        isActive('/dashboard')
+                          ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25'
+                          : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
+                      }`}
+                    >
+                      Dashboard
+                    </Link>
 
-                <Link
-                  to="/applications"
-                  onClick={closeMobileMenu}
-                  className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 ${
-                    isActive('/applications')
-                      ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25'
-                      : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
-                  }`}
-                >
-                  Applications
-                </Link>
+                    <Link
+                      to="/applications"
+                      onClick={closeMobileMenu}
+                      className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 ${
+                        isActive('/applications')
+                          ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25'
+                          : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
+                      }`}
+                    >
+                      Applications
+                    </Link>
 
-                <Link
-                  to="/profile"
-                  onClick={closeMobileMenu}
-                  className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 ${
-                    isActive('/profile')
-                      ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25'
-                      : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
-                  }`}
-                >
-                  Profile
-                </Link>
+                    <Link
+                      to="/profile"
+                      onClick={closeMobileMenu}
+                      className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 ${
+                        isActive('/profile')
+                          ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25'
+                          : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
+                      }`}
+                    >
+                      Profile
+                    </Link>
+
+                    {/* User Info and Logout */}
+                    <div className="border-t border-gray-200 pt-4 mt-4">
+                      <div className="px-3 py-2 mb-2">
+                        <p className="text-sm font-semibold text-gray-900">
+                          {user?.fullName || 'New User'}
+                        </p>
+                        <p className="text-xs text-gray-500">{user?.phone}</p>
+                      </div>
+                      <button
+                        onClick={() => {
+                          handleLogout();
+                          closeMobileMenu();
+                        }}
+                        className="flex items-center w-full px-3 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
+                      >
+                        <LogOut className="w-4 h-4 mr-3" />
+                        Sign Out
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="border-t border-gray-200 pt-4 mt-4 space-y-3">
+                    <Link
+                      to="/login"
+                      onClick={closeMobileMenu}
+                      className="block px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-violet-50 hover:shadow-md transition-all duration-300"
+                    >
+                      Login/Sign Up
+                    </Link>
+                    {/* <Link
+                      to="/register"
+                      onClick={closeMobileMenu}
+                      className="block px-3 py-2.5 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 shadow-lg hover:shadow-xl transition-all duration-300"
+                    >
+                      Sign Up
+                    </Link> */}
+                  </div>
+                )}
               </div>
-
             </div>
           </div>
         </div>

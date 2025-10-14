@@ -1,0 +1,61 @@
+{
+  "formType": "DATE/PLACE OF BIRTH FORM - B",
+  "recipient": {
+    "title": "The Managing Director",
+    "organization": "Ghana Publishing Company Ltd",
+    "location": "Assembly Press - Accra"
+  },
+  "formFields": {
+    "header": {
+      "date": "",
+      "tel": ""
+    },
+    "personalInfo": {
+      "name": {
+        "label": "Name: Mr./Mrs./Miss/Ms/Others",
+        "value": ""
+      },
+      "gender": {
+        "options": ["Male", "Female"],
+        "value": ""
+      },
+      "occupation": {
+        "label": "Occupation/Profession",
+        "value": ""
+      },
+      "organization": {
+        "label": "Organization/Company",
+        "value": ""
+      }
+    },
+    "birthDetails": {
+      "registrationNo": {
+        "label": "Registration No.",
+        "value": ""
+      },
+      "incorrectBirthInfo": {
+        "label": "Incorrect Date/Place of Birth",
+        "value": ""
+      },
+      "correctBirthInfo": {
+        "label": "Correct Date/Place of Birth",
+        "value": ""
+      },
+      "confirmedPlaceDate": {
+        "label": "Confirmed Place/Date",
+        "value": ""
+      },
+      "effectiveDate": {
+        "label": "Effective Date",
+        "value": ""
+      }
+    },
+    "signature": {
+      "label": "Signature",
+      "value": ""
+    }
+  },
+  "footer": {
+    "note": "*Quote date on Statutory Declaration"
+  }
+}

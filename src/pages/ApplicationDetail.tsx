@@ -33,14 +33,20 @@ const ApplicationDetail: React.FC = () => {
 
   useEffect(() => {
     if (id) {
+      console.log('Looking for application with ID:', id);
+      
       // Try to get application from LocalStorageService first
-      let applications = LocalStorageService.getApplications();
+      let applications = LocalStorageService.getAllApplications();
+      console.log('All applications found:', applications.length);
+      console.log('Application IDs:', applications.map(app => app.id));
+      
       let foundApplication = applications.find((app: any) => app.id === id);
       
       // If not found, try the old localStorage key as fallback
       if (!foundApplication) {
         try {
           const oldApplications = JSON.parse(localStorage.getItem('applications') || '[]');
+          console.log('Old applications found:', oldApplications.length);
           foundApplication = oldApplications.find((app: any) => app.id === id);
         } catch (error) {
           console.error('Error reading from localStorage:', error);
@@ -48,6 +54,7 @@ const ApplicationDetail: React.FC = () => {
       }
       
       if (foundApplication) {
+        console.log('Found application:', foundApplication);
         setApplication(foundApplication as Application);
         const foundService = gazetteServices.find(s => s.id === foundApplication.serviceType);
         setService(foundService || null);
@@ -56,6 +63,8 @@ const ApplicationDetail: React.FC = () => {
         const orders = JSON.parse(localStorage.getItem('orders') || '[]');
         const foundOrder = orders.find((ord: Order) => ord.applicationId === id);
         setOrder(foundOrder || null);
+      } else {
+        console.log('Application not found with ID:', id);
       }
     }
     setLoading(false);
@@ -401,7 +410,7 @@ const ApplicationDetail: React.FC = () => {
                   <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
                     <div className="flex items-center">
                       <FileText className="w-5 h-5 text-gray-500 mr-3" />
-                      <span className="text-gray-900 font-medium">{doc}</span>
+                      <span className="text-gray-900 font-medium">{doc}</span> 
                     </div>
                     <div className="flex items-center space-x-2">
                       <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">

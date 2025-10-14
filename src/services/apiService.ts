@@ -38,10 +38,13 @@ interface GazetteTypeApiResponse {
 
 class ApiService {
   private static readonly API_TOKEN = API_CONFIG.TOKEN;
+  private static readonly MAX_RETRIES = 3;
+  private static readonly RETRY_DELAY = 1000; // 1 second
   
   private static async makeRequest<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
+    retryCount: number = 0
   ): Promise<ApiResponse<T>> {
     try {
       const url = `${API_CONFIG.BASE_URL}${endpoint}`;
@@ -64,6 +67,10 @@ class ApiService {
       
       // Check for API errors in response
       if (data.Message && data.Message.includes('error has occurred')) {
+        // Check if it's a database connection error that might be temporary
+        if (data.ExceptionMessage && data.ExceptionMessage.includes('connection')) {
+          throw new Error(`Database connection error: ${data.ExceptionMessage}`);
+        }
         throw new Error(data.Message);
       }
       
@@ -79,6 +86,20 @@ class ApiService {
     } catch (error) {
       console.error('API request failed:', error);
       
+      // Check if this is a retryable error and we haven't exceeded max retries
+      const isRetryableError = error instanceof Error && (
+        error.message.includes('Database connection error') ||
+        error.message.includes('connection') ||
+        error.message.includes('Failed to fetch') ||
+        error.message.includes('ERR_NAME_NOT_RESOLVED')
+      );
+      
+      if (isRetryableError && retryCount < this.MAX_RETRIES) {
+        console.log(`Retrying request (${retryCount + 1}/${this.MAX_RETRIES}) after ${this.RETRY_DELAY}ms...`);
+        await new Promise(resolve => setTimeout(resolve, this.RETRY_DELAY * (retryCount + 1)));
+        return this.makeRequest<T>(endpoint, options, retryCount + 1);
+      }
+      
       // Provide more specific error messages
       let errorMessage = 'Unknown error occurred';
       if (error instanceof Error) {
@@ -86,6 +107,8 @@ class ApiService {
           errorMessage = 'API server not found. Please check your API_BASE_URL configuration.';
         } else if (error.message.includes('Failed to fetch')) {
           errorMessage = 'Network error. Please check if the API server is running.';
+        } else if (error.message.includes('Database connection error')) {
+          errorMessage = 'Database connection issue on the server. Please try again later or contact support.';
         } else {
           errorMessage = error.message;
         }
@@ -173,9 +196,9 @@ class ApiService {
     const response = await this.makeRequest<GazetteTypeApiResponse>('API/GPLoginweb/API_GazetteList', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'APPType': 'WEB',
-        'APITocken': this.API_TOKEN
+        [API_CONFIG.HEADERS.CONTENT_TYPE]: 'application/json',
+        [API_CONFIG.HEADERS.APP_TYPE]: 'WEB',
+        [API_CONFIG.HEADERS.API_TOKEN]: this.API_TOKEN
       },
       body: JSON.stringify({
         "GazetteType": gazetteType,
@@ -199,9 +222,9 @@ class ApiService {
     const response = await this.makeRequest<any>('API/GPLoginweb/API_SubmitApplication', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'APPType': 'WEB',
-        'APITocken': this.API_TOKEN
+        [API_CONFIG.HEADERS.CONTENT_TYPE]: 'application/json',
+        [API_CONFIG.HEADERS.APP_TYPE]: 'WEB',
+        [API_CONFIG.HEADERS.API_TOKEN]: this.API_TOKEN
       },
       body: JSON.stringify(applicationData)
     });
@@ -223,9 +246,9 @@ class ApiService {
       const response = await this.makeRequest<any>('API/GPLoginweb/API_ValidateToken', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'APPType': 'WEB',
-          'APITocken': this.API_TOKEN
+          [API_CONFIG.HEADERS.CONTENT_TYPE]: 'application/json',
+          [API_CONFIG.HEADERS.APP_TYPE]: 'WEB',
+          [API_CONFIG.HEADERS.API_TOKEN]: this.API_TOKEN
         },
         body: JSON.stringify({})
       });
