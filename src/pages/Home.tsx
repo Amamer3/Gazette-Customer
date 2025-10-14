@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Clock, Shield, FileText, ArrowRight, Users, Award, Star, User, Building, Church, X, CheckCircle, Heart, Briefcase } from 'lucide-react';
+import { Clock, Shield, FileText, ArrowRight, Users, Award, User, Building, Church, X, CheckCircle, Heart, Briefcase } from 'lucide-react';
 import { useServices } from '../hooks/useServices';
 import ApiService from '../services/apiService';
 
@@ -158,17 +158,18 @@ const Home: React.FC = () => {
       {/* Services Section */}
       <section id="services-section" className="py-12 sm:py-16 lg:py-20 xl:py-24 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+        <div className="text-center mb-12 sm:mb-16 lg:mb-20">
             <div className="inline-flex items-center px-3 sm:px-4 py-2 rounded-full bg-violet-100 text-violet-700 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
               <FileText className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
               Our Services
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
-              Government Services
-              <span className="block text-violet-600">Made Simple</span>
+              Gazette Services
+              <span className="block text-violet-600">Tailored to Your Needs</span>
             </h2>
-            <p className="text-sm sm:text-base lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
-              Access all essential government documents and certificates through our streamlined digital platform
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Choose from our comprehensive range of official gazette publication services, 
+              each designed to meet specific legal and administrative requirements with professional excellence.
             </p>
           </div>
           
@@ -230,7 +231,7 @@ const Home: React.FC = () => {
       {/* Services Overview Section */}
       <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-br from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+          {/* <div className="text-center mb-12 sm:mb-16 lg:mb-20">
             <div className="inline-flex items-center px-3 sm:px-4 py-2 rounded-full bg-violet-100 text-violet-700 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
               <FileText className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
               Our Services
@@ -243,12 +244,12 @@ const Home: React.FC = () => {
               Choose from our comprehensive range of official gazette publication services, 
               each designed to meet specific legal and administrative requirements with professional excellence.
             </p>
-          </div>
+          </div> */}
           
           {/* Service Categories */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-14 lg:mb-16">
             {/* Personal Services */}
-            <div className="group bg-white rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
+            {/* <div className="group bg-white rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
               <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-violet-100 to-violet-200 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
                 <User className="w-6 h-6 sm:w-8 sm:h-8 text-violet-600" />
                     </div>
@@ -279,10 +280,10 @@ const Home: React.FC = () => {
                 Learn More
                 <ArrowRight className="ml-2 w-3 h-3 sm:w-4 sm:h-4" />
               </button>
-                    </div>
+                    </div> */}
                     
             {/* Corporate Services */}
-            <div className="group bg-white rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
+            {/* <div className="group bg-white rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
               <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
                 <Building className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
                     </div>
@@ -313,10 +314,10 @@ const Home: React.FC = () => {
                 Learn More
                 <ArrowRight className="ml-2 w-3 h-3 sm:w-4 sm:h-4" />
                     </button>
-          </div>
+            </div> */}
           
             {/* Religious Services */}
-            <div className="group bg-white rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
+            {/* <div className="group bg-white rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
               <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-green-100 to-green-200 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
                 <Church className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" />
                     </div>
@@ -347,7 +348,7 @@ const Home: React.FC = () => {
                 Learn More
                 <ArrowRight className="ml-2 w-3 h-3 sm:w-4 sm:h-4" />
                     </button>
-                  </div>
+                  </div> */}
           </div>
 
           {/* CTA Section */}
@@ -377,26 +378,26 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-blue-900 relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-0 left-0 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 bg-violet-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
-          <div className="absolute top-0 right-0 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse" style={{animationDelay: '2s'}}></div>
-          <div className="absolute bottom-0 left-1/2 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 bg-indigo-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse" style={{animationDelay: '4s'}}></div>
-        </div>
+            {/* Features Section 
+            <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-blue-900 relative overflow-hidden">
+              Background Pattern 
+              <div className="absolute inset-0 opacity-5">
+                <div className="absolute top-0 left-0 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 bg-violet-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
+                <div className="absolute top-0 right-0 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse" style={{animationDelay: '2s'}}></div>
+                <div className="absolute bottom-0 left-1/2 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 bg-indigo-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse" style={{animationDelay: '4s'}}></div>
+              </div> 
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          {/* Features Illustration */}
+          Features Illustration
           <div className="flex justify-center mb-8 sm:mb-12">
             <img 
               src="/image.png" 
               alt="Digital Government Services Features" 
               className="w-full max-w-xs sm:max-w-md lg:max-w-2xl h-auto opacity-90 rounded-xl sm:rounded-2xl"
             />
-          </div>
+          </div> 
           
-          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+           <div className="text-center mb-12 sm:mb-16 lg:mb-20">
             <div className="inline-flex items-center px-3 sm:px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm text-violet-700 text-xs sm:text-sm font-medium mb-4 sm:mb-6 shadow-lg">
               <Star className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-yellow-500" />
               Why Choose Us
@@ -408,9 +409,9 @@ const Home: React.FC = () => {
               </span>
             </h2>
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-100 max-w-3xl mx-auto leading-relaxed">
-              Experience government services like never before with our cutting-edge platform designed for speed, security, and simplicity
+              Experience gazette services like never before with our cutting-edge platform designed for speed, security, and simplicity
             </p>
-          </div>
+          </div> 
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             <div className="group text-center">
@@ -457,9 +458,9 @@ const Home: React.FC = () => {
                 <span className="text-xl sm:text-2xl font-bold mr-2">256-bit</span>
                 <span className="text-xs sm:text-sm">SSL Encryption</span>
               </div>
-            </div>
+            </div> 
             
-            <div className="group text-center">
+             <div className="group text-center">
               <div className="relative">
                 <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
                   <Users className="w-8 h-8 sm:w-10 sm:h-10 text-indigo-600" />
@@ -480,10 +481,13 @@ const Home: React.FC = () => {
                 <span className="text-xl sm:text-2xl font-bold mr-2">24/7</span>
                 <span className="text-xs sm:text-sm">Live Support</span>
               </div>
-            </div>
+            </div> 
+
           </div>
+
+
         </div>
-      </section>
+      </section> 
 
       {/* Statistics Section */}
         <section className="bg-blue-900 py-12 sm:py-16 lg:py-20">
@@ -491,7 +495,7 @@ const Home: React.FC = () => {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 text-center">
             <div>
               <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-100 mb-1 sm:mb-2">50,000+</div>
-              <div className="text-xs sm:text-sm lg:text-base text-gray-100">Certificates Issued</div>
+              <div className="text-xs sm:text-sm lg:text-base text-gray-100">Gazette Publications Issued</div>
             </div>
             <div>
               <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-100 mb-1 sm:mb-2">98%</div>
@@ -549,7 +553,7 @@ const Home: React.FC = () => {
             </h2>
             
             <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-white/90 mb-8 sm:mb-10 lg:mb-12 max-w-3xl mx-auto leading-relaxed">
-              Join thousands of satisfied customers who trust Ghana Publishing Company Ltd for their official gazette needs. Start your journey today!
+              Join thousands of satisfied customers who trust Ghana E-Gazette for their official gazette needs. Start your journey today!
             </p>
             
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
@@ -602,16 +606,16 @@ const Home: React.FC = () => {
                 <img src="/ghanaPublish-logo.png" className='w-16 h-16' alt="" />
               </div>
               <p className="text-gray-400">
-                Official digital gazette services from Ghana Publishing Company Ltd.
+                Official digital gazette services from Ghana E-Gazette.
               </p>
             </div>
             
             <div>
               <h3 className="text-lg font-semibold mb-4">Services</h3>
               <ul className="space-y-2 text-gray-400">
-                <li>Birth Certificates</li>
+                <li>Gazette Publications</li>
                 <li>Name Changes</li>
-                <li>Marriage Certificates</li>
+                <li>Marriage Publications</li>
                 <li>Business Licenses</li>
               </ul>
             </div>
@@ -629,7 +633,7 @@ const Home: React.FC = () => {
             <div>
               <h3 className="text-lg font-semibold mb-4">Contact</h3>
               <div className="space-y-2 text-gray-400">
-                <p>Ghana Publishing Company Ltd</p>
+                <p>Ghana E-Gazette</p>
                 <p>Accra, Ghana</p>
                 <p>+233 XXX XXX XXX</p>
                 <p>info@egazette.gov.gh</p>
