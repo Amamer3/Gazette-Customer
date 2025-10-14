@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import { 
   Upload, 
   FileText, 
@@ -143,9 +144,19 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
           }
         } else {
           console.error('Failed to fetch gazette plans:', response.error);
+          // Show error to user and redirect back
+          toast.error(`Failed to load gazette plans: ${response.error || 'Unknown error'}`);
+          setTimeout(() => {
+            window.location.href = '/#services-section';
+          }, 2000);
         }
       } catch (error) {
         console.error('Error fetching gazette plans:', error);
+        // Show error to user and redirect back
+        toast.error(`Network error: ${error instanceof Error ? error.message : 'Failed to load gazette plans'}`);
+        setTimeout(() => {
+          window.location.href = '/#services-section';
+        }, 2000);
       } finally {
         setLoadingPlans(false);
       }

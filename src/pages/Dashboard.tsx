@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import { useServices } from '../hooks/useServices';
 import LocalStorageService from '../services/localStorage';
 import Navigation from '../components/Navigation';
@@ -45,6 +46,8 @@ const Dashboard: React.FC = () => {
     setLoadingPlans(true);
     setShowGazetteTypeModal(true);
 
+    const loadingToast = toast.loading('Loading gazette plans...');
+
     try {
       // Fetch gazette types for the selected service
       const response = await ApiService.getGazetteTypes(service.id);
@@ -52,13 +55,21 @@ const Dashboard: React.FC = () => {
       
       if (response.success && response.data && response.data.SearchDetail) {
         setGazettePlans(response.data.SearchDetail);
+        toast.dismiss(loadingToast);
+        toast.success(`Loaded ${response.data.SearchDetail.length} gazette plans`);
       } else {
         console.error('Failed to fetch gazette types:', response.error);
         setGazettePlans([]);
+        toast.dismiss(loadingToast);
+        // Show error to user
+        toast.error(`Failed to load gazette plans: ${response.error || 'Unknown error'}`);
       }
     } catch (error) {
       console.error('Error fetching gazette types:', error);
       setGazettePlans([]);
+      toast.dismiss(loadingToast);
+      // Show error to user
+      toast.error(`Network error: ${error instanceof Error ? error.message : 'Failed to load gazette plans'}`);
     } finally {
       setLoadingPlans(false);
     }

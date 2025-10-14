@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import ApiService from '../services/apiService';
 import type { GazetteService } from '../types/application';
-import { gazetteServices, gazettePricingServices } from '../services/mockData';
 
 interface UseServicesReturn {
   services: GazetteService[];
@@ -19,6 +19,8 @@ export const useServices = (): UseServicesReturn => {
     setLoading(true);
     setError(null);
 
+    const loadingToast = toast.loading('Loading services...');
+
     try {
       const response = await ApiService.getServices();
       console.log('useServices - API response:', response);
@@ -26,39 +28,25 @@ export const useServices = (): UseServicesReturn => {
       if (response.success && response.data) {
         console.log('useServices - Setting services:', response.data);
         setServices(response.data);
+        setError(null);
+        toast.dismiss(loadingToast);
+        // Show success toast
+        toast.success(`Loaded ${response.data.length} services`);
       } else {
         console.error('useServices - API failed:', response.error);
-        console.log('useServices - Falling back to mock data');
-        // Transform mock data to match the expected interface
-        const mockServices: GazetteService[] = gazetteServices.map(service => ({
-          id: service.id,
-          name: service.name,
-          description: service.description,
-          price: service.price,
-          processingTime: service.processingTime,
-          category: 'general',
-          icon: 'FileText',
-          requiredDocuments: service.requiredDocuments
-        }));
-        setServices(mockServices);
-        setError(null); // Clear error since we have mock data
+        setServices([]);
+        setError(response.error || 'Failed to fetch services');
+        toast.dismiss(loadingToast);
+        // Show toast notification for API errors
+        toast.error(`Failed to load services: ${response.error || 'Unknown error'}`);
       }
     } catch (err) {
       console.error('Error fetching services:', err);
-      console.log('useServices - Network error, falling back to mock data');
-      // Transform mock data to match the expected interface
-      const mockServices: GazetteService[] = gazetteServices.map(service => ({
-        id: service.id,
-        name: service.name,
-        description: service.description,
-        price: service.price,
-        processingTime: service.processingTime,
-        category: 'general',
-        icon: 'FileText',
-        requiredDocuments: service.requiredDocuments
-      }));
-      setServices(mockServices);
-      setError(null); // Clear error since we have mock data
+      setServices([]);
+      setError(err instanceof Error ? err.message : 'Network error occurred');
+      toast.dismiss(loadingToast);
+      // Show toast notification for network errors
+      toast.error(`Network error: ${err instanceof Error ? err.message : 'Failed to load services'}`);
     } finally {
       setLoading(false);
     }

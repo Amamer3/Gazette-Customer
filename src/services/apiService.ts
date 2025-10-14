@@ -1,7 +1,5 @@
 import type { GazetteService } from '../types/application';
-import { gazettePricingServices } from './mockData';
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api/';
+import { API_CONFIG } from '../config/apiConfig';
 
 interface ApiResponse<T> {
   success: boolean;
@@ -39,15 +37,16 @@ interface GazetteTypeApiResponse {
 }
 
 class ApiService {
-  private static readonly API_TOKEN = 'AyTRfghyNoo987-ghtuHH86YYR';
+  private static readonly API_TOKEN = API_CONFIG.TOKEN;
   
   private static async makeRequest<T>(
     endpoint: string,
     options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
     try {
-      const url = `${API_BASE_URL}${endpoint}`;
+      const url = `${API_CONFIG.BASE_URL}${endpoint}`;
       console.log('Making API request to:', url);
+      console.log('Using API token:', this.API_TOKEN);
       
       const response = await fetch(url, {
         headers: {
@@ -101,15 +100,15 @@ class ApiService {
   }
 
   static async getServices(): Promise<ApiResponse<GazetteService[]>> {
-    const response = await this.makeRequest<ServiceApiResponse>('API/GPLoginweb/API_GetParamDetails', {
+    const response = await this.makeRequest<ServiceApiResponse>(API_CONFIG.ENDPOINTS.GET_SERVICES, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'APPType': 'WEB',
-        'APITocken': this.API_TOKEN
+        [API_CONFIG.HEADERS.CONTENT_TYPE]: 'application/json',
+        [API_CONFIG.HEADERS.APP_TYPE]: 'WEB',
+        [API_CONFIG.HEADERS.API_TOKEN]: this.API_TOKEN
       },
       body: JSON.stringify({
-        "ID": "16"
+        "ID": API_CONFIG.REQUEST_IDS.SERVICES
       })
     });
     
@@ -171,95 +170,53 @@ class ApiService {
   }
 
   static async getGazetteTypes(gazetteType: string = "0", paymentPlan: string = "0"): Promise<ApiResponse<GazetteTypeApiResponse>> {
-    try {
-      const response = await this.makeRequest<GazetteTypeApiResponse>('API/GPLoginweb/API_GazetteList', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'APPType': 'WEB',
-          'APITocken': this.API_TOKEN
-        },
-        body: JSON.stringify({
-          "GazetteType": gazetteType,
-          "PaymentPlan": paymentPlan
-        })
-      });
-      
-      if (response.success) {
-        return response;
-      } else {
-        console.log('getGazetteTypes - API failed, falling back to mock data');
-        return this.getMockGazetteTypes();
-      }
-    } catch (error) {
-      console.log('getGazetteTypes - Network error, falling back to mock data');
-      return this.getMockGazetteTypes();
+    const response = await this.makeRequest<GazetteTypeApiResponse>('API/GPLoginweb/API_GazetteList', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'APPType': 'WEB',
+        'APITocken': this.API_TOKEN
+      },
+      body: JSON.stringify({
+        "GazetteType": gazetteType,
+        "PaymentPlan": paymentPlan
+      })
+    });
+    
+    if (!response.success) {
+      return {
+        success: false,
+        data: null as any,
+        error: response.error || 'Failed to fetch gazette types'
+      };
     }
+
+    return response;
   }
 
-  private static getMockGazetteTypes(): ApiResponse<GazetteTypeApiResponse> {
-    const mockResponse: GazetteTypeApiResponse = {
-      SearchDetail: gazettePricingServices.map(service => ({
-        FeeID: service.id,
-        GazzeteType: service.name,
-        PaymentPlan: service.gazetteType,
-        GazetteName: service.name,
-        GazetteDetails: `Service for ${service.name}`,
-        ProcessDays: service.gazetteType === 'premium-plus' ? 1 : service.gazetteType === 'premium-gazette' ? 3 : 21,
-        GazetteFee: service.price,
-        TaxRate: 0.15,
-        DocRequired: service.requirements.map(req => ({
-          ID: Math.random().toString(36).substr(2, 9),
-          DocName: req
-        }))
-      })),
-      success: true,
-      Message: 'Mock data loaded successfully'
-    };
-
-    return {
-      success: true,
-      data: mockResponse
-    };
-  }
 
   static async submitApplication(applicationData: any): Promise<ApiResponse<any>> {
-    try {
-      const response = await this.makeRequest<any>('API/GPLoginweb/API_SubmitApplication', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'APPType': 'WEB',
-          'APITocken': this.API_TOKEN
-        },
-        body: JSON.stringify(applicationData)
-      });
-      
-      if (response.success) {
-        return response;
-      } else {
-        console.log('submitApplication - API failed, returning mock success');
-        return this.getMockSubmissionResponse();
-      }
-    } catch (error) {
-      console.log('submitApplication - Network error, returning mock success');
-      return this.getMockSubmissionResponse();
+    const response = await this.makeRequest<any>('API/GPLoginweb/API_SubmitApplication', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'APPType': 'WEB',
+        'APITocken': this.API_TOKEN
+      },
+      body: JSON.stringify(applicationData)
+    });
+    
+    if (!response.success) {
+      return {
+        success: false,
+        data: null,
+        error: response.error || 'Failed to submit application'
+      };
     }
+
+    return response;
   }
 
-  private static getMockSubmissionResponse(): ApiResponse<any> {
-    const mockResponse = {
-      ReferenceNumber: `GZ-${Date.now()}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
-      Status: 'Submitted',
-      Message: 'Application submitted successfully (using mock data)',
-      SubmittedAt: new Date().toISOString()
-    };
-
-    return {
-      success: true,
-      data: mockResponse
-    };
-  }
 
   static async validateToken(): Promise<ApiResponse<boolean>> {
     try {

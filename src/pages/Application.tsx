@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import GazetteApplicationForm from '../components/GazetteApplicationForm';
 import ApiService from '../services/apiService';
 import type { ApplicationFormData } from '../types/application';
@@ -18,18 +19,20 @@ const Application: React.FC = () => {
       if (response.success) {
         console.log('Application submitted successfully:', response.data);
         // Show success message
-        alert(`Application submitted successfully! Reference: ${response.data.ReferenceNumber || 'N/A'}`);
+        toast.success(`Application submitted successfully! Reference: ${response.data.ReferenceNumber || 'N/A'}`);
         // Navigate to applications list
-        navigate('/applications');
+        setTimeout(() => {
+          navigate('/applications');
+        }, 2000);
       } else {
         console.error('API submission failed:', response.error);
         // Show error message
-        alert(`Application submission failed: ${response.error}`);
+        toast.error(`Application submission failed: ${response.error}`);
       }
     } catch (error) {
       console.error('Error submitting application:', error);
       // Show error message
-      alert(`Application submission failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      toast.error(`Application submission failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsSubmitting(false);
     }

@@ -1,5 +1,6 @@
 
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import Navigation from './components/Navigation';
 import PWAInstallPrompt from './components/PWAInstallPrompt';
 import Home from './pages/Home';
@@ -11,6 +12,7 @@ import ApplicationDetail from './pages/ApplicationDetail';
 import Applications from './pages/Applications'; 
 import Profile from './pages/Profile';
 import About from './pages/About';
+import ApiTest from './pages/ApiTest';
 
 function AppContent() {
   const location = useLocation();
@@ -33,11 +35,38 @@ function AppContent() {
             <Route path="/applications" element={<Applications />} />
             <Route path="/application-detail/:id" element={<ApplicationDetail />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/api-test" element={<ApiTest />} />
           </Routes>
       </main>
       
       {/* PWA Install Prompt */}
       <PWAInstallPrompt />
+      
+      {/* Toast Notifications */}
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#363636',
+            color: '#fff',
+          },
+          success: {
+            duration: 3000,
+            iconTheme: {
+              primary: '#10b981',
+              secondary: '#fff',
+            },
+          },
+          error: {
+            duration: 5000,
+            iconTheme: {
+              primary: '#ef4444',
+              secondary: '#fff',
+            },
+          },
+        }}
+      />
     </div>
   );
 }
