@@ -20,16 +20,32 @@ export default async function handler(req, res) {
     console.log('Method:', req.method);
     console.log('Headers:', req.headers);
 
+    // Prepare headers for the target server
+    const targetHeaders = {
+      'Content-Type': 'application/json',
+      'APPType': 'WEB',
+      'APITocken': 'AyTRfghyNoo987-ghtuHH86YYR'
+    };
+
+    // Prepare request body
+    let requestBody = undefined;
+    if (req.method !== 'GET' && req.method !== 'HEAD') {
+      if (req.body) {
+        requestBody = JSON.stringify(req.body);
+      } else {
+        // If no body but it's a POST request, send empty JSON object
+        requestBody = JSON.stringify({});
+      }
+    }
+
+    console.log('Request body:', requestBody);
+    console.log('Target headers:', targetHeaders);
+
     // Forward the request to the target server
     const response = await fetch(targetUrl, {
       method: req.method,
-      headers: {
-        'Content-Type': 'application/json',
-        'APPType': 'WEB',
-        'APITocken': 'AyTRfghyNoo987-ghtuHH86YYR', 
-        ...req.headers
-      },
-      body: req.method !== 'GET' ? JSON.stringify(req.body) : undefined
+      headers: targetHeaders,
+      body: requestBody
     });
 
     console.log('Response status:', response.status);
