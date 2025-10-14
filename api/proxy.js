@@ -10,11 +10,13 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Get the path from the request
+    // Get the path from the request - remove /api/ prefix
     const path = req.url.replace('/api/', '');
-    const targetUrl = `http://209.236.119.239:2211/API/${path}`;
+    const targetUrl = `http://209.236.119.239:2211/${path}`;
     
-    console.log('Proxying request to:', targetUrl);
+    console.log('Original URL:', req.url);
+    console.log('Extracted path:', path);
+    console.log('Target URL:', targetUrl);
     console.log('Method:', req.method);
     console.log('Headers:', req.headers);
 
