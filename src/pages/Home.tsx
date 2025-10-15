@@ -81,12 +81,6 @@ const Home: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center">
             {/* Hero Content */}
             <div className="text-center lg:text-left order-2 lg:order-1">
-            {/* Badge */}
-            {/* <div className="inline-flex items-center px-3 sm:px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white text-xs sm:text-sm font-medium mb-6 sm:mb-8">
-              
-              Official Government Platform
-            </div> */}
-            
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent leading-tight">
               Ghana E-Gazette
             </h1>
@@ -140,9 +134,9 @@ const Home: React.FC = () => {
             <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
               <div className="relative">
                 <img 
-                  src="/image.png"
+                  src="/mobile-screenshot-hp2.png"
                   alt="Ghana E-Gazette Digital Services" 
-                  className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl h-80 sm:h-96 md:h-[28rem] lg:h-[32rem] xl:h-[36rem] object-cover rounded-2xl"
+                  className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-2xl xl:max-w-xl h-80 sm:h-96 md:h-[28rem] lg:h-[32rem] xl:h-[36rem] object-cover rounded-2xl"
                 />
                 {/* Floating Animation Elements */}
                 {/* <div className="absolute -top-2 sm:-top-4 -left-2 sm:-left-4 w-6 h-6 sm:w-8 sm:h-8 bg-white/20 rounded-full animate-bounce"></div>

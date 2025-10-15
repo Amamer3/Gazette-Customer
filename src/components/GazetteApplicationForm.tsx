@@ -190,7 +190,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-violet-200 border-t-violet-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-200 border-t-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading service details...</p>
         </div>
       </div>
@@ -389,8 +389,8 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
   const renderGazetteTypeStep = () => (
     <div className="space-y-6">
       <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-gradient-to-br from-violet-100 to-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <FileText className="w-8 h-8 text-violet-600" />
+          <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <FileText className="w-8 h-8 text-blue-600" />
         </div>
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Select Gazette Plan</h2>
         <p className="text-gray-600">Choose your preferred gazette plan and processing option</p>
@@ -399,7 +399,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
       {loadingPlans ? (
         <div className="flex items-center justify-center py-16">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-violet-200 border-t-violet-600 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-200 border-t-blue-600 mx-auto mb-4"></div>
             <p className="text-gray-600">Loading gazette plans...</p>
           </div>
         </div>
@@ -421,7 +421,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
               key={plan.FeeID}
               className={`border-2 rounded-xl p-6 cursor-pointer transition-all ${
                 formData.gazetteType === plan.FeeID 
-                  ? 'border-violet-500 bg-violet-50' 
+                  ? 'border-blue-500 bg-blue-50' 
                   : 'border-gray-200 hover:border-gray-300'
               }`}
               onClick={() => handleInputChange('gazetteType', plan.FeeID)}
@@ -446,7 +446,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                   <ul className="space-y-1">
                     {plan.DocRequired.slice(0, 2).map((doc: any) => (
                       <li key={doc.ID} className="text-xs text-gray-600 flex items-start">
-                        <div className="w-1 h-1 bg-violet-400 rounded-full mr-2 mt-2 flex-shrink-0"></div>
+                        <div className="w-1 h-1 bg-blue-400 rounded-full mr-2 mt-2 flex-shrink-0"></div>
                         {doc.DocName}
                       </li>
                     ))}
@@ -1122,15 +1122,15 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
             Secure payment processing with SSL encryption
           </span>
         </div>
-        <div className="flex items-center p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-200">
-          <Check className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 mr-2 sm:mr-3 flex-shrink-0" />
-          <span className="text-blue-800 text-xs sm:text-sm font-medium">
+        <div className="flex items-center p-3 sm:p-4 bg-green-50 rounded-lg border border-green-200">
+          <Check className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 mr-2 sm:mr-3 flex-shrink-0" />
+          <span className="text-green-800 text-xs sm:text-sm font-medium">
             Multiple payment methods available
           </span>
         </div>
-        <div className="flex items-center p-3 sm:p-4 bg-violet-50 rounded-lg border border-violet-200">
-          <Check className="w-4 h-4 sm:w-5 sm:h-5 text-violet-600 mr-2 sm:mr-3 flex-shrink-0" />
-          <span className="text-violet-800 text-xs sm:text-sm font-medium">
+        <div className="flex items-center p-3 sm:p-4 bg-green-50 rounded-lg border border-green-200">
+          <Check className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 mr-2 sm:mr-3 flex-shrink-0" />
+          <span className="text-green-800 text-xs sm:text-sm font-medium">
             Instant payment confirmation
           </span>
         </div>
@@ -1139,7 +1139,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
       <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
         <button
           onClick={handlePaymentNavigation}
-          className="w-full sm:flex-1 bg-gradient-to-r from-violet-600 to-blue-600 text-white px-4 sm:px-6 py-3 rounded-xl font-semibold hover:from-violet-700 hover:to-blue-700 transition-all duration-300 flex items-center justify-center space-x-2"
+          className="w-full sm:flex-1 bg-blue-600 text-white px-4 sm:px-6 py-3 rounded-xl font-semibold hover:from-green-700 hover:to-blue-700 transition-all duration-300 flex items-center justify-center space-x-2"
         >
           <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />
           <span className="text-sm sm:text-base">Proceed to Payment</span>
@@ -1180,15 +1180,15 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                 <ArrowLeft className="w-5 h-5" />
               </button>
               <div className="flex items-center space-x-3 min-w-0">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-violet-100 to-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <ServiceIcon className="w-5 h-5 sm:w-6 sm:h-6 text-violet-600" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-100 to-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <ServiceIcon className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <h1 className="text-lg sm:text-xl font-bold text-gray-900 truncate">{service.name}</h1>
                   {selectedPlan ? (
                     <div className="space-y-1">
                       <p className="text-xs sm:text-sm text-gray-600 truncate">
-                        <span className="font-semibold text-violet-600">{selectedPlan.PaymentPlan}</span>
+                        <span className="font-semibold text-blue-600">{selectedPlan.PaymentPlan}</span>
                         {selectedPlan.GazetteName && ` • ${selectedPlan.GazetteName}`}
                       </p>
                       <p className="text-xs sm:text-sm text-gray-600 truncate">
@@ -1209,11 +1209,11 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
       <div className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Application Summary Card */}
         {selectedPlan && (
-          <div className="bg-gradient-to-r from-violet-50 to-blue-50 border border-violet-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8">
+          <div className="bg-gradient-to-r from-blue-50 to-blue-50 border border-blue-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
               <div className="flex items-center space-x-3 sm:space-x-4">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-violet-100 to-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <ServiceIcon className="w-6 h-6 sm:w-8 sm:h-8 text-violet-600" />
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-100 to-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <ServiceIcon className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
                 </div>
                 <div className="min-w-0">
                   <h2 className="text-base sm:text-lg font-bold text-gray-900">Application Summary</h2>
@@ -1236,7 +1236,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
               <div key={step.number} className="flex items-center">
                 <div className={`flex items-center justify-center w-10 h-10 rounded-full border-2 ${
                   currentStep >= step.number
-                    ? 'bg-violet-600 border-violet-600 text-white'
+                    ? 'bg-blue-600 border-blue-600 text-white'
                     : 'bg-white border-gray-300 text-gray-500'
                 }`}>
                   {currentStep > step.number ? (
@@ -1246,13 +1246,13 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                   )}
                 </div>
                 <span className={`ml-2 text-sm font-medium ${
-                  currentStep >= step.number ? 'text-violet-600' : 'text-gray-500'
+                  currentStep >= step.number ? 'text-blue-600' : 'text-gray-500'
                 }`}>
                   {step.title}
                 </span>
                 {index < visibleSteps.length - 1 && (
                   <div className={`w-16 h-0.5 mx-4 ${
-                    currentStep > step.number ? 'bg-violet-600' : 'bg-gray-300'
+                    currentStep > step.number ? 'bg-blue-600' : 'bg-gray-300'
                   }`} />
                 )}
               </div>
@@ -1266,7 +1266,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                 <div key={step.number} className="flex items-center">
                   <div className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${
                     currentStep >= step.number
-                      ? 'bg-violet-600 border-violet-600 text-white'
+                      ? 'bg-blue-600 border-blue-600 text-white'
                       : 'bg-white border-gray-300 text-gray-500'
                   }`}>
                     {currentStep > step.number ? (
@@ -1277,14 +1277,14 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                   </div>
                   {index < visibleSteps.length - 1 && (
                     <div className={`w-8 h-0.5 mx-2 ${
-                      currentStep > step.number ? 'bg-violet-600' : 'bg-gray-300'
+                      currentStep > step.number ? 'bg-blue-600' : 'bg-gray-300'
                     }`} />
                   )}
                 </div>
               ))}
             </div>
             <div className="text-center">
-              <p className="text-sm font-medium text-violet-600">
+              <p className="text-sm font-medium text-blue-600">
                 Step {currentStep - 1} of {visibleSteps.length}: {visibleSteps[currentStep - 2]?.title}
               </p>
             </div>
@@ -1311,7 +1311,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
             <button
               onClick={() => setCurrentStep(prev => prev + 1)}
               disabled={!isStepValid(currentStep)}
-              className="w-full sm:w-auto inline-flex items-center justify-center px-4 sm:px-6 py-3 bg-violet-600 text-white rounded-xl font-medium hover:bg-violet-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center px-4 sm:px-6 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               Next
               <ArrowRight className="w-4 h-4 ml-2" />

@@ -1,0 +1,42 @@
+[
+    {
+        "Typ": "DropDownList",
+        "ID": "DDLNCGender",
+        "Val": "M"
+    },
+    {
+        "Typ": "TextBox",
+        "ID": "TxtNCChangeFrom",
+        "Val": "BHUPINDER SINGH"
+    },
+    {
+        "Typ": "TextBox",
+        "ID": "TxtNCChangeTo",
+        "Val": "BHUPINDER SINGH KALA"
+    },
+    {
+        "Typ": "TextBox",
+        "ID": "TxtNCEffectiveDate",
+        "Val": "2025-10-18"
+    },
+    {
+        "Typ": "TextBox",
+        "ID": "TxtNCGhanaCardNo",
+        "Val": "ABC GHC"
+    },
+    {
+        "Typ": "TextBox",
+        "ID": "TxtNCORegNo",
+        "Val": "12323"
+    },
+    {
+        "Typ": "TextBox",
+        "ID": "TxtNCOccupation",
+        "Val": "Software Engineer "
+    },
+    {
+        "Typ": "TextBox",
+        "ID": "TxtNCOOrg",
+        "Val": "Nacasky Company LTD"
+    }
+]
