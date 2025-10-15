@@ -66,8 +66,8 @@ const Profile: React.FC = () => {
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center space-x-4">
-            <div className="w-20 h-20 bg-gradient-to-br from-violet-100 to-blue-100 rounded-full flex items-center justify-center">
-              <User className="w-10 h-10 text-violet-600" />
+            <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-blue-100 rounded-full flex items-center justify-center">
+              <User className="w-10 h-10 text-blue-600" />
             </div>
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
@@ -98,7 +98,7 @@ const Profile: React.FC = () => {
                     onClick={() => setActiveTab(tab.id)}
                     className={`w-full flex items-center px-4 py-3 rounded-xl text-left transition-colors ${
                       activeTab === tab.id
-                        ? 'bg-violet-100 text-violet-700 font-semibold'
+                        ? 'bg-blue-100 text-blue-700 font-semibold'
                         : 'text-gray-700 hover:bg-gray-100'
                     }`}
                   >
@@ -119,7 +119,7 @@ const Profile: React.FC = () => {
                   {!isEditing ? (
                     <button
                       onClick={() => setIsEditing(true)}
-                      className="inline-flex items-center px-4 py-2 bg-violet-100 text-violet-700 rounded-lg font-medium hover:bg-violet-200 transition-colors"
+                      className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-700 rounded-lg font-medium hover:bg-blue-200 transition-colors"
                     >
                       <Edit className="w-4 h-4 mr-2" />
                       Edit Profile
@@ -154,7 +154,7 @@ const Profile: React.FC = () => {
                         type="text"
                         value={editForm.fullName}
                         onChange={(e) => setEditForm({ ...editForm, fullName: e.target.value })}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     ) : (
                       <div className="flex items-center px-4 py-3 bg-gray-50 rounded-xl">
@@ -173,7 +173,7 @@ const Profile: React.FC = () => {
                         type="email"
                         value={editForm.email}
                         onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     ) : (
                       <div className="flex items-center px-4 py-3 bg-gray-50 rounded-xl">
@@ -192,7 +192,7 @@ const Profile: React.FC = () => {
                         type="tel"
                         value={editForm.phone}
                         onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     ) : (
                       <div className="flex items-center px-4 py-3 bg-gray-50 rounded-xl">
@@ -236,7 +236,7 @@ const Profile: React.FC = () => {
                         <h3 className="text-lg font-semibold text-gray-900">Change Password</h3>
                         <p className="text-gray-600">Update your account password for better security</p>
                       </div>
-                      <button className="inline-flex items-center px-4 py-2 bg-violet-100 text-violet-700 rounded-lg font-medium hover:bg-violet-200 transition-colors">
+                      <button className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-700 rounded-lg font-medium hover:bg-blue-200 transition-colors">
                         <Lock className="w-4 h-4 mr-2" />
                         Change Password
                       </button>
@@ -291,7 +291,7 @@ const Profile: React.FC = () => {
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" className="sr-only peer" defaultChecked />
-                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-violet-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-violet-600"></div>
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                       </label>
                     </div>
                   ))}
@@ -314,7 +314,7 @@ const Profile: React.FC = () => {
                         </div>
                         <span className="text-sm text-gray-600">+233 24 123 4567</span>
                       </div>
-                      <button className="w-full text-center py-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-violet-300 hover:text-violet-600 transition-colors">
+                      <button className="w-full text-center py-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-blue-300 hover:text-blue-600 transition-colors">
                         + Add Payment Method
                       </button>
                     </div>
@@ -339,7 +339,7 @@ const Profile: React.FC = () => {
                   <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">No Documents Yet</h3>
                   <p className="text-gray-600 mb-6">Your uploaded documents will appear here</p>
-                  <button className="inline-flex items-center px-6 py-3 bg-violet-600 text-white rounded-xl font-semibold hover:bg-violet-700 transition-colors">
+                  <button className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors">
                     <FileText className="w-5 h-5 mr-2" />
                     Upload Document
                   </button>
@@ -357,7 +357,7 @@ const Profile: React.FC = () => {
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
                         <span className="text-gray-700">Language</span>
-                        <select className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500">
+                        <select className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
                           <option>English</option>
                           <option>Twi</option>
                           <option>Ga</option>
@@ -365,7 +365,7 @@ const Profile: React.FC = () => {
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-gray-700">Time Zone</span>
-                        <select className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500">
+                        <select className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
                           <option>GMT+0 (Accra)</option>
                         </select>
                       </div>

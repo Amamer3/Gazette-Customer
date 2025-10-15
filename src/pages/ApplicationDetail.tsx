@@ -79,7 +79,7 @@ const ApplicationDetail: React.FC = () => {
       case 'under-review':
         return 'bg-yellow-100 text-yellow-800 border-yellow-200';
       case 'submitted':
-        return 'bg-purple-100 text-blue-800 border-blue-200';
+        return 'bg-blue-100 text-blue-800 border-blue-200';
       case 'rejected':
         return 'bg-red-100 text-red-800 border-red-200';
       case 'draft':
@@ -157,7 +157,7 @@ const ApplicationDetail: React.FC = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-violet-600"></div>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
           <p className="mt-4 text-gray-600">Loading application details...</p>
         </div>
       </div>
@@ -557,7 +557,7 @@ const ApplicationDetail: React.FC = () => {
               </div>
               
               <div className="mt-6 space-y-3">
-                <button className="w-full inline-flex items-center justify-center px-4 py-3 bg-violet-600 text-white rounded-xl font-semibold hover:bg-violet-700 transition-colors">
+                <button className="w-full inline-flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors">
                   <MessageCircle className="w-4 h-4 mr-2" />
                   Contact Support
                 </button>

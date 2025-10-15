@@ -125,8 +125,8 @@ const Navigation: React.FC = () => {
                 to="/"
                 className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
                   isActive('/')
-                    ? 'bg-blue-600 text-white shadow-lg shadow-violet-500/25 transform scale-105'
-                    : 'text-gray-700 hover:text-violet-700  hover:shadow-md hover:scale-105'
+                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/25 transform scale-105'
+                    : 'text-gray-700 hover:text-blue-700  hover:shadow-md hover:scale-105'
                 }`}
               >
                 Home
@@ -150,8 +150,8 @@ const Navigation: React.FC = () => {
                     to="/dashboard"
                     className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
                       isActive('/dashboard')
-                        ? 'bg-blue-600 text-white shadow-lg shadow-violet-500/25 transform scale-105'
-                        : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md hover:scale-105'
+                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/25 transform scale-105'
+                        : 'text-gray-700 hover:text-blue-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-50 hover:shadow-md hover:scale-105'
                     }`}
                   >
                     Dashboard
@@ -160,8 +160,8 @@ const Navigation: React.FC = () => {
                     to="/applications"
                     className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
                       isActive('/applications')
-                        ? 'bg-blue-600 text-white shadow-lg shadow-violet-500/25 transform scale-105'
-                        : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md hover:scale-105'
+                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/25 transform scale-105'
+                        : 'text-gray-700 hover:text-blue-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-50 hover:shadow-md hover:scale-105'
                     }`}
                   >
                     Applications
@@ -177,9 +177,9 @@ const Navigation: React.FC = () => {
               <div className="relative" ref={userMenuRef}>
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center space-x-2 px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md transition-all duration-300"
+                  className="flex items-center space-x-2 px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-50 hover:shadow-md transition-all duration-300"
                 >
-                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-violet-500 rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-500 rounded-full flex items-center justify-center">
                     <User className="w-4 h-4 text-white" />
                   </div>
                   <span className="hidden lg:block">
@@ -218,13 +218,13 @@ const Navigation: React.FC = () => {
               <div className="flex items-center space-x-2">
                 <Link
                   to="/login"
-                  className="px-4 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-violet-50 hover:shadow-md shadow-md transition-all duration-300"
+                  className="px-4 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-50 hover:shadow-md shadow-md transition-all duration-300"
                 >
                   Login/Sign Up
                 </Link>
                 {/* <Link
                   to="/register"
-                  className="px-4 py-2 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="px-4 py-2 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   Sign Up
                 </Link> */}
@@ -240,7 +240,7 @@ const Navigation: React.FC = () => {
               type="button"
               onClick={isMobileMenuOpen ? closeMobileMenu : openMobileMenu}
               onKeyDown={handleKeyDown}
-              className="bg-gradient-to-r from-violet-50 to-purple-50 p-2 sm:p-2.5 rounded-xl text-violet-600 hover:text-violet-700 hover:from-violet-100 hover:to-purple-100 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 border border-violet-100"
+              className="bg-gradient-to-r from-blue-50 to-blue-50 p-2 sm:p-2.5 rounded-xl text-blue-600 hover:text-blue-700 hover:from-blue-100 hover:to-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 border border-blue-100"
               aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-menu"
@@ -313,7 +313,7 @@ const Navigation: React.FC = () => {
               </div>
               <button
                 onClick={closeMobileMenu}
-                className="p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
+                className="p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 aria-label="Close navigation menu"
               >
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -329,10 +329,10 @@ const Navigation: React.FC = () => {
                 <Link
                   to="/"
                   onClick={closeMobileMenu}
-                  className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 ${
+                  className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
                     isActive('/')
-                      ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25'
-                      : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
+                      ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/25'
+                      : 'text-gray-700 hover:text-blue-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-50 hover:shadow-md'
                   }`}
                 >
                   Home
@@ -356,10 +356,10 @@ const Navigation: React.FC = () => {
                     <Link
                       to="/dashboard"
                       onClick={closeMobileMenu}
-                      className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 ${
+                      className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
                         isActive('/dashboard')
-                          ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25'
-                          : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
+                          ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/25'
+                          : 'text-gray-700 hover:text-blue-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-50 hover:shadow-md'
                       }`}
                     >
                       Dashboard
@@ -368,10 +368,10 @@ const Navigation: React.FC = () => {
                     <Link
                       to="/applications"
                       onClick={closeMobileMenu}
-                      className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 ${
+                      className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
                         isActive('/applications')
-                          ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25'
-                          : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
+                          ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/25'
+                          : 'text-gray-700 hover:text-blue-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-50 hover:shadow-md'
                       }`}
                     >
                       Applications
@@ -380,10 +380,10 @@ const Navigation: React.FC = () => {
                     <Link
                       to="/profile"
                       onClick={closeMobileMenu}
-                      className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 ${
+                      className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
                         isActive('/profile')
-                          ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25'
-                          : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md'
+                          ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/25'
+                          : 'text-gray-700 hover:text-blue-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-50 hover:shadow-md'
                       }`}
                     >
                       Profile
@@ -414,14 +414,14 @@ const Navigation: React.FC = () => {
                     <Link
                       to="/login"
                       onClick={closeMobileMenu}
-                      className="block px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-violet-50 hover:shadow-md transition-all duration-300"
+                      className="block px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-50 hover:shadow-md transition-all duration-300"
                     >
                       Login/Sign Up
                     </Link>
                     {/* <Link
                       to="/register"
                       onClick={closeMobileMenu}
-                      className="block px-3 py-2.5 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 shadow-lg hover:shadow-xl transition-all duration-300"
+                      className="block px-3 py-2.5 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all duration-300"
                     >
                       Sign Up
                     </Link> */}

@@ -141,7 +141,7 @@ const Dashboard: React.FC = () => {
       case 'processing':
         return 'text-blue-600 bg-blue-100 border-blue-200';
       case 'under-review':
-        return 'text-purple-600 bg-purple-100 border-purple-200';
+        return 'text-blue-600 bg-blue-100 border-blue-200';
       case 'submitted':
         return 'text-orange-600 bg-orange-100 border-orange-200';
       case 'rejected':
@@ -289,7 +289,7 @@ const Dashboard: React.FC = () => {
                     <h3 className="text-base sm:text-lg lg:text-xl font-bold text-gray-900 mb-1">Recent Applications</h3>
                     <p className="text-xs sm:text-sm lg:text-base text-gray-600">Track your application progress</p>
                   </div>
-                  <div className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-blue-100 to-violet-100 rounded-md sm:rounded-lg lg:rounded-xl flex items-center justify-center">
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-blue-100 to-blue-100 rounded-md sm:rounded-lg lg:rounded-xl flex items-center justify-center">
                     <Activity className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-blue-600" />
                   </div>
                 </div>
@@ -319,15 +319,15 @@ const Dashboard: React.FC = () => {
                       return (
                         <div 
                           key={application.id} 
-                          className="group bg-gradient-to-r from-gray-50 to-white border border-gray-200 rounded-lg sm:rounded-xl p-3 sm:p-4 hover:border-violet-300 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+                          className="group bg-gradient-to-r from-gray-50 to-white border border-gray-200 rounded-lg sm:rounded-xl p-3 sm:p-4 hover:border-blue-300 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
                           style={{ animationDelay: `${index * 50}ms` }}
                         >
                           <div className="flex items-start space-x-2 sm:space-x-3 lg:space-x-4">
-                            <div className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-violet-100 to-blue-100 rounded-md sm:rounded-lg lg:rounded-xl flex items-center justify-center flex-shrink-0">
-                              <IconComponent className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-violet-600" />
+                            <div className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-blue-100 to-blue-100 rounded-md sm:rounded-lg lg:rounded-xl flex items-center justify-center flex-shrink-0">
+                              <IconComponent className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-blue-600" />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <h5 className="font-bold text-gray-900 text-xs sm:text-sm lg:text-base group-hover:text-violet-700 transition-colors truncate">
+                              <h5 className="font-bold text-gray-900 text-xs sm:text-sm lg:text-base group-hover:text-blue-700 transition-colors truncate">
                                 {service?.name || 'Unknown Service'}
                               </h5>
                               <p className="text-xs sm:text-sm text-gray-500 mb-2">#{application.id.slice(-8)}</p>
@@ -346,7 +346,7 @@ const Dashboard: React.FC = () => {
                               
                               <Link
                                 to={`/application-detail/${application.id}`}
-                                className="group/btn w-full bg-gradient-to-r from-violet-600 to-blue-600 text-white px-2 sm:px-3 py-1.5 sm:py-2 rounded-md sm:rounded-lg hover:from-violet-700 hover:to-blue-700 transition-all duration-300 text-xs sm:text-sm font-semibold flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-105"
+                                className="group/btn w-full bg-gradient-to-r from-blue-600 to-blue-600 text-white px-2 sm:px-3 py-1.5 sm:py-2 rounded-md sm:rounded-lg hover:from-blue-700 hover:to-blue-700 transition-all duration-300 text-xs sm:text-sm font-semibold flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-105"
                               >
                                 <span>View Details</span>
                                 <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2 group-hover/btn:translate-x-1 transition-transform duration-300" />
@@ -392,7 +392,7 @@ const Dashboard: React.FC = () => {
                 <div className="space-y-3 sm:space-y-4">
                   <button
                     onClick={handleNewApplicationClick}
-                    className="w-full bg-blue-600 text-white py-2.5 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl hover:from-violet-700 hover:to-blue-700 transition-all duration-300 text-xs sm:text-sm font-semibold flex items-center justify-center transform hover:scale-105 shadow-lg hover:shadow-xl"
+                    className="w-full bg-blue-600 text-white py-2.5 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl hover:from-blue-700 hover:to-blue-700 transition-all duration-300 text-xs sm:text-sm font-semibold flex items-center justify-center transform hover:scale-105 shadow-lg hover:shadow-xl"
                   >
                     <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
                     <span>New Application</span>
@@ -445,7 +445,7 @@ const Dashboard: React.FC = () => {
             <div className="p-6">
               {servicesLoading ? (
                 <div className="flex items-center justify-center py-12">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-violet-600"></div>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                   <span className="ml-3 text-gray-600">Loading services...</span>
                 </div>
               ) : servicesError ? (
@@ -475,22 +475,22 @@ const Dashboard: React.FC = () => {
                   return (
                     <div
                       key={service.id}
-                      className="group bg-white border border-gray-200 rounded-xl p-4 hover:border-violet-300 hover:shadow-lg transition-all duration-300 cursor-pointer"
+                      className="group bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-lg transition-all duration-300 cursor-pointer"
                       onClick={() => handleServiceClick(service)}
                     >
                       <div className="flex items-center space-x-3">
-                        <div className="w-12 h-12 bg-gradient-to-br from-violet-100 to-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <IconComponent className="w-6 h-6 text-violet-600" />
+                        <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <IconComponent className="w-6 h-6 text-blue-600" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-gray-900 group-hover:text-violet-700 transition-colors text-sm">
+                          <h3 className="font-semibold text-gray-900 group-hover:text-blue-700 transition-colors text-sm">
                             {service.name}
                           </h3>
                           <p className="text-xs text-gray-500 mt-1 line-clamp-2">
                             {service.description || `Professional ${service.name.toLowerCase()} service`}
                           </p>
                         </div>
-                        <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-violet-600 group-hover:translate-x-1 transition-all" />
+                        <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
                       </div>
                     </div>
                   );
@@ -530,7 +530,7 @@ const Dashboard: React.FC = () => {
             <div className="p-6">
               {loadingPlans ? (
                 <div className="flex items-center justify-center py-12">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-violet-600"></div>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                   <span className="ml-3 text-gray-600">Loading gazette plans...</span>
                 </div>
               ) : gazettePlans.length === 0 ? (
@@ -581,7 +581,7 @@ const Dashboard: React.FC = () => {
                             {plans.map((plan: any) => (
                               <div
                                 key={plan.FeeID}
-                                className="group bg-white border border-gray-200 rounded-xl p-4 hover:border-violet-300 hover:shadow-lg transition-all duration-300 cursor-pointer"
+                                className="group bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-lg transition-all duration-300 cursor-pointer"
                                 onClick={() => {
                                   setShowGazetteTypeModal(false);
                                   navigate(`/application/${selectedService.id}?plan=${plan.FeeID}`);

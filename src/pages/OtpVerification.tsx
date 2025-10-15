@@ -152,7 +152,7 @@ const OtpVerification: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-violet-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         
 
@@ -167,7 +167,7 @@ const OtpVerification: React.FC = () => {
                 className="w-16 h-16" 
                 alt="Ghana Publishing Company Limited" 
               />
-              <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 opacity-20 blur-sm"></div>
+              <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-blue-600 to-blue-600 opacity-20 blur-sm"></div>
             </div>
           </div>
           <h2 className="mt-6 text-3xl font-bold text-gray-900">
@@ -225,7 +225,7 @@ const OtpVerification: React.FC = () => {
             <button
               type="submit"
               disabled={isLoading || otp.join('').length !== 6}
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-xl text-white bg-blue-600 hover:from-blue-700 hover:to-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-xl text-white bg-blue-600 hover:from-blue-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
             >
               {isLoading ? (
                 <div className="flex items-center">

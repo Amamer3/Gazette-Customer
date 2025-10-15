@@ -92,10 +92,10 @@ const Home: React.FC = () => {
               Apply for certificates, licenses, and official documents with just a few clicks.
             </p>
             
-            {/* <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start mb-12 sm:mb-14 lg:mb-16">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start mb-12 sm:mb-14 lg:mb-16">
               <Link
                 to="/auth"
-                className="group inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-white text-violet-700 rounded-xl font-semibold text-base sm:text-lg hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
+                className="group inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-white text-blue-700 rounded-xl font-semibold text-base sm:text-lg hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
               >
                 Get Started Today
                 <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
@@ -106,10 +106,10 @@ const Home: React.FC = () => {
               >
                 Explore Services
               </button>
-            </div> */}
+            </div>
             
             {/* Trust Indicators */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 text-center lg:text-left">
+            {/* <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 text-center lg:text-left">
               <div className="text-white/90">
                 <div className="text-2xl sm:text-3xl font-bold mb-1">50K+</div>
                 <div className="text-xs sm:text-sm text-blue-200">Documents Issued</div>
@@ -126,7 +126,7 @@ const Home: React.FC = () => {
                 <div className="text-2xl sm:text-3xl font-bold mb-1">5-7</div>
                 <div className="text-xs sm:text-sm text-blue-200">Days Processing</div>
               </div>
-            </div>
+            </div> */}
             
             </div>
             
@@ -138,9 +138,7 @@ const Home: React.FC = () => {
                   alt="Ghana E-Gazette Digital Services" 
                   className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-2xl xl:max-w-xl h-80 sm:h-96 md:h-[28rem] lg:h-[32rem] xl:h-[36rem] object-cover rounded-2xl"
                 />
-                {/* Floating Animation Elements */}
-                {/* <div className="absolute -top-2 sm:-top-4 -left-2 sm:-left-4 w-6 h-6 sm:w-8 sm:h-8 bg-white/20 rounded-full animate-bounce"></div>
-                <div className="absolute -bottom-2 sm:-bottom-4 -right-2 sm:-right-4 w-4 h-4 sm:w-6 sm:h-6 bg-blue-400/30 rounded-full animate-bounce" style={{animationDelay: '1s'}}></div> */}
+                
               </div>
             </div>
           </div>
@@ -156,13 +154,13 @@ const Home: React.FC = () => {
       <section id="services-section" className="py-12 sm:py-16 lg:py-20 xl:py-24 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 sm:mb-16 lg:mb-20">
-            <div className="inline-flex items-center px-3 sm:px-4 py-2 rounded-full bg-violet-100 text-violet-700 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+            <div className="inline-flex items-center px-3 sm:px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
               <FileText className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
               Our Services
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
               Gazette Services
-              <span className="block text-violet-600">Tailored to Your Needs</span>
+              <span className="block text-blue-600">Tailored to Your Needs</span>
             </h2>
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Choose from our comprehensive range of official gazette publication services, 
@@ -172,7 +170,7 @@ const Home: React.FC = () => {
           
           {loading ? (
             <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-16 w-16 border-4 border-violet-200 border-t-violet-600 mx-auto mb-4"></div>
+              <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-200 border-t-blue-600 mx-auto mb-4"></div>
               <p className="text-gray-600">Loading services...</p>
             </div>
           ) : error ? (
@@ -187,22 +185,22 @@ const Home: React.FC = () => {
                 return (
                   <div 
                     key={service.id} 
-                    className="group relative bg-white rounded-2xl sm:rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 sm:hover:-translate-y-3 border border-gray-100 overflow-hidden cursor-pointer"
+                    className="group relative bg-white rounded-2xl sm:rounded-3xl shadow-sm hover:shadow-lg transition-all duration-500 transform hover:-translate-y-2 sm:hover:-translate-y-3 border border-gray-100 overflow-hidden cursor-pointer"
                     style={{ animationDelay: `${index * 100}ms` }}
                     onClick={() => handleServiceClick(service)}
                   >
                     {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     
                     <div className="relative p-4 sm:p-6 lg:p-8">
                       {/* Service Icon */}
                       <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 mx-auto mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
-                        <div className="w-full h-full bg-gradient-to-br from-violet-100 to-blue-100 rounded-2xl sm:rounded-3xl flex items-center justify-center shadow-inner">
-                          <IconComponent className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-violet-600" />
+                        <div className="w-full h-full bg-gradient-to-br from-blue-100 to-blue-100 rounded-2xl sm:rounded-3xl flex items-center justify-center shadow-inner">
+                          <IconComponent className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-blue-600" />
                         </div>
                       </div>
                       
-                      <h3 className="text-sm sm:text-base lg:text-lg font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-violet-700 transition-colors text-center leading-tight">
+                      <h3 className="text-sm sm:text-base lg:text-lg font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-blue-700 transition-colors text-center leading-tight">
                         {service.name}
                       </h3>
                       
@@ -212,7 +210,7 @@ const Home: React.FC = () => {
                       </p>
                       
                       {/* Apply Button */}
-                      <div className="w-full inline-flex items-center justify-center px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-r from-violet-600 to-blue-600 text-white rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm hover:from-violet-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group-hover:shadow-2xl">
+                      <div className="w-full inline-flex items-center justify-center px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-blue-600 text-white rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm hover:from-blue-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group-hover:shadow-2xl">
                         Apply Now
                         <ArrowRight className="ml-2 w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
                       </div>
@@ -229,13 +227,13 @@ const Home: React.FC = () => {
       <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-br from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* <div className="text-center mb-12 sm:mb-16 lg:mb-20">
-            <div className="inline-flex items-center px-3 sm:px-4 py-2 rounded-full bg-violet-100 text-violet-700 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+            <div className="inline-flex items-center px-3 sm:px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
               <FileText className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
               Our Services
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
               Gazette Services
-              <span className="block text-violet-600">Tailored to Your Needs</span>
+              <span className="block text-blue-600">Tailored to Your Needs</span>
             </h2>
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Choose from our comprehensive range of official gazette publication services, 
@@ -259,7 +257,7 @@ const Home: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12 justify-center text-center">
               <button
                 onClick={() => document.getElementById('services-section')?.scrollIntoView({ behavior: 'smooth' })}
-                className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-white text-violet-600 rounded-lg sm:rounded-xl font-bold text-base sm:text-lg  hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-2xl"
+                className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-white text-blue-600 rounded-lg sm:rounded-xl font-bold text-base sm:text-lg  hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-2xl"
               >
                 View All Services
                 <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
@@ -347,7 +345,7 @@ const Home: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
               <Link
                 to="/auth"
-                className="group inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-white text-violet-600 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-white/25"
+                className="group inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-white text-blue-600 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-white/25"
               >
                 <span>Get Started</span>
                 <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
@@ -455,7 +453,7 @@ const Home: React.FC = () => {
             <div className="p-6">
               {loadingPlans ? (
                 <div className="text-center py-12">
-                  <div className="animate-spin rounded-full h-16 w-16 border-4 border-violet-200 border-t-violet-600 mx-auto mb-4"></div>
+                  <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-200 border-t-blue-600 mx-auto mb-4"></div>
                   <p className="text-gray-600">Loading plans...</p>
                 </div>
               ) : gazettePlans.length === 0 ? (
@@ -506,7 +504,7 @@ const Home: React.FC = () => {
                             {plans.map((plan: any) => (
                               <div
                                 key={plan.FeeID}
-                                className="group bg-white border border-gray-200 rounded-xl p-4 hover:border-violet-300 hover:shadow-lg transition-all duration-300 cursor-pointer"
+                                className="group bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-lg transition-all duration-300 cursor-pointer"
                                 onClick={() => {
                                   setShowGazetteTypeModal(false);
                                   navigate(`/application/${selectedService.id}?plan=${plan.FeeID}`);

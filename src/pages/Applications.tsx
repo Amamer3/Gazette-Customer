@@ -125,7 +125,7 @@ const Applications: React.FC = () => {
       case 'rejected':
         return 'bg-red-100 text-red-800';
       case 'submitted':
-        return 'bg-purple-100 text-blue-800';
+        return 'bg-blue-100 text-blue-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -189,7 +189,7 @@ const Applications: React.FC = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-violet-600"></div>
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
       </div>
     );
   }
@@ -207,7 +207,7 @@ const Applications: React.FC = () => {
             <div className="mt-4 md:mt-0">
               <button
                 onClick={() => window.location.href = '/#services-section'}
-                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-violet-600 to-blue-600 text-white rounded-xl font-semibold hover:from-violet-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 <FileText className="w-5 h-5 mr-2" />
                 New Application
@@ -229,7 +229,7 @@ const Applications: React.FC = () => {
                   placeholder="Search applications or orders..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
             </div>
@@ -238,7 +238,7 @@ const Applications: React.FC = () => {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="all">All Status</option>
                 <option value="draft">Draft</option>
@@ -254,7 +254,7 @@ const Applications: React.FC = () => {
               <select
                 value={serviceFilter}
                 onChange={(e) => setServiceFilter(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="all">All Services</option>
                 <option value="appointment-marriage-officers">Marriage Officers</option>
@@ -278,7 +278,7 @@ const Applications: React.FC = () => {
               <p className="text-gray-600 mb-6">You haven't submitted any applications yet.</p>
               <button
                 onClick={() => window.location.href = '/#services-section'}
-                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-violet-600 to-blue-600 text-white rounded-xl font-semibold hover:from-violet-700 hover:to-blue-700 transition-all duration-300"
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-blue-700 transition-all duration-300"
               >
                 Start Your First Application
               </button>
@@ -291,7 +291,7 @@ const Applications: React.FC = () => {
                   <div key={application.id} className="bg-white rounded-2xl shadow-sm p-6 hover:shadow-lg transition-shadow">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center space-x-3">
-                        <div className="w-12 h-12 bg-gradient-to-br from-violet-100 to-blue-100 rounded-xl flex items-center justify-center">
+                        <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-100 rounded-xl flex items-center justify-center">
                           <ServiceIcon className="w-6 h-6 text-blue-600" />
                         </div>
                         <div>
@@ -333,7 +333,7 @@ const Applications: React.FC = () => {
                     <div className="flex items-center justify-between">
                       <Link
                         to={`/application-detail/${application.id}`}
-                        className="inline-flex items-center px-4 py-2 bg-violet-100 text-blue-700 rounded-lg font-medium hover:bg-violet-200 transition-colors"
+                        className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-700 rounded-lg font-medium hover:bg-blue-200 transition-colors"
                       >
                         <Eye className="w-4 h-4 mr-2" />
                         View Details
@@ -426,7 +426,7 @@ const Applications: React.FC = () => {
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <button 
                             onClick={() => handleViewReceipt(order)}
-                            className="text-violet-600 hover:text-violet-900 font-medium transition-colors"
+                            className="text-blue-600 hover:text-blue-900 font-medium transition-colors"
                           >
                             View Receipt
                           </button>

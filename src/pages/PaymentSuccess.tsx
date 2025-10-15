@@ -34,7 +34,7 @@ const PaymentSuccess: React.FC = () => {
           <p className="text-gray-600 mb-6">Please access this page through the payment process.</p>
           <button
             onClick={() => navigate('/applications')}
-            className="px-6 py-3 bg-violet-600 text-white rounded-xl font-semibold hover:bg-violet-700 transition-colors"
+            className="px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors"
           >
             Return to Applications
           </button>
@@ -294,7 +294,7 @@ const PaymentSuccess: React.FC = () => {
                   <Mail className="w-5 h-5 text-gray-400 mr-3" />
                   <div>
                     <p className="text-sm font-medium text-gray-900">Email Support</p>
-                    <a href="mailto:support@egazette.gov.gh" className="text-sm text-violet-600 hover:text-violet-700">
+                    <a href="mailto:support@egazette.gov.gh" className="text-sm text-blue-600 hover:text-blue-700">
                       support@egazette.gov.gh
                     </a>
                   </div>
@@ -304,7 +304,7 @@ const PaymentSuccess: React.FC = () => {
                   <Phone className="w-5 h-5 text-gray-400 mr-3" />
                   <div>
                     <p className="text-sm font-medium text-gray-900">Phone Support</p>
-                    <a href="tel:+233302123456" className="text-sm text-violet-600 hover:text-violet-700">
+                    <a href="tel:+233302123456" className="text-sm text-blue-600 hover:text-blue-700">
                       +233 30 212 3456
                     </a>
                   </div>
@@ -324,7 +324,7 @@ const PaymentSuccess: React.FC = () => {
             <div className="space-y-3">
               <button
                 onClick={() => navigate('/applications')}
-                className="w-full inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-violet-600 to-blue-600 text-white rounded-xl font-semibold hover:from-violet-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="w-full inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 <FileText className="w-5 h-5 mr-2" />
                 Track Application

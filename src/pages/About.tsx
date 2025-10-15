@@ -41,17 +41,17 @@ const About: React.FC = () => {
                 <p>
                   We exist primarily to print and publish very high quality books and stationery for Educational Institutions, Government Departments and the General Public at competitive prices.
                 </p>
-                <p className="font-semibold text-violet-700 text-lg">
+                <p className="font-semibold text-blue-700 text-lg">
                   We aim at nothing but the best in all our Services. As a Printing and Publishing Company, our values drive us to offer World Class Services to our clients and the General Public.
                 </p>
               </div>
             </div>
             
-            <div className="bg-gradient-to-br from-violet-50 to-blue-50 rounded-2xl p-8">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-50 rounded-2xl p-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-6">Key Milestones</h3>
               <div className="space-y-4">
                 <div className="flex items-start space-x-4">
-                  <div className="w-8 h-8 bg-violet-600 rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
                     <span className="text-white font-bold text-sm">1965</span>
                   </div>
                   <div>
@@ -69,7 +69,7 @@ const About: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
-                  <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
                     <span className="text-white font-bold text-sm">1993</span>
                   </div>
                   <div>
@@ -106,8 +106,8 @@ const About: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-white rounded-2xl p-8 shadow-lg">
-              <div className="w-16 h-16 bg-gradient-to-br from-violet-100 to-violet-200 rounded-2xl flex items-center justify-center mb-6">
-                <Award className="w-8 h-8 text-violet-600" />
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center mb-6">
+                <Award className="w-8 h-8 text-blue-600" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Mission</h3>
               <p className="text-gray-700 leading-relaxed">
@@ -164,7 +164,7 @@ const About: React.FC = () => {
                 icon: Briefcase,
                 title: 'Company Incorporation',
                 description: 'Official incorporation and commencement of business companies',
-                color: 'from-purple-500 to-violet-500'
+                color: 'from-blue-500 to-blue-500'
               },
               {
                 icon: Church,
@@ -183,7 +183,7 @@ const About: React.FC = () => {
                 <div className={`w-16 h-16 bg-gradient-to-br ${service.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
                   <service.icon className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-violet-700 transition-colors">
+                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-700 transition-colors">
                   {service.title}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
@@ -209,8 +209,8 @@ const About: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-br from-violet-100 to-violet-200 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <Clock className="w-10 h-10 text-violet-600" />
+              <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Clock className="w-10 h-10 text-blue-600" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Fast Processing</h3>
               <p className="text-gray-600">
@@ -255,8 +255,8 @@ const About: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-violet-100 to-violet-200 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Phone className="w-8 h-8 text-violet-600" />
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Phone className="w-8 h-8 text-blue-600" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Phone</h3>
               <p className="text-gray-600">+233 XXX XXX XXX</p>
@@ -296,7 +296,7 @@ const About: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/auth"
-              className="inline-flex items-center px-8 py-4 bg-white text-violet-600 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-2xl"
+              className="inline-flex items-center px-8 py-4 bg-white text-blue-600 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-2xl"
             >
               Get Started 
               <ArrowRight className="ml-2 w-5 h-5" />

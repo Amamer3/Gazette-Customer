@@ -93,7 +93,7 @@ const PWAInstallPrompt: React.FC = () => {
         {/* Header */}
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center space-x-3">
-            {/* <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-blue-500 rounded-xl flex items-center justify-center">
+            {/* <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-500 rounded-xl flex items-center justify-center">
               <Smartphone className="w-6 h-6 text-white" />
             </div> */}
             <div>
@@ -133,7 +133,7 @@ const PWAInstallPrompt: React.FC = () => {
           {!isIOS && deferredPrompt && (
             <button
               onClick={handleInstallClick}
-              className="flex-1 bg-blue-800 text-white px-4 py-3 rounded-xl font-semibold text-sm hover:from-violet-700 hover:to-blue-700 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
+              className="flex-1 bg-blue-800 text-white px-4 py-3 rounded-xl font-semibold text-sm hover:from-blue-700 hover:to-blue-700 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
             >
               <Download className="w-4 h-4" />
               <span>Install App</span>

@@ -56,7 +56,7 @@ const Payment: React.FC = () => {
       name: 'Bank Transfer',
       description: 'Transfer directly from your bank account',
       icon: Building,
-      color: 'from-purple-500 to-violet-600',
+      color: 'from-blue-500 to-blue-600',
       fields: [
         { key: 'bankName', label: 'Bank Name', type: 'select', options: ['GCB Bank', 'Ecobank', 'Standard Chartered', 'Fidelity Bank', 'Access Bank', 'CalBank', 'Other'], required: true },
         { key: 'accountNumber', label: 'Account Number', type: 'text', placeholder: 'Your account number', required: true }
@@ -200,7 +200,7 @@ const Payment: React.FC = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-violet-600"></div>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
           <p className="mt-4 text-gray-600">Loading payment details...</p>
         </div>
       </div>
@@ -216,7 +216,7 @@ const Payment: React.FC = () => {
           <p className="text-gray-600 mb-6">The requested application could not be found.</p>
           <button
             onClick={() => navigate('/applications')}
-            className="px-6 py-3 bg-violet-600 text-white rounded-xl font-semibold hover:bg-violet-700 transition-colors"
+            className="px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors"
           >
             Return to Applications
           </button>
@@ -265,7 +265,7 @@ const Payment: React.FC = () => {
                       key={method.id} 
                       className={`border-2 rounded-xl p-6 cursor-pointer transition-all duration-300 ${
                         selectedPaymentMethod === method.id
-                          ? 'border-violet-500 bg-violet-50'
+                          ? 'border-blue-500 bg-blue-50'
                           : 'border-gray-200 hover:border-gray-300'
                       }`}
                       onClick={() => setSelectedPaymentMethod(method.id)}
@@ -310,7 +310,7 @@ const Payment: React.FC = () => {
                           <select
                             value={paymentDetails[field.key] || ''}
                             onChange={(e) => handlePaymentDetailChange(field.key, e.target.value)}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                           >
                             <option value="">Select {field.label}</option>
                             {field.options?.map((option) => (
@@ -323,7 +323,7 @@ const Payment: React.FC = () => {
                             value={paymentDetails[field.key] || ''}
                             onChange={(e) => handlePaymentDetailChange(field.key, e.target.value)}
                             placeholder={field.placeholder}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                           />
                         )}
                       </div>
@@ -399,14 +399,14 @@ const Payment: React.FC = () => {
                 <hr />
                 <div className="flex justify-between text-xl font-bold">
                   <span>Total:</span>
-                  <span className="text-violet-600">GHS {((application as any).totalPrice || service.price).toFixed(2)}</span>
+                  <span className="text-blue-600">GHS {((application as any).totalPrice || service.price).toFixed(2)}</span>
                 </div>
               </div>
 
               <button
                 onClick={handlePayment}
                 disabled={isProcessing || !isPaymentFormValid()}
-                className="w-full px-6 py-4 bg-gradient-to-r from-violet-600 to-blue-600 text-white rounded-xl font-semibold hover:from-violet-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 {isProcessing ? (
                   <div className="flex items-center justify-center">
