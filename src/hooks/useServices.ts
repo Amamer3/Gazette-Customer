@@ -30,8 +30,6 @@ export const useServices = (): UseServicesReturn => {
         setServices(response.data);
         setError(null);
         toast.dismiss(loadingToast);
-        // Show success toast
-        toast.success(`Loaded ${response.data.length} services`);
       } else {
         console.error('useServices - API failed:', response.error);
         setServices([]);

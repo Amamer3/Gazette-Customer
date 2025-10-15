@@ -126,7 +126,7 @@ const Navigation: React.FC = () => {
                 className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
                   isActive('/')
                     ? 'bg-blue-600 text-white shadow-lg shadow-violet-500/25 transform scale-105'
-                    : 'text-gray-700 hover:text-violet-700 hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 hover:shadow-md hover:scale-105'
+                    : 'text-gray-700 hover:text-violet-700  hover:shadow-md hover:scale-105'
                 }`}
               >
                 Home
