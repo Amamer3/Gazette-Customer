@@ -108,25 +108,7 @@ const Home: React.FC = () => {
               </button>
             </div>
             
-            {/* Trust Indicators */}
-            {/* <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 text-center lg:text-left">
-              <div className="text-white/90">
-                <div className="text-2xl sm:text-3xl font-bold mb-1">50K+</div>
-                <div className="text-xs sm:text-sm text-blue-200">Documents Issued</div>
-              </div>
-              <div className="text-white/90">
-                <div className="text-2xl sm:text-3xl font-bold mb-1">98%</div>
-                <div className="text-xs sm:text-sm text-blue-200">Satisfaction Rate</div>
-              </div>
-              <div className="text-white/90">
-                <div className="text-2xl sm:text-3xl font-bold mb-1">24/7</div>
-                <div className="text-xs sm:text-sm text-blue-200">Online Support</div>
-              </div>
-              <div className="text-white/90">
-                <div className="text-2xl sm:text-3xl font-bold mb-1">5-7</div>
-                <div className="text-xs sm:text-sm text-blue-200">Days Processing</div>
-              </div>
-            </div> */}
+            
             
             </div>
             
