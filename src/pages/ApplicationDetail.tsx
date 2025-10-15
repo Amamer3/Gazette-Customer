@@ -79,7 +79,7 @@ const ApplicationDetail: React.FC = () => {
       case 'under-review':
         return 'bg-yellow-100 text-yellow-800 border-yellow-200';
       case 'submitted':
-        return 'bg-purple-100 text-purple-800 border-purple-200';
+        return 'bg-purple-100 text-blue-800 border-blue-200';
       case 'rejected':
         return 'bg-red-100 text-red-800 border-red-200';
       case 'draft':
@@ -175,7 +175,7 @@ const ApplicationDetail: React.FC = () => {
           <p className="text-gray-600 mb-6">The application you're looking for doesn't exist or has been removed.</p>
           <button
             onClick={() => navigate('/applications')}
-            className="inline-flex items-center px-6 py-3 bg-violet-600 text-white rounded-xl font-semibold hover:bg-violet-700 transition-colors"
+            className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Applications
@@ -200,8 +200,8 @@ const ApplicationDetail: React.FC = () => {
               <ArrowLeft className="w-5 h-5" />
             </button>
             <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-violet-100 to-blue-100 rounded-xl flex items-center justify-center">
-                <ServiceIcon className="w-6 h-6 text-violet-600" />
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-100 rounded-xl flex items-center justify-center">
+                <ServiceIcon className="w-6 h-6 text-blue-600" />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">{service.name}</h1>
@@ -267,7 +267,7 @@ const ApplicationDetail: React.FC = () => {
             {application.personalInfo && (
               <div className="bg-white rounded-2xl shadow-sm p-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                  <User className="w-6 h-6 mr-3 text-violet-600" />
+                  <User className="w-6 h-6 mr-3 text-blue-600" />
                   Personal Information
                 </h2>
                 
@@ -318,7 +318,7 @@ const ApplicationDetail: React.FC = () => {
             {application.companyInfo && (
               <div className="bg-white rounded-2xl shadow-sm p-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                  <Building className="w-6 h-6 mr-3 text-violet-600" />
+                  <Building className="w-6 h-6 mr-3 text-blue-600" />
                   Company Information
                 </h2>
                 
@@ -355,7 +355,7 @@ const ApplicationDetail: React.FC = () => {
             {application.religiousInfo && (
               <div className="bg-white rounded-2xl shadow-sm p-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                  <Church className="w-6 h-6 mr-3 text-violet-600" />
+                  <Church className="w-6 h-6 mr-3 text-blue-600" />
                   Religious Institution Information
                 </h2>
                 
@@ -401,7 +401,7 @@ const ApplicationDetail: React.FC = () => {
             {/* Documents */}
             <div className="bg-white rounded-2xl shadow-sm p-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                <FileText className="w-6 h-6 mr-3 text-violet-600" />
+                  <FileText className="w-6 h-6 mr-3 text-blue-600" />
                 Required Documents
               </h2>
               
@@ -416,10 +416,10 @@ const ApplicationDetail: React.FC = () => {
                       <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
                         Uploaded
                       </span>
-                      <button className="text-violet-600 hover:text-violet-700 p-2 hover:bg-violet-50 rounded-lg transition-colors">
+                      <button className="text-blue-600 hover:text-blue-700 p-2 hover:bg-blue-50 rounded-lg transition-colors">
                         <Eye className="w-4 h-4" />
                       </button>
-                      <button className="text-violet-600 hover:text-violet-700 p-2 hover:bg-violet-50 rounded-lg transition-colors">
+                      <button className="text-blue-600 hover:text-blue-700 p-2 hover:bg-blue-50 rounded-lg transition-colors">
                         <Download className="w-4 h-4" />
                       </button>
                     </div>
@@ -442,7 +442,7 @@ const ApplicationDetail: React.FC = () => {
             {/* Status Timeline */}
             <div className="bg-white rounded-2xl shadow-sm p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center">
-                <Clock className="w-5 h-5 mr-2 text-violet-600" />
+                <Clock className="w-5 h-5 mr-2 text-blue-600" />
                 Status Timeline
               </h3>
               
@@ -497,7 +497,7 @@ const ApplicationDetail: React.FC = () => {
             {order && (
               <div className="bg-white rounded-2xl shadow-sm p-6">
                 <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center">
-                  <CreditCard className="w-5 h-5 mr-2 text-violet-600" />
+                  <CreditCard className="w-5 h-5 mr-2 text-blue-600" />
                   Payment Information
                 </h3>
                 
@@ -531,7 +531,7 @@ const ApplicationDetail: React.FC = () => {
                   <Phone className="w-5 h-5 text-gray-400 mr-3" />
                   <div>
                     <p className="text-sm font-medium text-gray-900">Phone Support</p>
-                    <a href="tel:+233302123456" className="text-sm text-violet-600 hover:text-violet-700">
+                    <a href="tel:+233302123456" className="text-sm text-blue-600 hover:text-blue-700">
                       +233 30 212 3456
                     </a>
                   </div>
@@ -541,17 +541,17 @@ const ApplicationDetail: React.FC = () => {
                   <Mail className="w-5 h-5 text-gray-400 mr-3" />
                   <div>
                     <p className="text-sm font-medium text-gray-900">Email Support</p>
-                    <a href="mailto:support@egazette.gov.gh" className="text-sm text-violet-600 hover:text-violet-700">
+                    <a href="mailto:support@egazette.gov.gh" className="text-sm text-blue-600 hover:text-blue-700">
                       support@egazette.gov.gh
                     </a>
                   </div>
                 </div>
                 
                 <div className="flex items-center">
-                  <Clock className="w-5 h-5 text-gray-400 mr-3" />
+                  <Clock className="w-5 h-5 text-blue-600 mr-3" />
                   <div>
-                    <p className="text-sm font-medium text-gray-900">Business Hours</p>
-                    <p className="text-sm text-gray-600">Mon-Fri, 8AM-5PM GMT</p>
+                    <p className="text-sm font-medium text-blue-900">Business Hours</p>
+                    <p className="text-sm text-blue-600">Mon-Fri, 8AM-5PM GMT</p>
                   </div>
                 </div>
               </div>

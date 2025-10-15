@@ -125,7 +125,7 @@ const Applications: React.FC = () => {
       case 'rejected':
         return 'bg-red-100 text-red-800';
       case 'submitted':
-        return 'bg-purple-100 text-purple-800';
+        return 'bg-purple-100 text-blue-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -292,7 +292,7 @@ const Applications: React.FC = () => {
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center space-x-3">
                         <div className="w-12 h-12 bg-gradient-to-br from-violet-100 to-blue-100 rounded-xl flex items-center justify-center">
-                          <ServiceIcon className="w-6 h-6 text-violet-600" />
+                          <ServiceIcon className="w-6 h-6 text-blue-600" />
                         </div>
                         <div>
                           <h3 className="font-semibold text-gray-900">
@@ -333,7 +333,7 @@ const Applications: React.FC = () => {
                     <div className="flex items-center justify-between">
                       <Link
                         to={`/application-detail/${application.id}`}
-                        className="inline-flex items-center px-4 py-2 bg-violet-100 text-violet-700 rounded-lg font-medium hover:bg-violet-200 transition-colors"
+                        className="inline-flex items-center px-4 py-2 bg-violet-100 text-blue-700 rounded-lg font-medium hover:bg-violet-200 transition-colors"
                       >
                         <Eye className="w-4 h-4 mr-2" />
                         View Details

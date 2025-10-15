@@ -499,7 +499,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
             required
             value={formData.personalInfo?.fullName || ''}
             onChange={(e) => handlePersonalInfoChange('fullName', e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+            className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm sm:text-base"
             placeholder="Enter your full name"
           />
         </div>
@@ -513,7 +513,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
             required
             value={formData.personalInfo?.dateOfBirth || ''}
             onChange={(e) => handlePersonalInfoChange('dateOfBirth', e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+            className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm sm:text-base"
           />
         </div>
 
@@ -526,7 +526,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
             required
             value={formData.personalInfo?.email || ''}
             onChange={(e) => handlePersonalInfoChange('email', e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+            className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm sm:text-base"
             placeholder="Enter your email address"
           />
         </div>
@@ -540,7 +540,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
             required
             value={formData.personalInfo?.phone || ''}
             onChange={(e) => handlePersonalInfoChange('phone', e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+            className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm sm:text-base"
             placeholder="+233 XX XXX XXXX"
           />
         </div>
@@ -554,7 +554,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
             value={formData.personalInfo?.address || ''}
             onChange={(e) => handlePersonalInfoChange('address', e.target.value)}
             rows={3}
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+            className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm sm:text-base"
             placeholder="Enter your full address"
           />
         </div>
@@ -612,7 +612,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
             required
             value={formData.personalInfo?.occupation || ''}
             onChange={(e) => handlePersonalInfoChange('occupation', e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+            className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm sm:text-base"
             placeholder="Enter your occupation"
           />
         </div>
@@ -642,7 +642,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                 required
                 value={formData.religiousInfo?.religiousBodyName || ''}
                 onChange={(e) => handleReligiousInfoChange('religiousBodyName', e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm sm:text-base"
                 placeholder="Enter religious body name"
               />
             </div>
@@ -656,7 +656,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                 required
                 value={formData.religiousInfo?.registrationNumber || ''}
                 onChange={(e) => handleReligiousInfoChange('registrationNumber', e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm sm:text-base"
                 placeholder="Enter registration number"
               />
             </div>
@@ -670,7 +670,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                 required
                 value={formData.religiousInfo?.denomination || ''}
                 onChange={(e) => handleReligiousInfoChange('denomination', e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm sm:text-base"
                 placeholder="Enter denomination"
               />
             </div>
@@ -684,7 +684,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                 required
                 value={formData.religiousInfo?.headOfReligiousBody || ''}
                 onChange={(e) => handleReligiousInfoChange('headOfReligiousBody', e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm sm:text-base"
                 placeholder="Enter head of religious body"
               />
             </div>
@@ -698,7 +698,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                 required
                 value={formData.religiousInfo?.contactPerson || ''}
                 onChange={(e) => handleReligiousInfoChange('contactPerson', e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm sm:text-base"
                 placeholder="Enter contact person"
               />
             </div>
@@ -712,7 +712,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                 required
                 value={formData.religiousInfo?.placeOfWorship || ''}
                 onChange={(e) => handleReligiousInfoChange('placeOfWorship', e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm sm:text-base"
                 placeholder="Enter place of worship"
               />
             </div>
@@ -726,7 +726,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                 required
                 value={formData.religiousInfo?.capacity || ''}
                 onChange={(e) => handleReligiousInfoChange('capacity', parseInt(e.target.value))}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm sm:text-base"
                 placeholder="Enter capacity"
               />
             </div>
@@ -755,7 +755,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                 type="text"
                 value={formData.companyInfo?.companyName || ''}
                 onChange={(e) => handleCompanyInfoChange('companyName', e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm sm:text-base"
                 placeholder="Enter company name"
               />
             </div>
@@ -768,7 +768,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                 type="text"
                 value={formData.companyInfo?.registrationNumber || ''}
                 onChange={(e) => handleCompanyInfoChange('registrationNumber', e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm sm:text-base"
                 placeholder="Enter registration number"
               />
             </div>
@@ -781,7 +781,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                 required
                 value={formData.companyInfo?.businessType || ''}
                 onChange={(e) => handleCompanyInfoChange('businessType', e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm sm:text-base"
               >
                 <option value="">Select business type</option>
                 <option value="Limited Company">Limited Company</option>
@@ -804,7 +804,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                 value={formData.companyInfo?.registeredAddress || ''}
                 onChange={(e) => handleCompanyInfoChange('registeredAddress', e.target.value)}
                 rows={3}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm sm:text-base"
                 placeholder="Enter registered address"
               />
             </div>
@@ -818,7 +818,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                 required
                 value={formData.companyInfo?.authorizedCapital || ''}
                 onChange={(e) => handleCompanyInfoChange('authorizedCapital', parseFloat(e.target.value))}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm sm:text-base"
                 placeholder="Enter authorized capital"
               />
             </div>
@@ -832,7 +832,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                 required
                 value={formData.companyInfo?.paidUpCapital || ''}
                 onChange={(e) => handleCompanyInfoChange('paidUpCapital', parseFloat(e.target.value))}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm sm:text-base"
                 placeholder="Enter paid up capital"
               />
             </div>
@@ -921,11 +921,11 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
           htmlFor="file-upload" 
           className={paymentCompleted ? "cursor-pointer" : "cursor-not-allowed"}
         >
-          <Upload className={`w-12 h-12 mx-auto mb-4 ${paymentCompleted ? 'text-gray-400' : 'text-gray-300'}`} />
-          <p className={`text-lg font-medium mb-2 ${paymentCompleted ? 'text-gray-900' : 'text-gray-500'}`}>
+          <Upload className={`w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 ${paymentCompleted ? 'text-gray-400' : 'text-gray-300'}`} />
+          <p className={`text-base sm:text-lg font-medium mb-2 ${paymentCompleted ? 'text-gray-900' : 'text-gray-500'}`}>
             {paymentCompleted ? 'Click to upload documents' : 'Payment required to upload documents'}
           </p>
-          <p className={`text-sm ${paymentCompleted ? 'text-gray-600' : 'text-gray-400'}`}>
+          <p className={`text-xs sm:text-sm ${paymentCompleted ? 'text-gray-600' : 'text-gray-400'}`}>
             Upload all {service.requiredDocuments.length} required documents • PDF, JPG, PNG, DOC, DOCX files up to 10MB each
           </p>
         </label>
@@ -933,19 +933,19 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
 
       {uploadedFiles.length > 0 && (
         <div className="space-y-3">
-          <h3 className="text-lg font-semibold text-gray-900">Uploaded Files</h3>
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900">Uploaded Files</h3>
           {uploadedFiles.map((file, index) => (
-            <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
-              <div className="flex items-center">
-                <FileText className="w-5 h-5 text-gray-400 mr-3" />
-                <div>
-                  <p className="font-medium text-gray-900">{file.name}</p>
-                  <p className="text-sm text-gray-600">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+            <div key={index} className="flex items-center justify-between p-3 sm:p-4 bg-gray-50 rounded-xl">
+              <div className="flex items-center min-w-0 flex-1">
+                <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 mr-2 sm:mr-3 flex-shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <p className="font-medium text-gray-900 text-sm sm:text-base truncate">{file.name}</p>
+                  <p className="text-xs sm:text-sm text-gray-600">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
                 </div>
               </div>
               <button
                 onClick={() => removeFile(index)}
-                className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
+                className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors flex-shrink-0"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1084,69 +1084,69 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
   };
 
   const renderPaymentStep = () => (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-      <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <CheckCircle className="w-8 h-8 text-green-600" />
+    <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-6 lg:p-8">
+      <div className="text-center mb-6 sm:mb-8">
+        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+          <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Payment Required</h2>
-        <p className="text-gray-600">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Payment Required</h2>
+        <p className="text-sm sm:text-base text-gray-600">
           Complete payment to proceed with document upload and application submission.
         </p>
       </div>
 
-      <div className="bg-gradient-to-r from-blue-50 to-violet-50 rounded-xl p-6 border border-blue-200 mb-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900">{service?.name}</h3>
-            <p className="text-gray-600 text-sm">
+      <div className="bg-gradient-to-r from-blue-50 to-violet-50 rounded-xl p-4 sm:p-6 border border-blue-200 mb-4 sm:mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+          <div className="min-w-0 flex-1">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 truncate">{service?.name}</h3>
+            <p className="text-gray-600 text-xs sm:text-sm">
               Plan: {gazettePlans.find(p => p.FeeID === formData.gazetteType)?.PaymentPlan || 'Standard'}
             </p>
-            <p className="text-gray-600 text-sm">
+            <p className="text-gray-600 text-xs sm:text-sm">
               Processing: {gazettePlans.find(p => p.FeeID === formData.gazetteType)?.ProcessDays || service?.processingTime} days
             </p>
           </div>
-          <div className="text-right">
-            <div className="text-2xl font-bold text-violet-600">
+          <div className="text-left sm:text-right">
+            <div className="text-xl sm:text-2xl font-bold text-violet-600">
               GHS {gazettePlans.find(p => p.FeeID === formData.gazetteType)?.GazetteFee?.toFixed(2) || service?.price?.toFixed(2)}
             </div>
-            <p className="text-gray-500 text-sm">Total Amount</p>
+            <p className="text-gray-500 text-xs sm:text-sm">Total Amount</p>
           </div>
         </div>
       </div>
 
-      <div className="space-y-4 mb-8">
-        <div className="flex items-center p-4 bg-green-50 rounded-lg border border-green-200">
-          <Check className="w-5 h-5 text-green-600 mr-3" />
-          <span className="text-green-800 text-sm font-medium">
+      <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+        <div className="flex items-center p-3 sm:p-4 bg-green-50 rounded-lg border border-green-200">
+          <Check className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 mr-2 sm:mr-3 flex-shrink-0" />
+          <span className="text-green-800 text-xs sm:text-sm font-medium">
             Secure payment processing with SSL encryption
           </span>
         </div>
-        <div className="flex items-center p-4 bg-blue-50 rounded-lg border border-blue-200">
-          <Check className="w-5 h-5 text-blue-600 mr-3" />
-          <span className="text-blue-800 text-sm font-medium">
+        <div className="flex items-center p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-200">
+          <Check className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 mr-2 sm:mr-3 flex-shrink-0" />
+          <span className="text-blue-800 text-xs sm:text-sm font-medium">
             Multiple payment methods available
           </span>
         </div>
-        <div className="flex items-center p-4 bg-violet-50 rounded-lg border border-violet-200">
-          <Check className="w-5 h-5 text-violet-600 mr-3" />
-          <span className="text-violet-800 text-sm font-medium">
+        <div className="flex items-center p-3 sm:p-4 bg-violet-50 rounded-lg border border-violet-200">
+          <Check className="w-4 h-4 sm:w-5 sm:h-5 text-violet-600 mr-2 sm:mr-3 flex-shrink-0" />
+          <span className="text-violet-800 text-xs sm:text-sm font-medium">
             Instant payment confirmation
           </span>
         </div>
       </div>
 
-      <div className="flex space-x-4">
+      <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
         <button
           onClick={handlePaymentNavigation}
-          className="flex-1 bg-gradient-to-r from-violet-600 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-violet-700 hover:to-blue-700 transition-all duration-300 flex items-center justify-center space-x-2"
+          className="w-full sm:flex-1 bg-gradient-to-r from-violet-600 to-blue-600 text-white px-4 sm:px-6 py-3 rounded-xl font-semibold hover:from-violet-700 hover:to-blue-700 transition-all duration-300 flex items-center justify-center space-x-2"
         >
-          <CheckCircle className="w-5 h-5" />
-          <span>Proceed to Payment</span>
+          <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+          <span className="text-sm sm:text-base">Proceed to Payment</span>
         </button>
         <button
           onClick={() => setCurrentStep(3)}
-          className="px-6 py-3 text-gray-600 font-medium hover:text-gray-800 transition-colors"
+          className="w-full sm:w-auto px-4 sm:px-6 py-3 text-gray-600 font-medium hover:text-gray-800 transition-colors text-sm sm:text-base"
         >
           Back
         </button>
@@ -1170,34 +1170,34 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white shadow-sm">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+        <div className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+            <div className="flex items-center space-x-3 sm:space-x-4">
               <button
                 onClick={() => window.location.href = '/#services-section'}
-                className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0"
               >
                 <ArrowLeft className="w-5 h-5" />
               </button>
-              <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-violet-100 to-blue-100 rounded-xl flex items-center justify-center">
-                  <ServiceIcon className="w-6 h-6 text-violet-600" />
+              <div className="flex items-center space-x-3 min-w-0">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-violet-100 to-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <ServiceIcon className="w-5 h-5 sm:w-6 sm:h-6 text-violet-600" />
                 </div>
-                <div>
-                  <h1 className="text-xl font-bold text-gray-900">{service.name}</h1>
+                <div className="min-w-0 flex-1">
+                  <h1 className="text-lg sm:text-xl font-bold text-gray-900 truncate">{service.name}</h1>
                   {selectedPlan ? (
                     <div className="space-y-1">
-                      <p className="text-sm text-gray-600">
+                      <p className="text-xs sm:text-sm text-gray-600 truncate">
                         <span className="font-semibold text-violet-600">{selectedPlan.PaymentPlan}</span>
                         {selectedPlan.GazetteName && ` • ${selectedPlan.GazetteName}`}
                       </p>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-xs sm:text-sm text-gray-600 truncate">
                         <span className="font-bold text-green-600">₵{selectedPlan.GazetteFee.toLocaleString()}</span>
                         {selectedPlan.ProcessDays && ` • ${selectedPlan.ProcessDays} days processing`}
                       </p>
                     </div>
                   ) : (
-                    <p className="text-gray-600">Loading plan details...</p>
+                    <p className="text-xs sm:text-sm text-gray-600">Loading plan details...</p>
                   )}
                 </div>
               </div>
@@ -1206,22 +1206,22 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Application Summary Card */}
         {selectedPlan && (
-          <div className="bg-gradient-to-r from-violet-50 to-blue-50 border border-violet-200 rounded-2xl p-6 mb-8">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-violet-100 to-blue-100 rounded-xl flex items-center justify-center">
-                  <ServiceIcon className="w-8 h-8 text-violet-600" />
+          <div className="bg-gradient-to-r from-violet-50 to-blue-50 border border-violet-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+              <div className="flex items-center space-x-3 sm:space-x-4">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-violet-100 to-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <ServiceIcon className="w-6 h-6 sm:w-8 sm:h-8 text-violet-600" />
                 </div>
-                <div>
-                  <h2 className="text-lg font-bold text-gray-900">Application Summary</h2>
-                  <p className="text-sm text-gray-600">{service.name}</p>
+                <div className="min-w-0">
+                  <h2 className="text-base sm:text-lg font-bold text-gray-900">Application Summary</h2>
+                  <p className="text-sm text-gray-600 truncate">{service.name}</p>
                 </div>
               </div>
-              <div className="text-right">
-                <div className="text-2xl font-bold text-green-600">₵{selectedPlan.GazetteFee.toLocaleString()}</div>
+              <div className="text-left sm:text-right">
+                <div className="text-xl sm:text-2xl font-bold text-green-600">₵{selectedPlan.GazetteFee.toLocaleString()}</div>
                 <p className="text-sm text-gray-600">{selectedPlan.PaymentPlan}</p>
                 <p className="text-xs text-gray-500">{selectedPlan.ProcessDays} days processing</p>
               </div>
@@ -1230,8 +1230,8 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
         )}
 
         {/* Progress Steps */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
+        <div className="mb-6 sm:mb-8">
+          <div className="hidden sm:flex items-center justify-between">
             {visibleSteps.map((step, index) => (
               <div key={step.number} className="flex items-center">
                 <div className={`flex items-center justify-center w-10 h-10 rounded-full border-2 ${
@@ -1250,7 +1250,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                 }`}>
                   {step.title}
                 </span>
-                {index < steps.length - 1 && (
+                {index < visibleSteps.length - 1 && (
                   <div className={`w-16 h-0.5 mx-4 ${
                     currentStep > step.number ? 'bg-violet-600' : 'bg-gray-300'
                   }`} />
@@ -1258,19 +1258,50 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
               </div>
             ))}
           </div>
+          
+          {/* Mobile Progress Steps */}
+          <div className="sm:hidden">
+            <div className="flex items-center justify-center space-x-2 mb-4">
+              {visibleSteps.map((step, index) => (
+                <div key={step.number} className="flex items-center">
+                  <div className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${
+                    currentStep >= step.number
+                      ? 'bg-violet-600 border-violet-600 text-white'
+                      : 'bg-white border-gray-300 text-gray-500'
+                  }`}>
+                    {currentStep > step.number ? (
+                      <Check className="w-4 h-4" />
+                    ) : (
+                      <span className="text-xs font-semibold">{step.number}</span>
+                    )}
+                  </div>
+                  {index < visibleSteps.length - 1 && (
+                    <div className={`w-8 h-0.5 mx-2 ${
+                      currentStep > step.number ? 'bg-violet-600' : 'bg-gray-300'
+                    }`} />
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="text-center">
+              <p className="text-sm font-medium text-violet-600">
+                Step {currentStep - 1} of {visibleSteps.length}: {visibleSteps[currentStep - 2]?.title}
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Form Content */}
-        <div className="bg-white rounded-2xl shadow-sm p-8">
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm p-4 sm:p-6 lg:p-8">
           {steps[currentStep - 1].component()}
         </div>
 
         {/* Navigation Buttons */}
-        <div className="flex items-center justify-between mt-8">
+        <div className="flex flex-col sm:flex-row items-center justify-between mt-6 sm:mt-8 space-y-4 sm:space-y-0">
           <button
             onClick={() => setCurrentStep(prev => Math.max(2, prev - 1))}
             disabled={currentStep === 2}
-            className="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="w-full sm:w-auto inline-flex items-center justify-center px-4 sm:px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Previous
@@ -1280,7 +1311,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
             <button
               onClick={() => setCurrentStep(prev => prev + 1)}
               disabled={!isStepValid(currentStep)}
-              className="inline-flex items-center px-6 py-3 bg-violet-600 text-white rounded-xl font-medium hover:bg-violet-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center px-4 sm:px-6 py-3 bg-violet-600 text-white rounded-xl font-medium hover:bg-violet-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               Next
               <ArrowRight className="w-4 h-4 ml-2" />
@@ -1289,7 +1320,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
             <button
               onClick={handleSubmit}
               disabled={isLoading || !isStepValid(currentStep)}
-              className="inline-flex items-center px-8 py-3 bg-green-600 text-white rounded-xl font-medium hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3 bg-green-600 text-white rounded-xl font-medium hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {isLoading ? (
                 <>

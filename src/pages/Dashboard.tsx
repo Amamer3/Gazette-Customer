@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import LocalStorageService from '../services/localStorage';
 import Navigation from '../components/Navigation';
 import ApiService from '../services/apiService';
+import { useAuth } from '../contexts/AuthContext';
 import { 
   FileText, 
   Clock, 
@@ -25,6 +26,7 @@ import type { Application } from '../types/application.js';
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
   const [showServiceModal, setShowServiceModal] = useState(false);
@@ -190,14 +192,14 @@ const Dashboard: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/30 overflow-y-auto">
       <Navigation />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 pb-8 sm:pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 pb-8 sm:pb-12 pt-20 sm:pt-24">
         {/* Welcome Header */}
-        <div className="mb-8 sm:mb-10 lg:mb-12 pt-6 sm:pt-8">
-          <div className="text-center sm:text-left">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-gray-900 mb-3 sm:mb-4 lg:mb-5 leading-tight drop-shadow-sm">
-              Welcome to E-Gazette! 👋
+        <div className="mb-8 sm:mb-10 lg:mb-12">
+          <div className="text-left">
+            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-extrabold text-gray-900 mb-3 sm:mb-4 lg:mb-5 leading-tight drop-shadow-sm break-words hyphens-auto">
+              Welcome back, <span className="inline-block max-w-full break-words">{user?.fullName || 'User'}</span>! 👋
             </h1>
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 max-w-2xl mx-auto sm:mx-0 px-2 sm:px-0 leading-relaxed font-medium">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 max-w-2xl px-2 sm:px-0 leading-relaxed font-medium">
               Manage your gazette applications and track your progress
             </p>
           </div>
