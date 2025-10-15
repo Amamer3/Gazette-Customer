@@ -117,7 +117,7 @@ const Home: React.FC = () => {
               <div className="relative">
                 <img 
                   src="/mobile-screenshot-hp2.png"
-                  alt="Ghana E-Gazette Digital Services" 
+                  alt="Electronic Gazette Digital Services" 
                   className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-2xl xl:max-w-xl h-80 sm:h-96 md:h-[28rem] lg:h-[32rem] xl:h-[36rem] object-cover rounded-2xl"
                 />
                 
