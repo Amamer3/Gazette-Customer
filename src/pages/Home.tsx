@@ -133,7 +133,7 @@ const Home: React.FC = () => {
 
 
       {/* Services Section */}
-      <section id="services-section" className="py-12 sm:py-16 lg:py-20 xl:py-24 bg-gradient-to-b from-gray-50 to-white">
+      <section id="services-section" className="py-12 sm:py-16 lg:py-20 xl:py-24 ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 sm:mb-16 lg:mb-20">
             <div className="inline-flex items-center px-3 sm:px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
@@ -160,21 +160,21 @@ const Home: React.FC = () => {
               <p className="text-red-600">Error loading services: {error}</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
               {gazetteServices.map((service, index) => {
                 const IconComponent = getServiceIcon(service.name);
                 
                 return (
                   <div 
                     key={service.id} 
-                    className="group relative bg-white rounded-2xl sm:rounded-3xl shadow-sm hover:shadow-lg transition-all duration-500 transform hover:-translate-y-2 sm:hover:-translate-y-3 border border-gray-100 overflow-hidden cursor-pointer"
+                    className="group relative bg-white rounded-2xl sm:rounded-3xl shadow-sm hover:shadow-lg transition-all duration-500 transform hover:-translate-y-2 sm:hover:-translate-y-3 border border-gray-100 overflow-hidden cursor-pointer h-full flex flex-col"
                     style={{ animationDelay: `${index * 100}ms` }}
                     onClick={() => handleServiceClick(service)}
                   >
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     
-                    <div className="relative p-4 sm:p-6 lg:p-8">
+                    <div className="relative p-4 sm:p-6 lg:p-8 flex flex-col flex-1">
                       {/* Service Icon */}
                       <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 mx-auto mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
                         <div className="w-full h-full bg-gradient-to-br from-blue-100 to-blue-100 rounded-2xl sm:rounded-3xl flex items-center justify-center shadow-inner">
@@ -182,12 +182,12 @@ const Home: React.FC = () => {
                         </div>
                       </div>
                       
-                      <h3 className="text-sm sm:text-base lg:text-lg font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-blue-700 transition-colors text-center leading-tight">
+                      <h3 className="text-xs sm:text-sm lg:text-base font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-blue-700 transition-colors text-center leading-tight break-words hyphens-auto min-h-[3rem] flex items-center justify-center">
                         {service.name}
                       </h3>
                       
                       {/* Service Description */}
-                      <p className="text-gray-600 mb-6 sm:mb-8 leading-relaxed text-center text-xs sm:text-sm line-clamp-3">
+                      <p className="text-gray-600 mb-6 sm:mb-8 leading-relaxed text-center text-xs sm:text-sm flex-1 break-words hyphens-auto min-h-[4rem] flex items-center justify-center">
                         {service.description || `Professional ${service.name.toLowerCase()} service`}
                       </p>
                       
@@ -417,7 +417,7 @@ const Home: React.FC = () => {
 
       {/* Gazette Type Selection Modal */}
       {showGazetteTypeModal && selectedService && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between">
