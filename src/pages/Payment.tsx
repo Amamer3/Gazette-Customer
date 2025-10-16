@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { 
   CreditCard, 
   Smartphone, 
@@ -17,10 +17,12 @@ import LocalStorageService from '../services/localStorage';
 
 const Payment: React.FC = () => {
   const { applicationId } = useParams<{ applicationId: string }>();
+  const [searchParams] = useSearchParams();
   const { services: gazetteServices } = useServices();
   const navigate = useNavigate();
   const [application, setApplication] = useState<Application | null>(null);
   const [service, setService] = useState<any>(null);
+  const [selectedPlan, setSelectedPlan] = useState<any>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('mobile-money');
   const [paymentDetails, setPaymentDetails] = useState<Record<string, string>>({});
   const [isProcessing, setIsProcessing] = useState(false);
@@ -78,33 +80,94 @@ const Payment: React.FC = () => {
   useEffect(() => {
     const initializePage = async () => {
       try {
-        // Get application from localStorage
-        const applications = LocalStorageService.getApplications();
-        const foundApplication = applications.find((app: Application) => app.id === applicationId);
-        
-        if (!foundApplication) {
-          navigate('/applications');
-          return;
-        }
-        setApplication(foundApplication);
+        console.log('Payment - Page initialized');
+        const serviceId = searchParams.get('service');
+        const planId = searchParams.get('plan');
+        console.log('Payment - URL parameters:', { serviceId, planId, applicationId });
 
-        // Find the service
-        const foundService = gazetteServices.find(s => s.id === foundApplication.serviceType);
-        if (!foundService) {
-          navigate('/services');
+        if (applicationId) {
+          // Old flow: Get application from localStorage
+          const applications = LocalStorageService.getApplications();
+          const foundApplication = applications.find((app: Application) => app.id === applicationId);
+          
+          if (!foundApplication) {
+            navigate('/applications');
+            return;
+          }
+          setApplication(foundApplication);
+
+          // Find the service
+          const foundService = gazetteServices.find(s => s.id === foundApplication.serviceType);
+          if (!foundService) {
+            navigate('/services');
+            return;
+          }
+          setService(foundService);
+        } else if (serviceId && planId) {
+          // New flow: Get service and plan from parameters
+          console.log('Payment - Looking for service:', serviceId);
+          console.log('Payment - Available services:', gazetteServices.map(s => ({ id: s.id, name: s.name })));
+          
+          let foundService = gazetteServices.find(s => s.id === serviceId);
+          
+          if (!foundService) {
+            // Try to find by name if ID doesn't match
+            foundService = gazetteServices.find(s => 
+              s.name.toLowerCase().includes(serviceId.toLowerCase()) ||
+              serviceId.toLowerCase().includes(s.name.toLowerCase())
+            );
+          }
+          
+          if (!foundService) {
+            console.error('Payment - Service not found, creating temporary service');
+            // Create a temporary mock service for testing
+            foundService = {
+              id: serviceId,
+              name: serviceId.replace(/-/g, ' ').toUpperCase(),
+              description: `Service for ${serviceId}`,
+              price: 200.00,
+              processingTime: '7-10 business days',
+              category: 'General Services',
+              requiredDocuments: ['Application Letter', 'Supporting Documents'],
+              icon: 'FileText'
+            };
+          }
+          
+          setService(foundService);
+
+          // Create mock plan data based on planId
+          const mockPlan = {
+            FeeID: planId,
+            GazzeteType: foundService.name,
+            PaymentPlan: planId === '64' ? 'PREMIUM PLUS' : 
+                        planId === '65' ? 'PREMIUM GAZETTE' : 
+                        planId === '66' ? 'REGULAR GAZETTE' : 'STANDARD',
+            GazetteName: `${foundService.name} - ${planId === '64' ? 'Premium Plus' : 
+                                     planId === '65' ? 'Premium Gazette' : 
+                                     planId === '66' ? 'Regular Gazette' : 'Standard'}`,
+            GazetteDetails: `Service for ${foundService.name}`,
+            ProcessDays: planId === '64' ? 5 : planId === '65' ? 7 : 10,
+            GazetteFee: planId === '64' ? foundService.price * 1.5 : 
+                       planId === '65' ? foundService.price * 1.2 : 
+                       foundService.price,
+            TaxRate: 0.15
+          };
+          
+          setSelectedPlan(mockPlan);
+        } else {
+          navigate('/#services-section');
           return;
         }
-        setService(foundService);
       } catch (error) {
         console.error('Error initializing payment page:', error);
-        navigate('/applications');
+        navigate('/#services-section');
       } finally {
         setLoading(false);
       }
     };
 
     initializePage();
-  }, [applicationId, navigate]);
+  }, [applicationId, searchParams, navigate, gazetteServices]);
 
   const handlePaymentDetailChange = (field: string, value: string) => {
     setPaymentDetails(prev => ({ ...prev, [field]: value }));
@@ -122,8 +185,18 @@ const Payment: React.FC = () => {
     });
   };
 
+  const getPaymentAmount = () => {
+    if (application) {
+      return (application as any).totalPrice || service.price;
+    } else if (selectedPlan) {
+      return selectedPlan.GazetteFee;
+    } else {
+      return service.price;
+    }
+  };
+
   const handlePayment = async () => {
-    if (!application || !service || !isPaymentFormValid()) return;
+    if (!service || !isPaymentFormValid()) return;
 
     setIsProcessing(true);
     
@@ -131,61 +204,119 @@ const Payment: React.FC = () => {
       // Simulate payment processing
       await new Promise(resolve => setTimeout(resolve, 3000));
 
-      // Create order record
-      const order: Order = {
-        id: `order-${Date.now()}`,
-        applicationId: application.id,
-        userId: 'user-001', // In real app, get from auth context
-        serviceName: service.name,
-        amount: (application as any).totalPrice || service.price,
-        currency: 'GHS',
-        status: 'paid',
-        paymentMethod: paymentMethods.find(m => m.id === selectedPaymentMethod)?.name || 'Unknown',
-        paymentReference: `PAY-${Date.now()}`,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days from now
-      };
+      if (applicationId && application) {
+        // Old flow: Update existing application
+        const order: Order = {
+          id: `order-${Date.now()}`,
+          applicationId: application.id,
+          userId: 'user-001', // In real app, get from auth context
+          serviceName: service.name,
+          amount: (application as any).totalPrice || service.price,
+          currency: 'GHS',
+          status: 'paid',
+          paymentMethod: paymentMethods.find(m => m.id === selectedPaymentMethod)?.name || 'Unknown',
+          paymentReference: `PAY-${Date.now()}`,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days from now
+        };
 
-      // Update application with payment info
-      const updatedApplication = {
-        ...application,
-        status: 'submitted' as const,
-        paymentStatus: 'paid' as const,
-        paymentId: order.id,
-        lastUpdated: new Date().toISOString()
-      };
+        // Update application with payment info
+        const updatedApplication = {
+          ...application,
+          status: 'submitted' as const,
+          paymentStatus: 'paid' as const,
+          paymentId: order.id,
+          lastUpdated: new Date().toISOString()
+        };
 
-      // Save to localStorage
-      const applications = LocalStorageService.getApplications();
-      const updatedApplications = applications.map((app: Application) => 
-        app.id === application.id ? updatedApplication : app
-      );
-      LocalStorageService.saveApplications(updatedApplications);
+        // Save to localStorage
+        const applications = LocalStorageService.getApplications();
+        const updatedApplications = applications.map((app: Application) => 
+          app.id === application.id ? updatedApplication : app
+        );
+        LocalStorageService.saveApplications(updatedApplications);
 
-      // Save order
-      const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-      orders.push(order);
-      localStorage.setItem('orders', JSON.stringify(orders));
+        // Save order
+        const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+        orders.push(order);
+        localStorage.setItem('orders', JSON.stringify(orders));
 
-      // Check if this is a temporary application (from form flow)
-      const tempApplicationData = localStorage.getItem(`temp_application_${applicationId}`);
-      if (tempApplicationData) {
-        // Store payment completion flag
-        localStorage.setItem(`payment_completed_${applicationId}`, 'true');
-        // Clean up temporary data
-        localStorage.removeItem(`temp_application_${applicationId}`);
-        // Navigate back to application form
-        navigate(`/application/${service.id}?paymentCompleted=true`);
+        // Check if this is a temporary application (from form flow)
+        const tempApplicationData = localStorage.getItem(`temp_application_${applicationId}`);
+        if (tempApplicationData) {
+          // Store payment completion flag
+          localStorage.setItem(`payment_completed_${applicationId}`, 'true');
+          // Clean up temporary data
+          localStorage.removeItem(`temp_application_${applicationId}`);
+          // Navigate back to application form
+          navigate(`/application/${service.id}?paymentCompleted=true`);
+        } else {
+          // Navigate to success page for regular applications
+          navigate('/payment-success', { 
+            state: { 
+              application: updatedApplication, 
+              service,
+              order
+            } 
+          });
+        }
       } else {
-        // Navigate to success page for regular applications
-        navigate('/payment-success', { 
-          state: { 
-            application: updatedApplication, 
-            service,
-            order
-          } 
+        // New flow: Create new application and navigate to form
+        const applicationId = `app-${Date.now()}`;
+        const amount = selectedPlan?.GazetteFee || service.price;
+        
+        const newApplication = {
+          id: applicationId,
+          serviceType: service.id,
+          status: 'draft' as const,
+          submittedAt: new Date().toISOString(),
+          documents: [],
+          paymentStatus: 'paid' as const,
+          notes: '',
+          lastUpdated: new Date().toISOString(),
+          gazetteType: selectedPlan?.PaymentPlan || 'premium-plus',
+          totalPrice: amount,
+          selectedPlan: selectedPlan
+        };
+
+        // Save application to localStorage
+        const applications = LocalStorageService.getApplications();
+        applications.push(newApplication);
+        LocalStorageService.saveApplications(applications);
+        
+        console.log('Payment - Created and saved application:', newApplication);
+        console.log('Payment - All applications in localStorage:', applications);
+
+        // Create order record
+        const order: Order = {
+          id: `order-${Date.now()}`,
+          applicationId: applicationId,
+          userId: 'user-001', // In real app, get from auth context
+          serviceName: service.name,
+          amount: amount,
+          currency: 'GHS',
+          status: 'paid',
+          paymentMethod: paymentMethods.find(m => m.id === selectedPaymentMethod)?.name || 'Unknown',
+          paymentReference: `PAY-${Date.now()}`,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days from now
+        };
+
+        // Save order
+        const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+        orders.push(order);
+        localStorage.setItem('orders', JSON.stringify(orders));
+
+        // Navigate to application form with payment completed flag
+        console.log('Payment - Navigating to application form:', {
+          serviceId: service.id,
+          serviceName: service.name,
+          applicationId: applicationId,
+          planId: selectedPlan?.FeeID
         });
+        navigate(`/application/${service.id}?paymentCompleted=true&plan=${selectedPlan?.FeeID}`);
       }
     } catch (error) {
       console.error('Payment processing error:', error);
@@ -207,18 +338,18 @@ const Payment: React.FC = () => {
     );
   }
 
-  if (!application || !service) {
+  if (!service) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Application Not Found</h3>
-          <p className="text-gray-600 mb-6">The requested application could not be found.</p>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">Service Not Found</h3>
+          <p className="text-gray-600 mb-6">The requested service could not be found.</p>
           <button
-            onClick={() => navigate('/applications')}
+            onClick={() => navigate('/#services-section')}
             className="px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors"
           >
-            Return to Applications
+            Back to Services
           </button>
         </div>
       </div>
@@ -363,7 +494,7 @@ const Payment: React.FC = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Application ID:</span>
-                  <span className="text-gray-900 font-mono text-sm">{application.id}</span>
+                  <span className="text-gray-900 font-mono text-sm">{application?.id || 'N/A'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Category:</span>
@@ -378,7 +509,7 @@ const Payment: React.FC = () => {
                   <span className="font-semibold">Base Service:</span>
                   <span className="font-semibold">GHS {service.price.toFixed(2)}</span>
                 </div>
-                {(application as any).gazetteType && (application as any).gazetteType !== 'regular-gazette' && (
+                {(application as any)?.gazetteType && (application as any).gazetteType !== 'regular-gazette' && (
                   <div className="flex justify-between text-sm text-gray-600">
                     <span>Gazette Type Premium:</span>
                     <span>
@@ -399,7 +530,7 @@ const Payment: React.FC = () => {
                 <hr />
                 <div className="flex justify-between text-xl font-bold">
                   <span>Total:</span>
-                  <span className="text-blue-600">GHS {((application as any).totalPrice || service.price).toFixed(2)}</span>
+                  <span className="text-blue-600">GHS {getPaymentAmount().toFixed(2)}</span>
                 </div>
               </div>
 
@@ -414,7 +545,7 @@ const Payment: React.FC = () => {
                     Processing Payment...
                   </div>
                 ) : (
-                  `Pay GHS ${((application as any).totalPrice || service.price).toFixed(2)}`
+                  `Pay GHS ${getPaymentAmount().toFixed(2)}`
                 )}
               </button>
 

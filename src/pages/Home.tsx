@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Clock, Shield, FileText, ArrowRight, Users, Award, User, Building, Church, X, Heart, Briefcase } from 'lucide-react';
 import { useServices } from '../hooks/useServices';
-import ApiService from '../services/apiService';
+import { useAuth } from '../contexts/AuthContext';
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const [selectedService, setSelectedService] = useState<any>(null);
   const [showGazetteTypeModal, setShowGazetteTypeModal] = useState(false);
   const [gazettePlans, setGazettePlans] = useState<any[]>([]);
@@ -33,29 +34,57 @@ const Home: React.FC = () => {
   const handleServiceClick = async (service: any) => {
     console.log('Home - handleServiceClick called with service:', service);
     console.log('Home - service.id:', service.id);
+    console.log('Home - service.name:', service.name);
     setSelectedService(service);
     setShowGazetteTypeModal(true);
     
-    // Fetch gazette plans for this service
+    // Create mock gazette plans for this service
     setLoadingPlans(true);
     try {
-      const response = await ApiService.getGazetteTypes(service.id, "0");
-      console.log('Home - getGazetteTypes response:', response);
-      console.log('Home - response.success:', response.success);
-      console.log('Home - response.data:', response.data);
-      console.log('Home - response.data.SearchDetail:', response.data?.SearchDetail);
+      // Simulate loading time
+      await new Promise(resolve => setTimeout(resolve, 500));
       
-      if (response.success && response.data && response.data.SearchDetail) {
-        console.log('Home - Setting gazette plans:', response.data.SearchDetail);
-        console.log('Home - Number of plans:', response.data.SearchDetail.length);
-        setGazettePlans(response.data.SearchDetail);
-      } else {
-        console.error('Home - Failed to fetch gazette types:', response.error);
-        console.error('Home - Response structure:', JSON.stringify(response, null, 2));
-        setGazettePlans([]);
-      }
+      // Create mock plans based on the service
+      const mockPlans = [
+        {
+          FeeID: '64',
+          GazzeteType: service.name,
+          PaymentPlan: 'PREMIUM PLUS',
+          PaymentPlanCategory: 'PREMIUM PLUS',
+          GazetteName: `${service.name} - Premium Plus`,
+          GazetteDetails: `Premium service for ${service.name}`,
+          ProcessDays: 5,
+          GazetteFee: service.price * 1.5,
+          TaxRate: 0.15
+        },
+        {
+          FeeID: '65',
+          GazzeteType: service.name,
+          PaymentPlan: 'PREMIUM GAZETTE',
+          PaymentPlanCategory: 'PREMIUM GAZETTE',
+          GazetteName: `${service.name} - Premium Gazette`,
+          GazetteDetails: `Standard service for ${service.name}`,
+          ProcessDays: 7,
+          GazetteFee: service.price * 1.2,
+          TaxRate: 0.15
+        },
+        {
+          FeeID: '66',
+          GazzeteType: service.name,
+          PaymentPlan: 'REGULAR GAZETTE',
+          PaymentPlanCategory: 'REGULAR GAZETTE',
+          GazetteName: `${service.name} - Regular Gazette`,
+          GazetteDetails: `Basic service for ${service.name}`,
+          ProcessDays: 10,
+          GazetteFee: service.price,
+          TaxRate: 0.15
+        }
+      ];
+      
+      console.log('Home - Setting mock gazette plans:', mockPlans);
+      setGazettePlans(mockPlans);
     } catch (error) {
-      console.error('Home - Error fetching gazette plans:', error);
+      console.error('Home - Error creating mock gazette plans:', error);
       setGazettePlans([]);
     } finally {
       setLoadingPlans(false);
@@ -82,22 +111,21 @@ const Home: React.FC = () => {
             {/* Hero Content */}
             <div className="text-center lg:text-left order-2 lg:order-1">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent leading-tight">
-              Ghana E-Gazette
+              Ghana Electronic Gazette System
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 text-blue-100 font-light">
-              Your Digital Gateway to Government Services
+            Your Official Digital Gateway to Government Publications
             </p>
             <p className="text-sm sm:text-base md:text-lg mb-8 sm:mb-10 lg:mb-12 text-blue-200/90 max-w-3xl mx-auto lg:mx-0 leading-relaxed">
-              Experience seamless government services with our modern digital platform. 
-              Apply for certificates, licenses, and official documents with just a few clicks.
-            </p>
+            Access and manage official government publications, certificates, and licenses securely online.
+            Delivering seamless digital services to citizens and institutions nationwide.            </p>
             
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start mb-12 sm:mb-14 lg:mb-16">
               <Link
-                to="/auth"
+                to={isAuthenticated ? "/dashboard" : "/auth"}
                 className="group inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-white text-blue-700 rounded-xl font-semibold text-base sm:text-lg hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
               >
-                Get Started Today
+                {isAuthenticated ? "Go to Dashboard" : "Get Started Today"}
                 <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <button 
@@ -245,10 +273,10 @@ const Home: React.FC = () => {
                 <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
               </button>
                     <Link 
-                to="/auth"
+                to={isAuthenticated ? "/dashboard" : "/auth"}
                 className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-white/10 backdrop-blur-sm text-white rounded-lg sm:rounded-xl font-semibold text-base sm:text-lg hover:bg-white/20 transition-all duration-300 border border-white/20"
                     >
-                Get Started
+                {isAuthenticated ? "Go to Dashboard" : "Get Started"}
                     </Link>
                   </div>
           </div>
@@ -326,10 +354,10 @@ const Home: React.FC = () => {
             
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
               <Link
-                to="/auth"
+                to={isAuthenticated ? "/dashboard" : "/auth"}
                 className="group inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-white text-blue-600 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-white/25"
               >
-                <span>Get Started</span>
+                <span>{isAuthenticated ? "Go to Dashboard" : "Get Started"}</span>
                 <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               
@@ -417,7 +445,7 @@ const Home: React.FC = () => {
 
       {/* Gazette Type Selection Modal */}
       {showGazetteTypeModal && selectedService && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-opacity-50 backdrop-blur-md flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between">
@@ -455,14 +483,17 @@ const Home: React.FC = () => {
                 <div className="space-y-6">
                   {(() => {
                     // Group plans by PaymentPlan
+                    console.log('Home - Grouping plans:', gazettePlans);
                     const groupedPlans = gazettePlans.reduce((groups, plan) => {
-                      const planType = plan.PaymentPlan;
+                      const planType = plan.PaymentPlanCategory || plan.PaymentPlan;
+                      console.log('Home - Plan type for grouping:', planType, 'from plan:', plan);
                       if (!groups[planType]) {
                         groups[planType] = [];
                       }
                       groups[planType].push(plan);
                       return groups;
                     }, {} as Record<string, any[]>);
+                    console.log('Home - Grouped plans:', groupedPlans);
 
                     // Define the order and colors for plan types
                     const planOrder = ['PREMIUM PLUS', 'PREMIUM GAZETTE', 'REGULAR GAZETTE'] as const;
@@ -488,8 +519,13 @@ const Home: React.FC = () => {
                                 key={plan.FeeID}
                                 className="group bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-lg transition-all duration-300 cursor-pointer"
                                 onClick={() => {
+                                  console.log('Home - Navigating to document confirmation with:', {
+                                    serviceId: selectedService.id,
+                                    serviceName: selectedService.name,
+                                    planId: plan.FeeID
+                                  });
                                   setShowGazetteTypeModal(false);
-                                  navigate(`/application/${selectedService.id}?plan=${plan.FeeID}`);
+                                  navigate(`/document-confirmation?service=${selectedService.id}&plan=${plan.FeeID}`);
                                 }}
                               >
                                 <div className="space-y-3">
@@ -498,30 +534,30 @@ const Home: React.FC = () => {
                                       {plan.GazetteName}
                                     </h4>
                                     <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
-                                  </div>
+                            </div>
                                   
                                   <div className="space-y-2">
                                     <div className="flex items-center justify-between">
                                       <span className="text-xs text-gray-500">Processing Time:</span>
                                       <span className="text-xs font-semibold text-gray-700">{plan.ProcessDays} days</span>
-                                    </div>
+                          </div>
                                     
                                     <div className="flex items-center justify-between">
                                       <span className="text-xs text-gray-500">Fee:</span>
                                       <span className="text-xs font-bold text-green-600">₵{plan.GazetteFee.toLocaleString()}</span>
-                                    </div>
-                                  </div>
+                      </div>
+                    </div>
                                   
                                   {plan.GazetteDetails && (
                                     <p className="text-xs text-gray-600 line-clamp-2">
                                       {plan.GazetteDetails}
                                     </p>
                                   )}
-                                </div>
+                      </div>
                               </div>
                             ))}
                           </div>
-                        </div>
+                      </div>
                       );
                     });
                   })()}

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import toast from 'react-hot-toast';
-import ApiService from '../services/apiService';
+import { gazetteServices as mockServices } from '../data/mockData';
 import type { GazetteService } from '../types/application';
 
 interface UseServicesReturn {
@@ -19,35 +18,15 @@ export const useServices = (): UseServicesReturn => {
     setLoading(true);
     setError(null);
 
-    const loadingToast = toast.loading('Loading services...');
-
-    try {
-      const response = await ApiService.getServices();
-      console.log('useServices - API response:', response);
-      
-      if (response.success && response.data) {
-        console.log('useServices - Setting services:', response.data);
-        setServices(response.data);
-        setError(null);
-        toast.dismiss(loadingToast);
-      } else {
-        console.error('useServices - API failed:', response.error);
-        setServices([]);
-        setError(response.error || 'Failed to fetch services');
-        toast.dismiss(loadingToast);
-        // Show toast notification for API errors
-        toast.error(`Failed to load services: ${response.error || 'Unknown error'}`);
-      }
-    } catch (err) {
-      console.error('Error fetching services:', err);
-      setServices([]);
-      setError(err instanceof Error ? err.message : 'Network error occurred');
-      toast.dismiss(loadingToast);
-      // Show toast notification for network errors
-      toast.error(`Network error: ${err instanceof Error ? err.message : 'Failed to load services'}`);
-    } finally {
-      setLoading(false);
-    }
+    // Since API is not ready yet, always use mock data
+    console.log('useServices - Using mock services data (API not ready)');
+    
+    // Simulate loading time
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    setServices(mockServices);
+    setError(null);
+    setLoading(false);
   };
 
   useEffect(() => {

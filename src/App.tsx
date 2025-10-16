@@ -13,6 +13,7 @@ import Register from './pages/Register';
 import RegistrationOtpVerification from './pages/RegistrationOtpVerification';
 import Dashboard from './pages/Dashboard';
 import Application from './pages/Application';
+import DocumentConfirmation from './pages/DocumentConfirmation';
 import Payment from './pages/Payment';
 import PaymentSuccess from './pages/PaymentSuccess';
 import ApplicationDetail from './pages/ApplicationDetail';
@@ -69,9 +70,19 @@ function AppContent() {
                 <Dashboard />
               </ProtectedRoute>
             } />
+            <Route path="/document-confirmation" element={
+              <ProtectedRoute>
+                <DocumentConfirmation />
+              </ProtectedRoute>
+            } />
             <Route path="/application/:serviceId" element={
               <ProtectedRoute>
                 <Application />
+              </ProtectedRoute>
+            } />
+            <Route path="/payment" element={
+              <ProtectedRoute>
+                <Payment />
               </ProtectedRoute>
             } />
             <Route path="/payment/:applicationId" element={

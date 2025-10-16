@@ -47,7 +47,10 @@ class ApiService {
     retryCount: number = 0
   ): Promise<ApiResponse<T>> {
     try {
-      const url = `${API_CONFIG.BASE_URL}${endpoint}`;
+      // Ensure proper URL construction without double slashes
+      const baseUrl = API_CONFIG.BASE_URL.endsWith('/') ? API_CONFIG.BASE_URL.slice(0, -1) : API_CONFIG.BASE_URL;
+      const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
+      const url = `${baseUrl}/${cleanEndpoint}`;
       console.log('Making API request to:', url);
       console.log('Using API token:', this.API_TOKEN);
       
@@ -68,7 +71,11 @@ class ApiService {
       // Check for API errors in response
       if (data.Message && data.Message.includes('error has occurred')) {
         // Check if it's a database connection error that might be temporary
-        if (data.ExceptionMessage && data.ExceptionMessage.includes('connection')) {
+        if (data.ExceptionMessage && (
+          data.ExceptionMessage.includes('ExecuteNonQuery') ||
+          data.ExceptionMessage.includes('connection') ||
+          data.ExceptionMessage.includes('database')
+        )) {
           throw new Error(`Database connection error: ${data.ExceptionMessage}`);
         }
         throw new Error(data.Message);
@@ -89,9 +96,12 @@ class ApiService {
       // Check if this is a retryable error and we haven't exceeded max retries
       const isRetryableError = error instanceof Error && (
         error.message.includes('Database connection error') ||
+        error.message.includes('ExecuteNonQuery') ||
         error.message.includes('connection') ||
+        error.message.includes('database') ||
         error.message.includes('Failed to fetch') ||
-        error.message.includes('ERR_NAME_NOT_RESOLVED')
+        error.message.includes('ERR_NAME_NOT_RESOLVED') ||
+        error.message.includes('HTTP error! status: 500')
       );
       
       if (isRetryableError && retryCount < this.MAX_RETRIES) {
@@ -215,6 +225,100 @@ class ApiService {
     }
 
     return response;
+  }
+
+  // Fetch all gazette types with different payment plans
+  static async getAllGazetteTypes(gazetteType: string = "59"): Promise<ApiResponse<any[]>> {
+    try {
+      console.log('Fetching gazette types for all PaymentPlan types: 64, 65, 66');
+      
+      // Fetch plans for each PaymentPlan type
+      const paymentPlans = ["64", "65", "66"];
+      const allPlans: any[] = [];
+      
+      for (const paymentPlan of paymentPlans) {
+        console.log(`Fetching plans for PaymentPlan: ${paymentPlan}`);
+        const response = await this.getGazetteTypes(gazetteType, paymentPlan);
+        console.log(`API Response for PaymentPlan ${paymentPlan}:`, response);
+        
+        if (response.success && response.data) {
+          let searchDetail = null;
+          
+          // Handle different response structures
+          if (response.data.SearchDetail) {
+            searchDetail = response.data.SearchDetail;
+          } else if (Array.isArray(response.data)) {
+            searchDetail = response.data;
+          }
+          
+          if (searchDetail && Array.isArray(searchDetail)) {
+            console.log(`Found ${searchDetail.length} plans for PaymentPlan ${paymentPlan}`);
+            
+            // Process each plan and add categorization
+            const processedPlans = searchDetail.map((plan: any) => {
+              const paymentPlanCategory = this.getPaymentPlanCategory(paymentPlan);
+              
+              console.log('Processing plan:', {
+                name: plan.GazetteName,
+                originalPaymentPlan: plan.PaymentPlan,
+                paymentPlanType: paymentPlan,
+                paymentPlanCategory
+              });
+              
+              return {
+                ...plan,
+                PaymentPlanType: paymentPlan,
+                PaymentPlanCategory: paymentPlanCategory
+              };
+            });
+            
+            allPlans.push(...processedPlans);
+          }
+        } else {
+          console.log(`No data found for PaymentPlan ${paymentPlan}:`, response.error);
+        }
+      }
+      
+      console.log(`Total plans collected: ${allPlans.length}`);
+      console.log('All collected plans:', allPlans);
+      
+      if (allPlans.length > 0) {
+        return {
+          success: true,
+          data: allPlans,
+          error: undefined
+        };
+      } else {
+        return {
+          success: false,
+          data: [],
+          error: 'No plans found for any PaymentPlan type'
+        };
+      }
+    } catch (error) {
+      console.error('Error fetching all gazette types:', error);
+      return {
+        success: false,
+        data: [],
+        error: error instanceof Error ? error.message : 'Failed to fetch gazette types'
+      };
+    }
+  }
+
+
+
+  // Helper method to get payment plan category
+  private static getPaymentPlanCategory(paymentPlan: string): string {
+    switch (paymentPlan) {
+      case "64":
+        return "PREMIUM PLUS";
+      case "65":
+        return "PREMIUM GAZETTE";
+      case "66":
+        return "REGULAR GAZETTE";
+      default:
+        return "Unknown";
+    }
   }
 
 

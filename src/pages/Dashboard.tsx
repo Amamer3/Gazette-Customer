@@ -32,6 +32,8 @@ const Dashboard: React.FC = () => {
   const [showServiceModal, setShowServiceModal] = useState(false);
   const [showGazetteTypeModal, setShowGazetteTypeModal] = useState(false);
   const [selectedService, setSelectedService] = useState<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  
   const [gazettePlans, setGazettePlans] = useState<any[]>([]);
   const [loadingPlans, setLoadingPlans] = useState(false);
   const [gazetteServices, setGazetteServices] = useState<any[]>([]);
@@ -42,6 +44,10 @@ const Dashboard: React.FC = () => {
   console.log('Dashboard - gazetteServices:', gazetteServices);
   console.log('Dashboard - servicesLoading:', servicesLoading);
   console.log('Dashboard - servicesError:', servicesError);
+  console.log('Dashboard - gazettePlans:', gazettePlans);
+  console.log('Dashboard - gazettePlans.length:', gazettePlans.length);
+  console.log('Dashboard - loadingPlans:', loadingPlans);
+  console.log('Dashboard - showGazetteTypeModal:', showGazetteTypeModal);
 
   const fetchServices = async () => {
     setServicesLoading(true);
@@ -83,14 +89,16 @@ const Dashboard: React.FC = () => {
     const loadingToast = toast.loading('Loading gazette plans...');
 
     try {
-      // Fetch gazette types for the selected service
-      const response = await ApiService.getGazetteTypes(service.id);
+      // Fetch all gazette types with different payment plans
+      const response = await ApiService.getAllGazetteTypes("59");
       console.log('Gazette types response:', response);
       
-      if (response.success && response.data && response.data.SearchDetail) {
-        setGazettePlans(response.data.SearchDetail);
+      if (response.success && response.data) {
+        console.log('Dashboard - Setting gazette plans:', response.data);
+        console.log('Dashboard - Plans length:', response.data.length);
+        setGazettePlans(response.data);
         toast.dismiss(loadingToast);
-        toast.success(`Loaded ${response.data.SearchDetail.length} gazette plans`);
+        toast.success(`Loaded ${response.data.length} gazette plans`);
       } else {
         console.error('Failed to fetch gazette types:', response.error);
         setGazettePlans([]);
@@ -108,6 +116,8 @@ const Dashboard: React.FC = () => {
       setLoadingPlans(false);
     }
   };
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
   useEffect(() => {
     // Load applications from localStorage (mock data)
@@ -452,10 +462,10 @@ const Dashboard: React.FC = () => {
                 <div className="text-center py-12">
                   <div className="text-red-500 mb-4">Error loading services: {servicesError}</div>
                   <button
-                    onClick={() => window.location.reload()}
+                    onClick={fetchServices}
                     className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                   >
-                    Retry
+                    Retry Loading Services
                   </button>
                 </div>
               ) : gazetteServices.length === 0 ? (
@@ -465,7 +475,7 @@ const Dashboard: React.FC = () => {
                     onClick={fetchServices}
                     className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                   >
-                    Retry Loading Services
+                    Load Services
                   </button>
                 </div>
               ) : (
@@ -489,6 +499,14 @@ const Dashboard: React.FC = () => {
                           <p className="text-xs text-gray-500 mt-1 line-clamp-2">
                             {service.description || `Professional ${service.name.toLowerCase()} service`}
                           </p>
+                          <div className="flex items-center justify-between mt-2">
+                            <span className="text-xs font-medium text-blue-600">
+                              {service.processingTime || 'Processing time varies'}
+                            </span>
+                            <span className="text-xs font-bold text-green-600">
+                              ₵{service.price || 'Contact for pricing'}
+                            </span>
+                          </div>
                         </div>
                         <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
                       </div>
@@ -550,14 +568,17 @@ const Dashboard: React.FC = () => {
                 <div className="space-y-6">
                   {(() => {
                     // Group plans by PaymentPlan
+                    console.log('Dashboard - Grouping plans:', gazettePlans);
                     const groupedPlans = gazettePlans.reduce((groups, plan) => {
-                      const planType = plan.PaymentPlan;
+                      const planType = plan.PaymentPlanCategory || plan.PaymentPlan;
+                      console.log('Dashboard - Plan type for grouping:', planType, 'from plan:', plan);
                       if (!groups[planType]) {
                         groups[planType] = [];
                       }
                       groups[planType].push(plan);
                       return groups;
                     }, {} as Record<string, any[]>);
+                    console.log('Dashboard - Grouped plans:', groupedPlans);
 
                     // Define the order and colors for plan types
                     const planOrder = ['PREMIUM PLUS', 'PREMIUM GAZETTE', 'REGULAR GAZETTE'] as const;
@@ -584,7 +605,7 @@ const Dashboard: React.FC = () => {
                                 className="group bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-lg transition-all duration-300 cursor-pointer"
                                 onClick={() => {
                                   setShowGazetteTypeModal(false);
-                                  navigate(`/application/${selectedService.id}?plan=${plan.FeeID}`);
+                                  navigate(`/document-confirmation?service=${selectedService.id}&plan=${plan.FeeID}`);
                                 }}
                               >
                                 <div className="space-y-3">

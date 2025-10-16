@@ -83,6 +83,7 @@ export interface ApplicationFormData {
   additionalNotes?: string;
   serviceType: string;
   gazetteType?: 'premium-plus' | 'premium-gazette' | 'regular-gazette';
+  _isServiceFormValid?: boolean; // Internal validation state
 }
 
 export interface Order {
