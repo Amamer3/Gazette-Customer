@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Clock, Shield, FileText, ArrowRight, Users, User, Award, X } from 'lucide-react';
+import { FileText, ArrowRight, User, Award, X } from 'lucide-react';
 import { useServices } from '../hooks/useServices';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -176,15 +176,15 @@ const Home: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 sm:mb-16 lg:mb-20">
             <div className="inline-flex items-center px-3 sm:px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
-              <User className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
-              Name Change Services
+              
+              Our Gazette Services
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
-              NAME CHANGE SERVICES
+              Gazette Services
               <span className="block text-blue-600">Official Gazette Publication</span>
             </h2>
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Choose from our comprehensive range of name change and correction services. 
+              Choose from our comprehensive range of gazette services. 
               Each service is tailored to specific requirements with professional excellence.
             </p>
           </div>
@@ -338,7 +338,7 @@ const Home: React.FC = () => {
             
 
       {/* Statistics Section */}
-        <section className="bg-blue-900 py-12 sm:py-16 lg:py-20">
+        {/* <section className="bg-blue-900 py-12 sm:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 text-center">
             <div>
@@ -359,19 +359,19 @@ const Home: React.FC = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Section */}
-      <section className="relative py-12 sm:py-16 md:py-20 lg:py-24 bg-blue-400 overflow-hidden">
+      <section className="relative py-12 sm:py-16 md:py-20 lg:py-24 bg-[#007bff] overflow-hidden">
         {/* Background Elements */}
-        <div className="absolute inset-0">
+        {/* <div className="absolute inset-0">
           <div className="absolute top-0 left-0 w-36 h-36 sm:w-48 sm:h-48 lg:w-72 lg:h-72 bg-white/10 rounded-full mix-blend-overlay filter blur-xl animate-pulse"></div>
           <div className="absolute bottom-0 right-0 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 bg-white/5 rounded-full mix-blend-overlay filter blur-2xl animate-pulse" style={{animationDelay: '3s'}}></div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 sm:w-48 sm:h-48 lg:w-64 lg:h-64 bg-white/5 rounded-full mix-blend-overlay filter blur-xl animate-pulse" style={{animationDelay: '1.5s'}}></div>
-        </div>
+        </div> */}
         
         {/* Floating Icons */}
-        <div className="absolute inset-0 overflow-hidden">
+        {/* <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-10 sm:top-20 left-4 sm:left-10 animate-float">
             <FileText className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-white/20" />
           </div>
@@ -384,7 +384,7 @@ const Home: React.FC = () => {
           <div className="absolute bottom-16 sm:bottom-32 right-4 sm:right-10 animate-float" style={{animationDelay: '1s'}}>
             <Users className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-white/20" />
           </div>
-        </div>
+        </div> */}
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
           <div className="max-w-4xl mx-auto">
@@ -423,7 +423,7 @@ const Home: React.FC = () => {
             </div>
             
             {/* Trust Indicators */}
-            <div className="mt-12 sm:mt-14 lg:mt-16 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 text-center">
+            {/* <div className="mt-12 sm:mt-14 lg:mt-16 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 text-center">
               <div className="text-white/80">
                 <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-1 sm:mb-2">50K+</div>
                 <div className="text-xs sm:text-sm">Happy Customers</div>
@@ -440,7 +440,7 @@ const Home: React.FC = () => {
                 <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-1 sm:mb-2">5★</div>
                 <div className="text-xs sm:text-sm">Rating</div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
@@ -454,7 +454,7 @@ const Home: React.FC = () => {
                 <img src="/ghanaPublish-logo.png" className='w-16 h-16' alt="" />
               </div>
               <p className="text-gray-400">
-                Official digital gazette services from Ghana E-Gazette.
+                Official digital gazette services from Ghana Publishing Company Ltd.
               </p>
             </div>
             
@@ -464,7 +464,6 @@ const Home: React.FC = () => {
                 <li>Gazette Publications</li>
                 <li>Name Changes</li>
                 <li>Marriage Publications</li>
-                <li>Business Licenses</li>
               </ul>
             </div>
             
