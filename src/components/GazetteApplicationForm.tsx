@@ -29,9 +29,10 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
   const [currentStep, setCurrentStep] = useState(1); // Start at step 1 (Service Details)
   const [uploadedFiles, _setUploadedFiles] = useState<File[]>([]);
   const [, setPaymentCompleted] = useState(false);
-  const [gazettePlans, setGazettePlans] = useState<any[]>([]);
+  const [, setGazettePlans] = useState<any[]>([]);
   const [, setLoadingPlans] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<any>(null);
+  const [toastShown, setToastShown] = useState(false);
   const [formData, setFormData] = useState<ApplicationFormData>({
     serviceType: serviceId || '',
     documents: [],
@@ -216,7 +217,10 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
             gazetteType: 'premium-plus' as 'premium-plus' | 'premium-gazette' | 'regular-gazette'
           }));
           
-          toast.success('Using offline gazette plans data');
+          if (!toastShown) {
+            toast.success('Using offline gazette plans data');
+            setToastShown(true);
+          }
         }
       } catch (error) {
         console.error('Error fetching gazette plans:', error);
@@ -282,7 +286,10 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
           gazetteType: 'premium-plus' as 'premium-plus' | 'premium-gazette' | 'regular-gazette'
         }));
         
-        toast.success('Using offline gazette plans data');
+        if (!toastShown) {
+          toast.success('Using offline gazette plans data');
+          setToastShown(true);
+        }
       } finally {
         setLoadingPlans(false);
       }
@@ -496,27 +503,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
   const isStepValid = (step: number) => {
     switch (step) {
       case 1:
-        if (service.id === 'appointment-marriage-officers' || service.id === 'public-place-worship-marriage-license') {
-          return formData.religiousInfo?.religiousBodyName && 
-                 formData.religiousInfo?.denomination &&
-                 formData.religiousInfo?.registrationNumber &&
-                 formData.religiousInfo?.headOfReligiousBody &&
-                 formData.religiousInfo?.contactPerson &&
-                 formData.religiousInfo?.placeOfWorship &&
-                 formData.religiousInfo?.capacity;
-        }
-        if (service.id === 'change-name-company-school-hospital' || service.id === 'incorporation-commencement-companies') {
-          return formData.companyInfo?.companyName && 
-                 formData.companyInfo?.businessType &&
-                 formData.companyInfo?.registrationNumber &&
-                 formData.companyInfo?.registeredAddress &&
-                 formData.companyInfo?.authorizedCapital &&
-                 formData.companyInfo?.paidUpCapital;
-        }
-        // For CHANGE OF NAME service, check if all documents are uploaded
-        if (service.id === 'change-name-confirmation-date-birth') {
-          return formData._isServiceFormValid || false;
-        }
+        // For CHANGE OF NAME service, always allow progression to review
         return true;
       case 2:
         return true; // Review step - always valid
@@ -857,43 +844,6 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
     </div>
   );
 
-  const handlePaymentNavigation = () => {
-    // Generate application ID for payment
-    const applicationId = `app-${Date.now()}`;
-    
-    // Calculate total price based on selected gazette plan
-    const getTotalPrice = () => {
-      const selectedPlan = gazettePlans.find(p => p.FeeID === formData.gazetteType);
-      return selectedPlan ? selectedPlan.GazetteFee : service.price;
-    };
-
-    // Create application object that matches the Payment component's expected structure
-    const application = {
-      id: applicationId,
-      serviceType: service.id,
-      status: 'draft' as const,
-      submittedAt: new Date().toISOString(),
-      companyInfo: formData.companyInfo,
-      religiousInfo: formData.religiousInfo,
-      documents: [],
-      paymentStatus: 'pending' as const,
-      notes: formData.additionalNotes,
-      lastUpdated: new Date().toISOString(),
-      gazetteType: formData.gazetteType,
-      totalPrice: getTotalPrice()
-    };
-    
-    // Store application in localStorage (this is what Payment component looks for)
-    const applications = LocalStorageService.getApplications();
-    applications.push(application);
-    LocalStorageService.saveApplications(applications);
-    
-    // Also store form data temporarily for form-specific handling
-    localStorage.setItem(`temp_application_${applicationId}`, JSON.stringify(formData));
-    
-    // Navigate to payment page
-    navigate(`/payment/${applicationId}`);
-  };
 
 
   const steps = [
@@ -1047,18 +997,11 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
 
           {currentStep < steps.length ? (
             <button
-              onClick={() => {
-                if (currentStep === 1) {
-                  // Navigate to payment after step 1
-                  handlePaymentNavigation();
-                } else {
-                  setCurrentStep(prev => prev + 1);
-                }
-              }}
+              onClick={() => setCurrentStep(prev => prev + 1)}
               disabled={!isStepValid(currentStep)}
               className="w-full sm:w-auto inline-flex items-center justify-center px-4 sm:px-6 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {currentStep === 1 ? 'Proceed to Payment' : 'Next'}
+              Next
               <ArrowRight className="w-4 h-4 ml-2" />
             </button>
           ) : (

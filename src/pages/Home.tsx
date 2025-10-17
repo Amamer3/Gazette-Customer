@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Clock, Shield, FileText, ArrowRight, Users, Award, User, Building, Church, X, Heart, Briefcase } from 'lucide-react';
+import { Clock, Shield, FileText, ArrowRight, Users, User, Award, X } from 'lucide-react';
 import { useServices } from '../hooks/useServices';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -13,22 +13,9 @@ const Home: React.FC = () => {
   const [loadingPlans, setLoadingPlans] = useState(false);
   const { services: gazetteServices, loading, error } = useServices();
 
-  const getServiceIcon = (serviceName: string) => { 
-    const name = serviceName.toLowerCase();
-    
-    if (name.includes('marriage') || name.includes('officer')) {
-      return Heart;
-    } else if (name.includes('company') || name.includes('incorporation') || name.includes('school') || name.includes('hospital')) {
-      return Building;
-    } else if (name.includes('name') || name.includes('birth')) {
-      return User;
-    } else if (name.includes('worship') || name.includes('religious')) {
-      return Church;
-    } else if (name.includes('business') || name.includes('license')) {
-      return Briefcase;
-    }
-    
-    return FileText;
+  const getServiceIcon = () => { 
+    // Focus on CHANGE OF NAME service
+    return User;
   };
 
   const handleServiceClick = async (service: any) => {
@@ -165,16 +152,16 @@ const Home: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 sm:mb-16 lg:mb-20">
             <div className="inline-flex items-center px-3 sm:px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
-              <FileText className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
-              Our Services
+              <User className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
+              Name Change Service
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
-              Gazette Services
-              <span className="block text-blue-600">Tailored to Your Needs</span>
+              CHANGE OF NAME
+              <span className="block text-blue-600">Official Gazette Publication</span>
             </h2>
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Choose from our comprehensive range of official gazette publication services, 
-              each designed to meet specific legal and administrative requirements with professional excellence.
+              Official name change, name confirmation, or date of birth correction service through Ghana Publishing Company Limited. 
+              Get your legal name change published in the official gazette with professional excellence.
             </p>
           </div>
           
@@ -190,7 +177,7 @@ const Home: React.FC = () => {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
               {gazetteServices.map((service, index) => {
-                const IconComponent = getServiceIcon(service.name);
+                const IconComponent = getServiceIcon();
                 
                 return (
                   <div 
