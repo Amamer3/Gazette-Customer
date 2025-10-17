@@ -1,7 +1,7 @@
 // API Configuration - All values come from environment variables
 export const API_CONFIG = {
   // Base URL from environment - Use proxy for both development and production
-  BASE_URL: import.meta.env.VITE_API_BASE_URL || '/api/',
+  BASE_URL: import.meta.env.VITE_API_BASE_URL || '/api',
   
   // API Token from environment
   TOKEN: import.meta.env.VITE_API_TOKEN || '',

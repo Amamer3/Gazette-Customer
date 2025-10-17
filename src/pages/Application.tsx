@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import GazetteApplicationForm from '../components/GazetteApplicationForm';
-import ApiService from '../services/apiService';
+// Removed ApiService import - using mock simulation instead
 import type { ApplicationFormData } from '../types/application';
 
 const Application: React.FC = () => {
@@ -13,24 +13,35 @@ const Application: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      // Submit to API
-      const response = await ApiService.submitApplication(applicationData);
+      // Simulate API submission (API not ready)
+      console.log('Simulating application submission with data:', applicationData);
       
-      if (response.success) {
-        console.log('Application submitted successfully:', response.data);
-        // Show success message
-        toast.success(`Application submitted successfully! Reference: ${response.data.ReferenceNumber || 'N/A'}`);
-        // Navigate to applications list
-        setTimeout(() => {
-          navigate('/applications');
-        }, 2000);
-      } else {
-        console.error('API submission failed:', response.error);
-        // Show error message
-        toast.error(`Application submission failed: ${response.error}`);
-      }
+      // Simulate processing time
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Generate mock response
+      const mockResponse = {
+        success: true,
+        data: {
+          ReferenceNumber: `REF-${Date.now()}`,
+          ApplicationId: `APP-${Date.now()}`,
+          Status: 'submitted',
+          Message: 'Application submitted successfully'
+        }
+      };
+      
+      console.log('Mock application submitted successfully:', mockResponse.data);
+      
+      // Show success message
+      toast.success(`Application submitted successfully! Reference: ${mockResponse.data.ReferenceNumber}`);
+      
+      // Navigate to applications list
+      setTimeout(() => {
+        navigate('/applications');
+      }, 2000);
+      
     } catch (error) {
-      console.error('Error submitting application:', error);
+      console.error('Error simulating application submission:', error);
       // Show error message
       toast.error(`Application submission failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {

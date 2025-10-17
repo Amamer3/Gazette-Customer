@@ -285,7 +285,7 @@ const About: React.FC = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-blue-900">
+      <section className="py-16 bg-[#007bff]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
             Ready to Get Started?
@@ -310,6 +310,58 @@ const About: React.FC = () => {
           </div>
         </div>
       </section>
+
+
+      {/* Footer */}
+      <footer className="bg-gray-800 text-white py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+              <div className="flex items-center space-x-2 mb-4">
+                <img src="/ghanaPublish-logo.png" className='w-16 h-16' alt="" />
+              </div>
+              <p className="text-gray-400">
+                Official digital gazette services from Ghana Publishing Company Ltd.
+              </p>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Services</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li>Gazette Publications</li>
+                <li>Name Changes</li>
+                <li>Marriage Publications</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Support</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li>Help Center</li>
+                <li>Contact Us</li>
+                <li>Track Application</li>
+                <li>FAQs</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Contact</h3>
+              <div className="space-y-2 text-gray-400">
+                <p>Ghana E-Gazette</p>
+                <p>Accra, Ghana</p>
+                <p>+233 XXX XXX XXX</p>
+                <p>info@egazette.gov.gh</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+            <p>&copy; {new Date().getFullYear()} Ghana Publishing Company Ltd. All rights reserved.</p>
+          </div>
+        </div>
+      </footer> 
+
+
     </div>
   );
 };
