@@ -119,14 +119,17 @@ const Payment: React.FC = () => {
             GazzeteType: foundService.name,
             PaymentPlan: planId === '64' ? 'PREMIUM PLUS' : 
                         planId === '65' ? 'PREMIUM GAZETTE' : 
-                        planId === '66' ? 'REGULAR GAZETTE' : 'STANDARD',
+                        planId === '66' ? 'REGULAR GAZETTE' : 
+                        planId === '67' ? 'NSS GAZETTE' : 'STANDARD',
             GazetteName: `${foundService.name} - ${planId === '64' ? 'Premium Plus' : 
                                      planId === '65' ? 'Premium Gazette' : 
-                                     planId === '66' ? 'Regular Gazette' : 'Standard'}`,
+                                     planId === '66' ? 'Regular Gazette' : 
+                                     planId === '67' ? 'NSS Gazette' : 'Standard'}`,
             GazetteDetails: `Service for ${foundService.name}`,
-            ProcessDays: planId === '64' ? 5 : planId === '65' ? 7 : 10,
+            ProcessDays: planId === '64' ? 5 : planId === '65' ? 7 : planId === '66' ? 10 : planId === '67' ? 14 : 10,
             GazetteFee: planId === '64' ? foundService.price * 1.5 : 
                        planId === '65' ? foundService.price * 1.2 : 
+                       planId === '67' ? 700.00 :
                        foundService.price,
             TaxRate: 0.15
           };
@@ -407,22 +410,22 @@ const Payment: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {/* Payment Methods */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-2xl shadow-sm p-8">
-              <div className="flex items-center mb-6">
-                <Shield className="w-6 h-6 text-green-600 mr-3" />
-                <h2 className="text-2xl font-bold text-gray-900">Delivery & Payment</h2>
+            <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm p-4 sm:p-6 lg:p-8">
+              <div className="flex items-center mb-4 sm:mb-6">
+                <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 mr-2 sm:mr-3" />
+                <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">Delivery & Payment</h2>
               </div>
 
               {/* Delivery/Pickup Options */}
-              <div className="mb-8">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Choose Delivery Option</h3>
+              <div className="mb-6 sm:mb-8">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Choose Delivery Option</h3>
                 <div className="space-y-4">
                   <div 
-                    className={`border-2 rounded-xl p-4 cursor-pointer transition-all duration-300 ${
+                    className={`border-2 rounded-lg sm:rounded-xl p-3 sm:p-4 cursor-pointer transition-all duration-300 ${
                       deliveryOption === 'pickup' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
                     }`}
                     onClick={() => setDeliveryOption('pickup')}
@@ -444,7 +447,7 @@ const Payment: React.FC = () => {
                   </div>
 
                   <div 
-                    className={`border-2 rounded-xl p-4 cursor-pointer transition-all duration-300 ${
+                    className={`border-2 rounded-lg sm:rounded-xl p-3 sm:p-4 cursor-pointer transition-all duration-300 ${
                       deliveryOption === 'delivery' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
                     }`}
                     onClick={() => setDeliveryOption('delivery')}

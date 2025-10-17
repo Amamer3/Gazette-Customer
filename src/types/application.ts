@@ -1,3 +1,10 @@
+export interface ServiceType {
+  id: string;
+  name: string;
+  requirements: string[];
+  note?: string;
+}
+
 export interface GazetteService {
   id: string;
   name: string;
@@ -7,7 +14,8 @@ export interface GazetteService {
   category: string;
   requiredDocuments: string[];
   icon: string;
-  gazetteType?: 'premium-plus' | 'premium-gazette' | 'regular-gazette';
+  gazetteType?: 'premium-plus' | 'premium-gazette' | 'regular-gazette' | 'nss-gazette';
+  note?: string;
 }
 
 export interface PersonalInfo { 
@@ -61,7 +69,7 @@ export interface Application {
   priority?: 'low' | 'normal' | 'high' | 'urgent';
   assignedTo?: string;
   lastUpdated?: string;
-  gazetteType?: 'premium-plus' | 'premium-gazette' | 'regular-gazette';
+  gazetteType?: 'premium-plus' | 'premium-gazette' | 'regular-gazette' | 'nss-gazette';
 }
 
 export interface DocumentFile {
@@ -82,7 +90,7 @@ export interface ApplicationFormData {
   documents: File[];
   additionalNotes?: string;
   serviceType: string;
-  gazetteType?: 'premium-plus' | 'premium-gazette' | 'regular-gazette';
+  gazetteType?: 'premium-plus' | 'premium-gazette' | 'regular-gazette' | 'nss-gazette';
   _isServiceFormValid?: boolean; // Internal validation state
 }
 

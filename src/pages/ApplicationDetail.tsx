@@ -56,8 +56,34 @@ const ApplicationDetail: React.FC = () => {
       if (foundApplication) {
         console.log('Found application:', foundApplication);
         setApplication(foundApplication as Application);
-        const foundService = gazetteServices.find(s => s.id === foundApplication.serviceType);
-        setService(foundService || null);
+        
+        // Try to find service with flexible matching
+        let foundService = gazetteServices.find(s => s.id === foundApplication.serviceType);
+        
+        // If not found by exact ID, try to find by name similarity
+        if (!foundService) {
+          foundService = gazetteServices.find(s => 
+            s.name.toLowerCase().includes(foundApplication.serviceType.toLowerCase()) ||
+            foundApplication.serviceType.toLowerCase().includes(s.name.toLowerCase())
+          );
+        }
+        
+        // If still not found, create a temporary service for display
+        if (!foundService) {
+          console.log('Service not found, creating temporary service for:', foundApplication.serviceType);
+          foundService = {
+            id: foundApplication.serviceType,
+            name: foundApplication.serviceType.replace(/-/g, ' ').toUpperCase(),
+            description: `Service for ${foundApplication.serviceType}`,
+            price: 200.00,
+            processingTime: '7-10 business days',
+            category: 'General Services',
+            requiredDocuments: ['Application Letter', 'Supporting Documents'],
+            icon: 'FileText'
+          };
+        }
+        
+        setService(foundService);
         
         // Get order information
         const orders = JSON.parse(localStorage.getItem('orders') || '[]');
@@ -218,15 +244,15 @@ const ApplicationDetail: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6 lg:space-y-8">
             {/* Application Overview */}
-            <div className="bg-white rounded-2xl shadow-sm p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Application Overview</h2>
+            <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm p-4 sm:p-6 lg:p-8">
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">Application Overview</h2>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Service Type</label>
                   <p className="text-gray-900 font-semibold">{service.name}</p>

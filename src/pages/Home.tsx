@@ -11,11 +11,24 @@ const Home: React.FC = () => {
   const [showGazetteTypeModal, setShowGazetteTypeModal] = useState(false);
   const [gazettePlans, setGazettePlans] = useState<any[]>([]);
   const [loadingPlans, setLoadingPlans] = useState(false);
+  const [expandedDocuments, setExpandedDocuments] = useState<Set<string>>(new Set());
   const { services: gazetteServices, loading, error } = useServices();
 
   const getServiceIcon = () => { 
     // Focus on CHANGE OF NAME service
-    return User;
+      return User;
+  };
+
+  const toggleDocumentsExpansion = (serviceId: string) => {
+    setExpandedDocuments(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(serviceId)) {
+        newSet.delete(serviceId);
+      } else {
+        newSet.add(serviceId);
+      }
+      return newSet;
+    });
   };
 
   const handleServiceClick = async (service: any) => {
@@ -65,6 +78,17 @@ const Home: React.FC = () => {
           ProcessDays: 10,
           GazetteFee: service.price,
           TaxRate: 0.15
+        },
+        {
+          FeeID: '67',
+          GazzeteType: service.name,
+          PaymentPlan: 'NSS GAZETTE',
+          PaymentPlanCategory: 'NSS GAZETTE',
+          GazetteName: `${service.name} - NSS Gazette`,
+          GazetteDetails: `NSS service for ${service.name}`,
+          ProcessDays: 14,
+          GazetteFee: 700.00,
+          TaxRate: 0.15
         }
       ];
       
@@ -97,10 +121,10 @@ const Home: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center">
             {/* Hero Content */}
             <div className="text-center lg:text-left order-2 lg:order-1">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent leading-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent leading-tight break-words">
               Ghana Electronic Gazette System
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 text-blue-100 font-light">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 text-blue-100 font-light break-words">
             Your Official Digital Gateway to Government Publications
             </p>
             <p className="text-sm sm:text-base md:text-lg mb-8 sm:mb-10 lg:mb-12 text-blue-200/90 max-w-3xl mx-auto lg:mx-0 leading-relaxed">
@@ -153,15 +177,15 @@ const Home: React.FC = () => {
         <div className="text-center mb-12 sm:mb-16 lg:mb-20">
             <div className="inline-flex items-center px-3 sm:px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
               <User className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
-              Name Change Service
+              Name Change Services
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
-              CHANGE OF NAME
+              NAME CHANGE SERVICES
               <span className="block text-blue-600">Official Gazette Publication</span>
             </h2>
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Official name change, name confirmation, or date of birth correction service through Ghana Publishing Company Limited. 
-              Get your legal name change published in the official gazette with professional excellence.
+              Choose from our comprehensive range of name change and correction services. 
+              Each service is tailored to specific requirements with professional excellence.
             </p>
           </div>
           
@@ -202,9 +226,50 @@ const Home: React.FC = () => {
                       </h3>
                       
                       {/* Service Description */}
-                      <p className="text-gray-600 mb-6 sm:mb-8 leading-relaxed text-center text-xs sm:text-sm flex-1 break-words hyphens-auto min-h-[4rem] flex items-center justify-center">
+                      <p className="text-gray-600 mb-4 leading-relaxed text-center text-xs sm:text-sm break-words hyphens-auto">
                         {service.description || `Professional ${service.name.toLowerCase()} service`}
                       </p>
+
+                      {/* Required Documents */}
+                      <div className="mb-4">
+                        <h4 className="text-xs font-semibold text-gray-800 mb-2 text-center">Required Documents:</h4>
+                        <ul className="text-xs text-gray-600 space-y-1 text-center">
+                          {service.requiredDocuments.slice(0, 2).map((doc, index) => (
+                            <li key={index} className="flex items-center justify-center">
+                              <span className="w-1 h-1 bg-blue-600 rounded-full mr-2"></span>
+                              <span className="break-words">{doc}</span>
+                            </li>
+                          ))}
+                          {expandedDocuments.has(service.id) && service.requiredDocuments.slice(2).map((doc, index) => (
+                            <li key={index + 2} className="flex items-center justify-center animate-fadeIn">
+                              <span className="w-1 h-1 bg-blue-600 rounded-full mr-2"></span>
+                              <span className="break-words">{doc}</span>
+                            </li>
+                          ))}
+                          {service.requiredDocuments.length > 2 && (
+                            <li className="text-blue-600 font-medium">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleDocumentsExpansion(service.id);
+                                }}
+                                className="hover:text-blue-800 hover:underline transition-colors cursor-pointer"
+                              >
+                                {expandedDocuments.has(service.id) 
+                                  ? `Show less` 
+                                  : `+${service.requiredDocuments.length - 2} more documents`}
+                              </button>
+                            </li>
+                          )}
+                        </ul>
+                      </div>
+
+                      {/* Service Note */}
+                      {service.note && (
+                        <div className="mb-4 p-2 bg-yellow-50 border border-yellow-200 rounded-lg">
+                          <p className="text-xs text-yellow-800 text-center">{service.note}</p>
+                        </div>
+                      )}
                       
                       {/* Apply Button */}
                       <div className="w-full inline-flex items-center justify-center px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-blue-600 text-white rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm hover:from-blue-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group-hover:shadow-2xl">
@@ -483,7 +548,7 @@ const Home: React.FC = () => {
                     console.log('Home - Grouped plans:', groupedPlans);
 
                     // Define the order and colors for plan types
-                    const planOrder = ['PREMIUM PLUS', 'PREMIUM GAZETTE', 'REGULAR GAZETTE'] as const;
+                    const planOrder = ['PREMIUM PLUS', 'PREMIUM GAZETTE', 'REGULAR GAZETTE', 'NSS GAZETTE'] as const;
                       
                     return planOrder.map((planType) => {
                       const plans = groupedPlans[planType];
@@ -497,6 +562,7 @@ const Home: React.FC = () => {
                               {planType === 'PREMIUM PLUS' && 'Fastest processing with premium features'}
                               {planType === 'PREMIUM GAZETTE' && 'Balanced processing with enhanced features'}
                               {planType === 'REGULAR GAZETTE' && 'Standard processing with essential features'}
+                              {planType === 'NSS GAZETTE' && 'NSS processing with extended timeline'}
                             </p>
                           </div>
                           

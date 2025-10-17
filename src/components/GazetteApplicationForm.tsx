@@ -13,7 +13,7 @@ import {
   Check,
   AlertCircle} from 'lucide-react';
 import { useServices } from '../hooks/useServices';
-import ApiService from '../services/apiService';
+// Removed ApiService import - using mock data instead
 import type { ApplicationFormData, CompanyInfo, ReligiousInfo } from '../types/application';
 import LocalStorageService from '../services/localStorage';
 import ServiceFormSelector from './forms/ServiceFormSelector';
@@ -100,133 +100,16 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
       return;
     }
 
-    // Fetch gazette plans for this service
+    // Create mock gazette plans for this service
     const fetchGazettePlans = async () => {
       setLoadingPlans(true);
       try {
-        console.log('Fetching gazette plans for service ID:', service.id);
-        const response = await ApiService.getGazetteTypes("0", "0");
-        console.log('Gazette plans response:', response);
-        if (response.success && response.data.success) {
-          // Filter plans by service name match
-          const filteredPlans = response.data.SearchDetail.filter(plan => 
-            plan.GazzeteType.toLowerCase().includes(service.name.toLowerCase()) ||
-            service.name.toLowerCase().includes(plan.GazzeteType.toLowerCase())
-          );
-          const plans = filteredPlans.length > 0 ? filteredPlans : response.data.SearchDetail;
-          setGazettePlans(plans);
-          console.log('Set gazette plans:', plans);
-          
-          // Find the selected plan from URL parameter or auto-select default
-          let planToSelect = null;
-          if (planId) {
-            planToSelect = plans.find(plan => plan.FeeID === planId);
-            console.log('Found plan from URL parameter:', planToSelect);
-          }
-          
-          // If no plan found from URL, auto-select the first plan (premium-plus if available, otherwise first plan)
-          if (!planToSelect) {
-            const premiumPlusPlan = plans.find(plan => plan.PaymentPlan === 'PREMIUM PLUS');
-            planToSelect = premiumPlusPlan || plans[0];
-            console.log('Auto-selected default plan:', planToSelect);
-          }
-          
-          if (planToSelect) {
-            setSelectedPlan(planToSelect);
-            // Map payment plan to gazetteType
-            const mapPaymentPlanToGazetteType = (paymentPlan: string) => {
-              switch (paymentPlan) {
-                case 'PREMIUM PLUS':
-                  return 'premium-plus';
-                case 'PREMIUM GAZETTE':
-                  return 'premium-gazette';
-                case 'REGULAR GAZETTE':
-                  return 'regular-gazette';
-                default:
-                  return 'regular-gazette';
-              }
-            };
-            
-            // Also set the gazetteType in formData
-            setFormData(prev => ({
-              ...prev,
-              gazetteType: mapPaymentPlanToGazetteType(planToSelect.PaymentPlan) as 'premium-plus' | 'premium-gazette' | 'regular-gazette'
-            }));
-          }
-        } else {
-          console.error('Failed to fetch gazette plans:', response.error);
-          console.log('Falling back to mock gazette plans data due to API error');
-          
-          // Fallback to mock data when API returns error
-          const mockPlans = [
-            {
-              FeeID: '64',
-              GazzeteType: service.name,
-              PaymentPlan: 'PREMIUM PLUS',
-              GazetteName: `${service.name} - Premium Plus`,
-              GazetteDetails: `Premium service for ${service.name}`,
-              ProcessDays: 5,
-              GazetteFee: service.price * 1.5,
-              TaxRate: 0.15,
-              DocRequired: service.requiredDocuments.map((doc, index) => ({
-                ID: (index + 1).toString(),
-                DocName: doc
-              }))
-            },
-            {
-              FeeID: '65',
-              GazzeteType: service.name,
-              PaymentPlan: 'PREMIUM GAZETTE',
-              GazetteName: `${service.name} - Premium Gazette`,
-              GazetteDetails: `Standard service for ${service.name}`,
-              ProcessDays: 7,
-              GazetteFee: service.price,
-              TaxRate: 0.15,
-              DocRequired: service.requiredDocuments.map((doc, index) => ({
-                ID: (index + 1).toString(),
-                DocName: doc
-              }))
-            },
-            {
-              FeeID: '66',
-              GazzeteType: service.name,
-              PaymentPlan: 'REGULAR GAZETTE',
-              GazetteName: `${service.name} - Regular Gazette`,
-              GazetteDetails: `Basic service for ${service.name}`,
-              ProcessDays: 10,
-              GazetteFee: service.price * 0.8,
-              TaxRate: 0.15,
-              DocRequired: service.requiredDocuments.map((doc, index) => ({
-                ID: (index + 1).toString(),
-                DocName: doc
-              }))
-            }
-          ];
-          
-          setGazettePlans(mockPlans);
-          console.log('Set mock gazette plans:', mockPlans);
-          
-          // Auto-select the first plan (premium-plus)
-          const planToSelect = mockPlans[0];
-          setSelectedPlan(planToSelect);
-          console.log('Auto-selected plan:', planToSelect);
-          
-          // Set the gazetteType in formData
-          setFormData(prev => ({
-            ...prev,
-            gazetteType: 'premium-plus' as 'premium-plus' | 'premium-gazette' | 'regular-gazette'
-          }));
-          
-          if (!toastShown) {
-            toast.success('Using offline gazette plans data');
-            setToastShown(true);
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching gazette plans:', error);
-        console.log('Falling back to mock gazette plans data');
+        console.log('Creating mock gazette plans for service ID:', service.id);
         
-        // Fallback to mock data when API is not available
+        // Simulate loading time
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // Create mock plans based on the service
         const mockPlans = [
           {
             FeeID: '64',
@@ -269,27 +152,71 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
               ID: (index + 1).toString(),
               DocName: doc
             }))
+          },
+          {
+            FeeID: '67',
+            GazzeteType: service.name,
+            PaymentPlan: 'NSS GAZETTE',
+            GazetteName: `${service.name} - NSS Gazette`,
+            GazetteDetails: `NSS service for ${service.name}`,
+            ProcessDays: 14,
+            GazetteFee: 700.00,
+            TaxRate: 0.15,
+            DocRequired: service.requiredDocuments.map((doc, index) => ({
+              ID: (index + 1).toString(),
+              DocName: doc
+            }))
           }
         ];
         
         setGazettePlans(mockPlans);
         console.log('Set mock gazette plans:', mockPlans);
         
-        // Auto-select the first plan (premium-plus)
-        const planToSelect = mockPlans[0];
-        setSelectedPlan(planToSelect);
-        console.log('Auto-selected plan:', planToSelect);
+        // Find the selected plan from URL parameter or auto-select default
+        let planToSelect = null;
+        if (planId) {
+          planToSelect = mockPlans.find(plan => plan.FeeID === planId);
+          console.log('Found plan from URL parameter:', planToSelect);
+        }
         
-        // Set the gazetteType in formData
-        setFormData(prev => ({
-          ...prev,
-          gazetteType: 'premium-plus' as 'premium-plus' | 'premium-gazette' | 'regular-gazette'
-        }));
+        // If no plan found from URL, auto-select the first plan (premium-plus)
+        if (!planToSelect) {
+          planToSelect = mockPlans[0];
+          console.log('Auto-selected default plan:', planToSelect);
+        }
+        
+        if (planToSelect) {
+          setSelectedPlan(planToSelect);
+          // Map payment plan to gazetteType
+          const mapPaymentPlanToGazetteType = (paymentPlan: string) => {
+            switch (paymentPlan) {
+              case 'PREMIUM PLUS':
+                return 'premium-plus';
+              case 'PREMIUM GAZETTE':
+                return 'premium-gazette';
+              case 'REGULAR GAZETTE':
+                return 'regular-gazette';
+              case 'NSS GAZETTE':
+                return 'nss-gazette';
+              default:
+                return 'regular-gazette';
+            }
+          };
+          
+          // Also set the gazetteType in formData
+          setFormData(prev => ({
+            ...prev,
+            gazetteType: mapPaymentPlanToGazetteType(planToSelect.PaymentPlan) as 'premium-plus' | 'premium-gazette' | 'regular-gazette' | 'nss-gazette'
+          }));
+        }
         
         if (!toastShown) {
-          toast.success('Using offline gazette plans data');
+          toast.success('Using mock gazette plans data');
           setToastShown(true);
         }
+      } catch (error) {
+        console.error('Error creating mock gazette plans:', error);
+        toast.error('Failed to load gazette plans');
       } finally {
         setLoadingPlans(false);
       }
@@ -778,14 +705,15 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
             <span className="font-medium text-gray-900">
               {formData.gazetteType === 'premium-plus' ? 'Premium Plus' :
                formData.gazetteType === 'premium-gazette' ? 'Premium Gazette' :
-               formData.gazetteType === 'regular-gazette' ? 'Regular Gazette' : 'Not selected'}
+               formData.gazetteType === 'regular-gazette' ? 'Regular Gazette' :
+               formData.gazetteType === 'nss-gazette' ? 'NSS Gazette' : 'Not selected'}
             </span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-600">Base Price:</span>
             <span className="font-medium text-gray-900">GHS {service.price.toFixed(2)}</span>
           </div>
-          {formData.gazetteType && formData.gazetteType !== 'regular-gazette' && (
+          {formData.gazetteType && formData.gazetteType !== 'regular-gazette' && formData.gazetteType !== 'nss-gazette' && (
             <div className="flex justify-between">
               <span className="text-gray-600">Gazette Type Premium:</span>
               <span className="font-medium text-gray-900">
@@ -795,6 +723,12 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
               </span>
             </div>
           )}
+          {formData.gazetteType === 'nss-gazette' && (
+            <div className="flex justify-between">
+              <span className="text-gray-600">NSS Gazette Fee:</span>
+              <span className="font-medium text-gray-900">GHS 700.00</span>
+            </div>
+          )}
           <div className="flex justify-between text-lg font-semibold border-t pt-3">
             <span className="text-gray-900">Total Price:</span>
             <span className="text-blue-600">
@@ -802,6 +736,8 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
                 ? (service.price * 2).toFixed(2)
                 : formData.gazetteType === 'premium-gazette'
                 ? (service.price * 1.5).toFixed(2)
+                : formData.gazetteType === 'nss-gazette'
+                ? '700.00'
                 : service.price.toFixed(2)}
             </span>
           </div>
@@ -810,6 +746,7 @@ const GazetteApplicationForm: React.FC<GazetteApplicationFormProps> = ({ onSubmi
             <span className="font-medium text-gray-900">
               {formData.gazetteType === 'premium-plus' ? 'Expedited (3-5 days)' :
                formData.gazetteType === 'premium-gazette' ? 'Priority (5-7 days)' :
+               formData.gazetteType === 'nss-gazette' ? 'NSS Processing (14 days)' :
                service.processingTime}
             </span>
           </div>

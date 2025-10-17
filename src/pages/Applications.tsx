@@ -133,6 +133,13 @@ const Applications: React.FC = () => {
 
   const getServiceIcon = (serviceType: string) => {
     const icons = {
+      // New service IDs
+      'name-change': User,
+      'date-place-birth': User,
+      'foreign-students-name': User,
+      'foreign-students-birth': User,
+      'marriage-name-change': User,
+      // Old service IDs (for backward compatibility)
       'appointment-marriage-officers': Heart,
       'change-name-company-school-hospital': Building,
       'change-name-confirmation-date-birth': User,
@@ -140,6 +147,24 @@ const Applications: React.FC = () => {
       'public-place-worship-marriage-license': Church
     };
     return icons[serviceType as keyof typeof icons] || FileText;
+  };
+
+  const getServiceDisplayName = (serviceType: string) => {
+    const serviceNames = {
+      // New service IDs
+      'name-change': 'NAME CHANGE',
+      'date-place-birth': 'DATE/PLACE OF BIRTH',
+      'foreign-students-name': 'FOREIGN STUDENTS - NAME CHANGE',
+      'foreign-students-birth': 'FOREIGN STUDENTS - DATE/PLACE OF BIRTH',
+      'marriage-name-change': 'CHANGE OF NAME: Miss to Mrs (MARRIAGE)',
+      // Old service IDs (for backward compatibility)
+      'appointment-marriage-officers': 'APPOINTMENT OF MARRIAGE OFFICERS',
+      'change-name-company-school-hospital': 'CHANGE NAME COMPANY SCHOOL HOSPITAL',
+      'change-name-confirmation-date-birth': 'CHANGE NAME CONFIRMATION DATE BIRTH',
+      'incorporation-commencement-companies': 'INCORPORATION COMMENCEMENT COMPANIES',
+      'public-place-worship-marriage-license': 'PUBLIC PLACE WORSHIP MARRIAGE LICENSE'
+    };
+    return serviceNames[serviceType as keyof typeof serviceNames] || serviceType.replace(/-/g, ' ').toUpperCase();
   };
 
   const formatDate = (dateString: string) => {
@@ -217,19 +242,19 @@ const Applications: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Search and Filters */}
-        <div className="bg-white rounded-2xl shadow-sm p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="md:col-span-2">
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm p-4 sm:p-6 mb-6 sm:mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            <div className="sm:col-span-2 lg:col-span-2">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
                 <input
                   type="text"
                   placeholder="Search applications or orders..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                 />
               </div>
             </div>
@@ -238,7 +263,7 @@ const Applications: React.FC = () => {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
               >
                 <option value="all">All Status</option>
                 <option value="draft">Draft</option>
@@ -254,9 +279,15 @@ const Applications: React.FC = () => {
               <select
                 value={serviceFilter}
                 onChange={(e) => setServiceFilter(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
               >
                 <option value="all">All Services</option>
+                <option value="name-change">Name Change</option>
+                <option value="date-place-birth">Date/Place of Birth</option>
+                <option value="foreign-students-name">Foreign Students - Name Change</option>
+                <option value="foreign-students-birth">Foreign Students - Date/Place of Birth</option>
+                <option value="marriage-name-change">Marriage Name Change</option>
+                {/* Old service options for backward compatibility */}
                 <option value="appointment-marriage-officers">Marriage Officers</option>
                 <option value="change-name-company-school-hospital">Company Name Change</option>
                 <option value="change-name-confirmation-date-birth">Personal Name Change</option>
@@ -296,7 +327,7 @@ const Applications: React.FC = () => {
                         </div>
                         <div>
                           <h3 className="font-semibold text-gray-900">
-                            {application.serviceType.replace(/-/g, ' ').toUpperCase()}
+                            {getServiceDisplayName(application.serviceType)}
                           </h3>
                           <p className="text-sm text-gray-600">
                             {application.personalInfo?.fullName}

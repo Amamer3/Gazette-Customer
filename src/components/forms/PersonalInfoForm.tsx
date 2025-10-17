@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FileText, Upload, AlertCircle, CheckCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import SignaturePad from 'signature_pad';
+import { useServices } from '../../hooks/useServices';
 
 interface PersonalInfoFormProps {
   onSubmit: (data: PersonalInfoFormData) => void;
@@ -36,6 +37,7 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
   serviceType: _serviceType,
   onValidationChange
 }) => {
+  const { services } = useServices();
   const [formData, setFormData] = useState<PersonalInfoFormData>({
     oldIncorrectName: '',
     oldNameTitle: 'Mr.',
@@ -58,8 +60,10 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [showCustomOldTitle, setShowCustomOldTitle] = useState(false);
   const [showCustomNewTitle, setShowCustomNewTitle] = useState(false);
+  const [hasUserInteracted, setHasUserInteracted] = useState(false);
   const signaturePadRef = useRef<SignaturePad | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const hasUserInteractedRef = useRef(false);
 
   // Initialize signature pad
   useEffect(() => {
@@ -98,6 +102,12 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
       // Handle signature changes with debouncing
       let timeoutId: NodeJS.Timeout;
       signaturePad.addEventListener('endStroke', () => {
+        // Mark that user has started interacting with the form
+        if (!hasUserInteractedRef.current) {
+          hasUserInteractedRef.current = true;
+          setHasUserInteracted(true);
+        }
+        
         clearTimeout(timeoutId);
         timeoutId = setTimeout(() => {
           if (signaturePad.isEmpty()) {
@@ -117,7 +127,7 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
 
   // Notify parent component about validation status (debounced)
   useEffect(() => {
-    if (onValidationChange) {
+    if (onValidationChange && hasUserInteracted) {
       const timeoutId = setTimeout(() => {
         const isValid = validateForm();
         onValidationChange(isValid);
@@ -125,10 +135,17 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
       
       return () => clearTimeout(timeoutId);
     }
-  }, [formData, uploadedFiles, onValidationChange]);
+  }, [formData, uploadedFiles, onValidationChange, hasUserInteracted]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+    
+    // Mark that user has started interacting with the form
+    if (!hasUserInteractedRef.current) {
+      hasUserInteractedRef.current = true;
+      setHasUserInteracted(true);
+    }
+    
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -146,6 +163,12 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     const newFiles = [...uploadedFiles, ...files];
+    
+    // Mark that user has started interacting with the form
+    if (!hasUserInteractedRef.current) {
+      hasUserInteractedRef.current = true;
+      setHasUserInteracted(true);
+    }
     
     // Limit to 10 files
     if (newFiles.length > 10) {
@@ -175,6 +198,12 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
   };
 
   const handleDocumentTypeChange = (fileName: string, documentType: string) => {
+    // Mark that user has started interacting with the form
+    if (!hasUserInteractedRef.current) {
+      hasUserInteractedRef.current = true;
+      setHasUserInteracted(true);
+    }
+    
     setFormData(prev => ({
       ...prev,
       documentTypes: {
@@ -305,41 +334,51 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
   };
 
   const getRequiredDocuments = () => {
+    // Get documents from the service data based on serviceType
+    const currentService = services.find(s => s.id === _serviceType);
+    
+    if (currentService) {
+      return currentService.requiredDocuments;
+    }
+    
+    // Default documents for CHANGE OF NAME service
     return [
       'Statutory Declaration',
-      'Marriage Certificate',
-      'Ecowas Card (Ghana Card)'
+      'Ecowas Card (Ghana Card)',
+      'Documents bearing both wrong and correct information'
     ];
   };
 
+
   return (
-    <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
-      <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-gray-200">
+    <div className="max-w-4xl mx-auto p-3 sm:p-4 lg:p-6 xl:p-8">
+      <div className="bg-white rounded-lg sm:rounded-xl lg:rounded-2xl shadow-lg border border-gray-200">
         {/* Header - Official Ghana Publishing Company Ltd. Format */}
-        <div className="p-4 sm:p-6 border-b border-gray-200 bg-blue-50">
+        <div className="p-3 sm:p-4 lg:p-6 border-b border-gray-200 bg-blue-50">
           <div className="text-center">
-            <div className="flex items-center justify-center space-x-3 mb-4">
+            <div className="flex items-center justify-center space-x-2 sm:space-x-3 mb-3 sm:mb-4">
             <img 
                 src="/gpclogo.png" 
                 alt="Ghana Publishing Company Limited Logo" 
-                className="w-14 h-14 object-contain"
+                className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain"
               />
               <div className="text-left">
-                <h1 className="text-lg font-bold text-blue-800">GHANA PUBLISHING COMPANY LIMITED</h1>
-                <p className="text-sm text-blue-600">Assembly Press - Accra</p>
+                <h1 className="text-xs sm:text-sm lg:text-lg font-bold text-blue-800 break-words">GHANA PUBLISHING COMPANY LIMITED</h1>
+                <p className="text-xs sm:text-sm text-blue-600">Assembly Press - Accra</p>
               </div>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-2 break-words">
               NAME FORM - CHANGE OF NAME
             </h2>
-            <p className="text-sm text-gray-600">
+            <p className="text-xs sm:text-sm text-gray-600">
               Official Application Form for Name Change
             </p>
           </div>
         </div>
 
+
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-6 sm:space-y-8">
+        <form onSubmit={handleSubmit} className="p-3 sm:p-4 lg:p-6 space-y-4 sm:space-y-6 lg:space-y-8">
           {/* Official Ghana Publishing Company Ltd. NAME FORM Fields */}
           <div className="space-y-6">
             {/* Old/Incorrect Name */}
@@ -703,15 +742,15 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
             </div>
           </div>
 
-          {/* Document Upload Section */}
-          <div className="space-y-4 sm:space-y-6">
-            <h3 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center">
+          {/* Document Upload Section - Single Card */}
+          <div className="bg-white border border-gray-200 rounded-lg sm:rounded-xl p-4 sm:p-6">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center mb-4">
               <Upload className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-blue-600" />
               Required Documents
             </h3>
 
             {/* Required Documents List */}
-            <div className="bg-blue-50 p-3 sm:p-4 rounded-lg sm:rounded-xl">
+            <div className="bg-blue-50 p-3 sm:p-4 rounded-lg mb-4">
               <h4 className="text-sm sm:text-base font-medium text-blue-900 mb-2">
                 Required Documents ({uploadedFiles.length}/{getRequiredDocuments().length} uploaded):
               </h4>
@@ -758,7 +797,7 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Upload Supporting Documents *
               </label>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg sm:rounded-xl p-4 sm:p-6 text-center hover:border-blue-400 transition-colors">
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 sm:p-6 text-center hover:border-blue-400 transition-colors">
                 <Upload className="w-8 h-8 sm:w-10 sm:h-10 text-gray-400 mx-auto mb-2" />
                 <p className="text-sm sm:text-base text-gray-600 mb-2">
                   Drag and drop files here, or click to select
@@ -794,7 +833,7 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
 
             {/* Uploaded Files */}
             {uploadedFiles.length > 0 && (
-              <div>
+              <div className="mt-4">
                 <h4 className="text-sm font-medium text-gray-700 mb-2">
                   Uploaded Files ({uploadedFiles.length})
                 </h4>

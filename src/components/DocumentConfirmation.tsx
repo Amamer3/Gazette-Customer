@@ -101,6 +101,26 @@ const DocumentConfirmation: React.FC<DocumentConfirmationProps> = ({
             </div>
           </div>
 
+          
+
+          {/* Important Notice */}
+          <div className="bg-red-50 border border-red-200 rounded-xl p-6 mb-8">
+            <div className="flex items-start space-x-3">
+              <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
+              <div>
+                <h4 className="font-medium text-red-800 mb-2">Important Notice</h4>
+                <ul className="text-red-700 text-sm space-y-1">
+                  <li>• All documents must be original or certified copies</li>
+                  <li>• Documents must be in good condition and clearly readable</li>
+                  <li>• Processing time starts only after all documents are received</li>
+                  <li>• Incomplete applications will be returned for correction</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+
+
           {/* Confirmation Checkbox */}
           <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mb-8">
             <div className="flex items-start space-x-3">
@@ -122,21 +142,6 @@ const DocumentConfirmation: React.FC<DocumentConfirmationProps> = ({
             </div>
           </div>
 
-          {/* Important Notice */}
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6 mb-8">
-            <div className="flex items-start space-x-3">
-              <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
-              <div>
-                <h4 className="font-medium text-red-800 mb-2">Important Notice</h4>
-                <ul className="text-red-700 text-sm space-y-1">
-                  <li>• All documents must be original or certified copies</li>
-                  <li>• Documents must be in good condition and clearly readable</li>
-                  <li>• Processing time starts only after all documents are received</li>
-                  <li>• Incomplete applications will be returned for correction</li>
-                </ul>
-              </div>
-            </div>
-          </div>
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">

@@ -11,7 +11,7 @@ const DocumentConfirmationPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
-  const { services: gazetteServices } = useServices();
+  const { services: gazetteServices, loading: servicesLoading } = useServices();
   const serviceId = searchParams.get('service');
   const planId = searchParams.get('plan');
 
@@ -20,6 +20,12 @@ const DocumentConfirmationPage: React.FC = () => {
       if (!serviceId || !planId) {
         setError('Missing service or plan information');
         setLoading(false);
+        return;
+      }
+
+      // Wait for services to load
+      if (servicesLoading) {
+        console.log('DocumentConfirmation - Services still loading, waiting...');
         return;
       }
 
@@ -65,14 +71,17 @@ const DocumentConfirmationPage: React.FC = () => {
           GazzeteType: service.name,
           PaymentPlan: planId === '64' ? 'PREMIUM PLUS' : 
                       planId === '65' ? 'PREMIUM GAZETTE' : 
-                      planId === '66' ? 'REGULAR GAZETTE' : 'STANDARD',
+                      planId === '66' ? 'REGULAR GAZETTE' : 
+                      planId === '67' ? 'NSS GAZETTE' : 'STANDARD',
           GazetteName: `${service.name} - ${planId === '64' ? 'Premium Plus' : 
                                    planId === '65' ? 'Premium Gazette' : 
-                                   planId === '66' ? 'Regular Gazette' : 'Standard'}`,
+                                   planId === '66' ? 'Regular Gazette' : 
+                                   planId === '67' ? 'NSS Gazette' : 'Standard'}`,
           GazetteDetails: `Service for ${service.name}`,
-          ProcessDays: planId === '64' ? 5 : planId === '65' ? 7 : 10,
+          ProcessDays: planId === '64' ? 5 : planId === '65' ? 7 : planId === '66' ? 10 : planId === '67' ? 14 : 10,
           GazetteFee: planId === '64' ? service.price * 1.5 : 
                      planId === '65' ? service.price * 1.2 : 
+                     planId === '67' ? 700.00 :
                      service.price,
           TaxRate: 0.15
         };
@@ -87,13 +96,13 @@ const DocumentConfirmationPage: React.FC = () => {
     };
 
     initializeData();
-  }, [serviceId, planId, gazetteServices]);
+  }, [serviceId, planId, gazetteServices, servicesLoading]);
 
   const handleBack = () => {
     navigate('/#services-section');
   };
 
-  if (loading) {
+  if (loading || servicesLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">

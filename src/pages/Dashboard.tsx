@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import LocalStorageService from '../services/localStorage';
 import Navigation from '../components/Navigation';
-import ApiService from '../services/apiService';
+// Removed ApiService import - using mock data instead
 import { useAuth } from '../contexts/AuthContext';
 import { 
   FileText, 
@@ -39,6 +39,7 @@ const Dashboard: React.FC = () => {
   const [gazetteServices, setGazetteServices] = useState<any[]>([]);
   const [servicesLoading, setServicesLoading] = useState(false);
   const [servicesError, setServicesError] = useState<string | null>(null);
+  const [expandedDocuments, setExpandedDocuments] = useState<Set<string>>(new Set());
   
   // Debug logging
   console.log('Dashboard - gazetteServices:', gazetteServices);
@@ -54,18 +55,91 @@ const Dashboard: React.FC = () => {
     setServicesError(null);
     
     try {
-      const response = await ApiService.getServices();
-      console.log('Services response:', response);
+      // Simulate loading time
+      await new Promise(resolve => setTimeout(resolve, 500));
       
-      if (response.success && response.data) {
-        setGazetteServices(response.data);
-        console.log('Services loaded successfully:', response.data.length);
-      } else {
-        console.error('Failed to fetch services:', response.error);
-        setServicesError(response.error || 'Failed to load services');
-      }
+      // Use mock services data (same as Home page)
+      const mockServices = [
+        {
+          id: 'name-change',
+          name: 'NAME CHANGE',
+          description: 'Official name change for Ghanaian citizens',
+          price: 200.00,
+          processingTime: '5-7 business days',
+          category: 'Personal Services',
+          requiredDocuments: [
+            'A Statutory Declaration',
+            'Ecowas Card (Ghana Card)',
+            'Documents bearing both wrong and correct information'
+          ],
+          icon: 'User'
+        },
+        {
+          id: 'date-place-birth',
+          name: 'DATE/PLACE OF BIRTH',
+          description: 'Correction of date or place of birth for Ghanaian citizens',
+          price: 200.00,
+          processingTime: '5-7 business days',
+          category: 'Personal Services',
+          requiredDocuments: [
+            'A Statutory Declaration',
+            'Ecowas Card (Ghana Card)',
+            'Documents bearing both wrong and correct information'
+          ],
+          icon: 'User'
+        },
+        {
+          id: 'foreign-students-name',
+          name: 'FOREIGN STUDENTS - NAME CHANGE',
+          description: 'Name change for foreign students in Ghana',
+          price: 250.00,
+          processingTime: '7-10 business days',
+          category: 'Foreign Services',
+          requiredDocuments: [
+            'Resident Permit',
+            'Non-citizen Ghana Card',
+            'Statutory Declaration'
+          ],
+          icon: 'User',
+          note: 'Notarised documents required for Foreign Students'
+        },
+        {
+          id: 'foreign-students-birth',
+          name: 'FOREIGN STUDENTS - DATE/PLACE OF BIRTH',
+          description: 'Birth date/place correction for foreign students in Ghana',
+          price: 250.00,
+          processingTime: '7-10 business days',
+          category: 'Foreign Services',
+          requiredDocuments: [
+            'Resident Permit',
+            'Non-citizen Ghana Card',
+            'Statutory Declaration',
+            'Birth Certificate (Notarised)'
+          ],
+          icon: 'User',
+          note: 'Notarised documents required for Foreign Students'
+        },
+        {
+          id: 'marriage-name-change',
+          name: 'CHANGE OF NAME: Miss to Mrs (MARRIAGE)',
+          description: 'Name change due to marriage (Miss to Mrs)',
+          price: 200.00,
+          processingTime: '5-7 business days',
+          category: 'Marriage Services',
+          requiredDocuments: [
+            'Statutory Declaration',
+            'Marriage Certificate',
+            'Ecowas Card (Ghana Card)'
+          ],
+          icon: 'User',
+          note: 'If the marriage is foreign, it must be notarised. If the marriage certificate is in any language other than English, it must be translated by a certified institution and notarised.'
+        }
+      ];
+      
+      setGazetteServices(mockServices);
+      console.log('Dashboard - Mock services loaded successfully:', mockServices.length);
     } catch (error) {
-      console.error('Error fetching services:', error);
+      console.error('Error loading mock services:', error);
       setServicesError(error instanceof Error ? error.message : 'Failed to load services');
     } finally {
       setServicesLoading(false);
@@ -89,29 +163,66 @@ const Dashboard: React.FC = () => {
     const loadingToast = toast.loading('Loading gazette plans...');
 
     try {
-      // Fetch all gazette types with different payment plans
-      const response = await ApiService.getAllGazetteTypes("59");
-      console.log('Gazette types response:', response);
+      // Simulate loading time
+      await new Promise(resolve => setTimeout(resolve, 500));
       
-      if (response.success && response.data) {
-        console.log('Dashboard - Setting gazette plans:', response.data);
-        console.log('Dashboard - Plans length:', response.data.length);
-        setGazettePlans(response.data);
-        toast.dismiss(loadingToast);
-        toast.success(`Loaded ${response.data.length} gazette plans`);
-      } else {
-        console.error('Failed to fetch gazette types:', response.error);
-        setGazettePlans([]);
-        toast.dismiss(loadingToast);
-        // Show error to user
-        toast.error(`Failed to load gazette plans: ${response.error || 'Unknown error'}`);
-      }
+      // Create mock plans based on the service (same as Home page)
+      const mockPlans = [
+        {
+          FeeID: '64',
+          GazzeteType: service.name,
+          PaymentPlan: 'PREMIUM PLUS',
+          PaymentPlanCategory: 'PREMIUM PLUS',
+          GazetteName: `${service.name} - Premium Plus`,
+          GazetteDetails: `Premium service for ${service.name}`,
+          ProcessDays: 5,
+          GazetteFee: service.price * 1.5,
+          TaxRate: 0.15
+        },
+        {
+          FeeID: '65',
+          GazzeteType: service.name,
+          PaymentPlan: 'PREMIUM GAZETTE',
+          PaymentPlanCategory: 'PREMIUM GAZETTE',
+          GazetteName: `${service.name} - Premium Gazette`,
+          GazetteDetails: `Standard service for ${service.name}`,
+          ProcessDays: 7,
+          GazetteFee: service.price * 1.2,
+          TaxRate: 0.15
+        },
+        {
+          FeeID: '66',
+          GazzeteType: service.name,
+          PaymentPlan: 'REGULAR GAZETTE',
+          PaymentPlanCategory: 'REGULAR GAZETTE',
+          GazetteName: `${service.name} - Regular Gazette`,
+          GazetteDetails: `Basic service for ${service.name}`,
+          ProcessDays: 10,
+          GazetteFee: service.price,
+          TaxRate: 0.15
+        },
+        {
+          FeeID: '67',
+          GazzeteType: service.name,
+          PaymentPlan: 'NSS GAZETTE',
+          PaymentPlanCategory: 'NSS GAZETTE',
+          GazetteName: `${service.name} - NSS Gazette`,
+          GazetteDetails: `NSS service for ${service.name}`,
+          ProcessDays: 14,
+          GazetteFee: 700.00,
+          TaxRate: 0.15
+        }
+      ];
+      
+      console.log('Dashboard - Setting mock gazette plans:', mockPlans);
+      setGazettePlans(mockPlans);
+      toast.dismiss(loadingToast);
+      toast.success(`Loaded ${mockPlans.length} gazette plans`);
     } catch (error) {
-      console.error('Error fetching gazette types:', error);
+      console.error('Error creating mock gazette plans:', error);
       setGazettePlans([]);
       toast.dismiss(loadingToast);
-      // Show error to user
-      toast.error(`Network error: ${error instanceof Error ? error.message : 'Failed to load gazette plans'}`);
+      toast.error('Failed to load gazette plans');
     } finally {
       setLoadingPlans(false);
     }
@@ -142,6 +253,18 @@ const Dashboard: React.FC = () => {
     }
     
     return FileText;
+  };
+
+  const toggleDocumentsExpansion = (serviceId: string) => {
+    setExpandedDocuments(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(serviceId)) {
+        newSet.delete(serviceId);
+      } else {
+        newSet.add(serviceId);
+      }
+      return newSet;
+    });
   };
 
   const getStatusColor = (status: string) => {
@@ -488,27 +611,75 @@ const Dashboard: React.FC = () => {
                       className="group bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-lg transition-all duration-300 cursor-pointer"
                       onClick={() => handleServiceClick(service)}
                     >
-                      <div className="flex items-center space-x-3">
-                        <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <IconComponent className="w-6 h-6 text-blue-600" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-gray-900 group-hover:text-blue-700 transition-colors text-sm">
-                            {service.name}
-                          </h3>
-                          <p className="text-xs text-gray-500 mt-1 line-clamp-2">
-                            {service.description || `Professional ${service.name.toLowerCase()} service`}
-                          </p>
-                          <div className="flex items-center justify-between mt-2">
-                            <span className="text-xs font-medium text-blue-600">
-                              {service.processingTime || 'Processing time varies'}
-                            </span>
-                            <span className="text-xs font-bold text-green-600">
-                              ₵{service.price || 'Contact for pricing'}
-                            </span>
+                      <div className="space-y-3">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <IconComponent className="w-6 h-6 text-blue-600" />
                           </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-semibold text-gray-900 group-hover:text-blue-700 transition-colors text-sm">
+                              {service.name}
+                            </h3>
+                            <p className="text-xs text-gray-500 mt-1 line-clamp-2">
+                              {service.description || `Professional ${service.name.toLowerCase()} service`}
+                            </p>
+                          </div>
+                          <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
                         </div>
-                        <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
+
+                        {/* Required Documents */}
+                        {service.requiredDocuments && service.requiredDocuments.length > 0 && (
+                          <div className="border-t pt-3">
+                            <h4 className="text-xs font-semibold text-gray-800 mb-2">Required Documents:</h4>
+                            <ul className="text-xs text-gray-600 space-y-1">
+                              {service.requiredDocuments.slice(0, 2).map((doc: string, index: number) => (
+                                <li key={index} className="flex items-center">
+                                  <span className="w-1 h-1 bg-blue-600 rounded-full mr-2"></span>
+                                  <span className="break-words">{doc}</span>
+                                </li>
+                              ))}
+                              {expandedDocuments.has(service.id) && service.requiredDocuments.slice(2).map((doc: string, index: number) => (
+                                <li key={index + 2} className="flex items-center animate-fadeIn">
+                                  <span className="w-1 h-1 bg-blue-600 rounded-full mr-2"></span>
+                                  <span className="break-words">{doc}</span>
+                                </li>
+                              ))}
+                              {service.requiredDocuments.length > 2 && (
+                                <li className="text-blue-600 font-medium">
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      toggleDocumentsExpansion(service.id);
+                                    }}
+                                    className="hover:text-blue-800 hover:underline transition-colors cursor-pointer"
+                                  >
+                                    {expandedDocuments.has(service.id) 
+                                      ? `Show less` 
+                                      : `+${service.requiredDocuments.length - 2} more documents`}
+                                  </button>
+                                </li>
+                              )}
+                            </ul>
+                          </div>
+                        )}
+
+                        {/* Service Note */}
+                        {service.note && (
+                          <div className="border-t pt-3">
+                            <div className="p-2 bg-yellow-50 border border-yellow-200 rounded-lg">
+                              <p className="text-xs text-yellow-800">{service.note}</p>
+                            </div>
+                          </div>
+                        )}
+
+                        <div className="flex items-center justify-between border-t pt-3">
+                          <span className="text-xs font-medium text-blue-600">
+                            {service.processingTime || 'Processing time varies'}
+                          </span>
+                          <span className="text-xs font-bold text-green-600">
+                            ₵{service.price || 'Contact for pricing'}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   );
@@ -581,7 +752,7 @@ const Dashboard: React.FC = () => {
                     console.log('Dashboard - Grouped plans:', groupedPlans);
 
                     // Define the order and colors for plan types
-                    const planOrder = ['PREMIUM PLUS', 'PREMIUM GAZETTE', 'REGULAR GAZETTE'] as const;
+                    const planOrder = ['PREMIUM PLUS', 'PREMIUM GAZETTE', 'REGULAR GAZETTE', 'NSS GAZETTE'] as const;
                       
                     return planOrder.map((planType) => {
                       const plans = groupedPlans[planType];
@@ -595,6 +766,7 @@ const Dashboard: React.FC = () => {
                               {planType === 'PREMIUM PLUS' && 'Fastest processing with premium features'}
                               {planType === 'PREMIUM GAZETTE' && 'Balanced processing with enhanced features'}
                               {planType === 'REGULAR GAZETTE' && 'Standard processing with essential features'}
+                              {planType === 'NSS GAZETTE' && 'NSS processing with extended timeline'}
                             </p>
                           </div>
                           
